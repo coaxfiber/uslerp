@@ -1,0 +1,638 @@
+<div id="student-information">
+<mat-card class="example-card">
+  <mat-card-header >
+    <mat-card-title><b>Student Information</b></mat-card-title>
+    <mat-card-subtitle>For Updating Student Information in the database</mat-card-subtitle>
+  </mat-card-header>
+  
+  <mat-card-content class='colo'>
+  	<mat-divider></mat-divider>
+  	<br>
+  	<table>
+  		<tr>
+  			<td width="160">
+  				<img [src]="image" width="150" onError="this.src='assets/noimage.jpg'"/>
+  			</td>
+  			<td>
+  				<form class="example-form"  id="ngForm" #documentEditForm="ngForm"> 
+		  <table class="example-full-width" cellspacing="0">
+		  <tr>
+		    <td width="50%"><mat-form-field class="example-full-widthminus">
+		      <input autofocus matInput #idno2 placeholder="ID Number" [(ngModel)]="id" name="idno" (keydown)="keyDownFunction($event)" [disabled]="updatenamevar">
+		      
+		    </mat-form-field>
+		    <button mat-mini-fab color="primary" (click)="studentlookup()">
+			    <mat-icon>search</mat-icon>
+			  </button></td>
+		  	<td style="padding-left: 10px">
+		  	<mat-form-field class="example-full-width">
+		      <input matInput placeholder="LR Number" value="" [(ngModel)]="lrno" name="lrno">
+		    </mat-form-field>
+		  	</td>
+		  </tr>
+		  </table>
+
+		<div style="height: 10px"></div>
+        <div style="height: 40px" *ngIf="!(lname!='')"></div>
+		<table *ngIf="lname!=''" >
+			<tr>
+				<td>
+				 <h2 style="margin: 0px" *ngIf="updatenamevar==false">{{lname}}, {{fname}} {{mname}} {{suffix}}</h2>
+
+		  		<button mat-raised-button color="primary"style="color:white;margin-bottom: 5px" class="buttondesign" 
+		  		(click)="Getdatab4pdf()" *ngIf="studinfo!=undefined"><i class="material-icons" >edit
+                        </i> 
+                        <span style="margin-top: 7px"> Enrollment Form&nbsp;&nbsp;</span></button>
+		  <table cellspacing="0"   *ngIf="updatenamevar==true"><tr>
+		    <td><mat-form-field class="example-full-width2">
+		      <input matInput placeholder="First Name" [(ngModel)]="fname" name="fname" required autocomplete="off">
+		    </mat-form-field></td>
+		    <td><mat-form-field class="example-full-width2">
+		      <input matInput placeholder="Middle Name" [(ngModel)]="mname" name="mname" autocomplete="off">
+		    </mat-form-field></td>
+		    <td><mat-form-field class="example-full-width2">
+		      <input matInput placeholder="Last Name" [(ngModel)]="lname" name="lname" required autocomplete="off">
+		    </mat-form-field></td>
+		    <td><mat-form-field class="example-full-width3">
+		      <input matInput placeholder="Suffix" [(ngModel)]="suffix" name="suffix" autocomplete="off" >
+		    </mat-form-field></td>
+		  </tr>
+		</table>
+
+				</td>
+				<td valign="top"><i class="material-icons" (click)="updatename()" style="color: #294a70"   *ngIf="updatenamevar==false&&global.checkaccess(':Student:PersonStudInfoPut')">edit</i>
+
+             <button mat-raised-button color="primary"style="width: 75px;color:white;margin-bottom: 5px" class="buttondesign" (click)="updatenameapi()" *ngIf="updatenamevar==true"><i class="material-icons" >edit
+                        </i> 
+                        <span style="margin-top: 7px"> Update&nbsp;&nbsp;</span></button>
+
+              <button mat-raised-button style="width: 75px;background-color:#990000;color:white;" class="buttondesign" (click)="updatename()" *ngIf="updatenamevar==true"><i class="material-icons">close
+                        </i> 
+                        <span style="margin-top: 7px"> Cancel&nbsp;&nbsp;</span></button>
+				</td>
+			</tr>
+		</table>
+		<div style="height: 20px"></div>
+
+		</form>
+  			</td>
+  		</tr>
+  	</table>
+
+    
+		<div style="height: 10px"></div>	
+  <mat-divider></mat-divider><br>
+	  
+  		<mat-accordion style="overflow: hidden"  *ngIf="hidden==false">
+		  <mat-expansion-panel>
+		    <mat-expansion-panel-header>
+		      <mat-panel-title>
+		        Basic Information
+		      </mat-panel-title>
+		      <mat-panel-description>
+		      </mat-panel-description>
+		    </mat-expansion-panel-header>
+
+		   <table class="example-full-width" cellspacing="0"><tr>
+		    <td style="padding-right: 20px">
+			    <mat-form-field class="example-full-width">
+			      <mat-select required [(ngModel)]="gender" name="gender" placeholder="Gender">
+			      <mat-option  value="M">Male</mat-option>
+			      <mat-option value="F">Female</mat-option>
+			    </mat-select>
+			    </mat-form-field>
+			</td>
+		    <td style="padding-right: 20px">
+			    <mat-form-field class="example-full-width">
+			    <mat-select required [(ngModel)]="cstatus" name="cstatus" placeholder="Civil Status">
+			      <mat-option value="S">Single</mat-option>
+			      <mat-option value="M">Married</mat-option>
+			      <mat-option value="W">Widow</mat-option>
+			    </mat-select>
+			    </mat-form-field>
+			</td>
+		    <td style="padding-right: 20px">
+			    <mat-form-field class="example-full-width">
+			      <input matInput [(ngModel)]="nationality" placeholder="Nationality">
+			    </mat-form-field>
+			</td>
+		  </tr></table>
+
+
+		   <table class="example-full-width" cellspacing="0"><tr>
+		    <td style="padding-right: 20px">
+			    <mat-form-field class="example-full-width">
+			      <input matInput [(ngModel)]="religion" placeholder="Religion">
+			    </mat-form-field>
+			</td>
+		    <td style="padding-right: 20px">
+			    <mat-form-field class="example-full-width">
+			    <input readonly matInput [matDatepicker]="picker" placeholder="Birth Date" (click)="picker.open()"  [(ngModel)]="bdate" name="bdate" required (onChange)="checkbday()">
+				  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+				  <mat-datepicker #picker></mat-datepicker>
+			    </mat-form-field>
+			</td>
+		    <td style="padding-right: 20px">
+			    <mat-form-field class="example-full-width">
+			      <input matInput [(ngModel)]="placeob" placeholder="Place of Birth">
+			    </mat-form-field>
+			</td>
+		  </tr></table>
+		  <mat-divider></mat-divider><br>
+	  			<button mat-raised-button color="primary" (click)="quickSaveBasicInfo()" style="float: right" *ngIf="global.checkaccess(':Student:BasicInfoPut')">
+	  				<i class="material-icons">edit</i> Quick Save
+	  			</button><br>&nbsp;
+
+		  </mat-expansion-panel>
+		  <mat-expansion-panel *ngIf="global.checkaccess(':Student:GetDemography')">
+		    <mat-expansion-panel-header>
+		      <mat-panel-title>
+		        Contact Information
+		      </mat-panel-title>
+		      <mat-panel-description>
+		      </mat-panel-description>
+		    </mat-expansion-panel-header>
+		     <table class="example-full-width" cellspacing="0"><tr>
+		    <td style="padding-right: 20px">
+			    <mat-form-field class="example-full-width">
+			      <input matInput [(ngModel)]="tno" placeholder="Telephone Number">
+			    </mat-form-field>
+			</td>
+		    <td style="padding-right: 20px">
+			    <mat-form-field class="example-full-width">
+			      <input matInput [(ngModel)]="cno" placeholder="Cellphone Number">
+			    </mat-form-field>
+			</td>
+		    <td style="padding-right: 20px">
+			    <mat-form-field class="example-full-width">
+			      <input matInput [(ngModel)]="email" placeholder="E-mail Address">
+			    </mat-form-field>
+			</td>
+		  	</tr></table>
+
+		  <table class="example-full-width" cellspacing="0">
+		  <tr>
+		    <td width="30%">
+		  	<mat-form-field class="example-full-width">
+		      <input matInput placeholder="Street" [(ngModel)]="street" name="lrno">
+		    </mat-form-field></td>
+		  	<td style="padding-left: 10px">
+		    <mat-form-field class="example-full-widthminus">
+		      <input autofocus matInput  placeholder="Home Address" [(ngModel)]="homeaddress" readonly="readonly">
+		      
+		    </mat-form-field>
+		    <button mat-mini-fab color="primary"  (click)="openDialog(1)">
+			    <mat-icon>search</mat-icon>
+			  </button>
+		  	</td>
+		  </tr>
+		  </table>
+
+		  <table class="example-full-width" cellspacing="0">
+		  <tr>
+		    <td width="30%">
+		  	<mat-form-field class="example-full-width">
+		      <input matInput placeholder="Street" [(ngModel)]="street2" name="lrno">
+		    </mat-form-field></td>
+		  	<td style="padding-left: 10px">
+		    <mat-form-field class="example-full-widthminus">
+		      <input autofocus matInput  placeholder="Current/Boarding Address" [(ngModel)]="boardingaddress" readonly="readonly">
+		      
+		    </mat-form-field>
+		    <button mat-mini-fab color="primary" (click)="openDialog(2)">
+			    <mat-icon>search</mat-icon>
+			  </button>
+		  	</td>
+		  </tr>
+		  </table>
+		  <mat-divider></mat-divider><br>
+	  			<button mat-raised-button color="primary" (click)="quickSaveContactInfo()" style="float: right"  *ngIf="global.checkaccess(':Student:ContactInfoPut')">
+	  				<i class="material-icons">edit</i> Quick Save
+	  			</button><br>&nbsp;
+		  </mat-expansion-panel>
+
+
+
+		  <mat-expansion-panel  *ngIf="global.domain=='HIGHSCHOOL'">
+		    <mat-expansion-panel-header>
+		      <mat-panel-title>
+		        Personal Information
+		      </mat-panel-title>
+		      <mat-panel-description>
+		      </mat-panel-description>
+		    </mat-expansion-panel-header>
+
+		   <table class="example-full-width" cellspacing="0">
+		   	<tr>
+			    <td style="padding-right: 20px">
+				    <mat-form-field class="example-full-width">
+				      <input matInput [(ngModel)]="nofamily" placeholder="Number of Children in the family" type="number" autocomplete="off">
+				    </mat-form-field>
+				</td>
+			    <td style="padding-right: 20px">
+				    <mat-form-field class="example-full-width">
+				      <input matInput [(ngModel)]="birthorder" placeholder="Your Birth Order" type="number" autocomplete="off">
+				    </mat-form-field>
+				</td>
+			  </tr>
+			  <tr>
+			    <td style="padding-right: 20px;" colspan="2">
+				    <mat-form-field class="example-full-width">
+				      <input matInput [(ngModel)]="sabilities" placeholder="Special Abilities/Expertise/Talents" autocomplete="off">
+				    </mat-form-field>
+				</td>
+			  </tr>
+			  <tr>
+			    <td style="padding-right: 20px;" colspan="2">
+				    <mat-form-field class="example-full-width">
+				      <input matInput [(ngModel)]="contest" placeholder="Contest you want to join" autocomplete="off">
+				    </mat-form-field>
+				</td>
+			  </tr>
+			  <tr>
+			    <td style="padding-right: 20px;" colspan="2">
+				    <mat-form-field class="example-full-width">
+				      <input matInput [(ngModel)]="pdefects" placeholder="Physical Defects" autocomplete="off">
+				    </mat-form-field>
+				</td>
+			  </tr>
+			  <tr>
+			    <td style="padding-right: 20px;" colspan="2">
+				    <mat-form-field class="example-full-width">
+				      <input matInput [(ngModel)]="healthproblems" placeholder="Health Problems" autocomplete="off">
+				    </mat-form-field>
+				</td>
+			  </tr>
+			  <tr>
+			    <td style="padding-right: 20px;" colspan="2">
+				    <mat-form-field class="example-full-width">
+				      <input matInput [(ngModel)]="medicaladvise" placeholder="Medical Advise" autocomplete="off">
+				    </mat-form-field>
+				</td>
+			  </tr>
+		   	<tr>
+			    <td style="padding-right: 20px">
+				    <mat-form-field class="example-full-width">
+				      <input matInput [(ngModel)]="nearestneighbor" placeholder="Nearest neighbor studying in USL" autocomplete="off">
+				    </mat-form-field>
+				</td>
+			    <td style="padding-right: 20px">
+				</td>
+			  </tr>
+			</table>
+
+
+		  <mat-divider></mat-divider><br>
+	  			<button mat-raised-button color="primary" (click)="quickSavePersonalInfo()" style="float: right" *ngIf="global.checkaccess(':Student:PersonalInfoPut')">
+	  				<i class="material-icons">edit</i> Quick Save
+	  			</button><br>&nbsp;
+
+		  </mat-expansion-panel>
+
+
+		   <mat-expansion-panel  *ngIf="global.domain!='ELEMENTARY'">
+		    <mat-expansion-panel-header>
+		      <mat-panel-title>
+		        Submitted Requirements (High School)
+		      </mat-panel-title>
+		      <mat-panel-description>
+		      </mat-panel-description>
+		    </mat-expansion-panel-header>
+		     
+		    <div style="margin-left: 20px">
+              <mat-checkbox [checked]='reportCard' [(ngModel)]="reportCard">
+                <p>Report Card</p>
+              </mat-checkbox>
+              <div style="height: 20px"></div>
+              <mat-checkbox [checked]='nso' [(ngModel)]="nso" >
+                <p>Photocopy of NSO Birth Certificate</p>
+              </mat-checkbox>
+              <div style="height: 0px"></div>
+              <mat-checkbox [checked]='form137A' [(ngModel)]="form137A" >
+                <p>Form 137A</p>
+              </mat-checkbox>
+              <div style="height: 0px"></div>
+              <mat-checkbox [checked]='form137E' [(ngModel)]="form137E" >
+                <p>Form 137E</p>
+              </mat-checkbox>	
+            </div>
+
+
+		  <mat-divider></mat-divider><br>
+	  			<button mat-raised-button color="primary" (click)="quickSaveEnrollmentRequirement()" style="float: right"  *ngIf="global.checkaccess(':Student:EnrollmentRequirementPut')">
+	  				<i class="material-icons">edit</i> Quick Save
+	  			</button><br>&nbsp;
+		  </mat-expansion-panel>
+
+
+
+		   <mat-expansion-panel  *ngIf="global.domain=='COLLEGE'">
+		    <mat-expansion-panel-header>
+		      <mat-panel-title>
+		        Submitted Requirements (College)
+		      </mat-panel-title>
+		      <mat-panel-description>
+		      </mat-panel-description>
+		    </mat-expansion-panel-header>
+		     
+		    <div style="margin-left: 20px">
+              <mat-checkbox [checked]='form137A' [(ngModel)]="cForm137A">
+                <p>Form 137A</p>
+              </mat-checkbox>
+              <div style="height: 0px"></div>
+              <mat-checkbox [checked]='cForm138' [(ngModel)]="cForm138" >
+                <p>Form 138</p>
+              </mat-checkbox>
+              <div style="height: 0px"></div>
+              <mat-checkbox [checked]='nso' [(ngModel)]="cnso" >
+                <p>NSO Birth Certificate</p>
+              </mat-checkbox>
+              <div style="height: 20px"></div>
+              <mat-checkbox [checked]='otr' [(ngModel)]="otr" >
+                <p>OTR From Other Schools</p>
+              </mat-checkbox>
+              <div style="height: 0px"></div>
+              <mat-checkbox [checked]='marriageContract' [(ngModel)]="marriageContract" >
+                <p>Marriage Contract</p>
+              </mat-checkbox>
+            </div>
+
+
+		  <mat-divider></mat-divider><br>
+	  			<button mat-raised-button color="primary" (click)="quickSaveCollegeEnrollmentRequirement()" style="float: right"  *ngIf="global.checkaccess(':Student:CollegeEnrollmentRequirementPut')">
+	  				<i class="material-icons">edit</i> Quick Save
+	  			</button><br>&nbsp;
+		  </mat-expansion-panel>
+
+
+
+
+		   <mat-expansion-panel >
+			    <mat-expansion-panel-header>
+			      <mat-panel-title>
+			        Sacraments Received
+			      </mat-panel-title>
+			      <mat-panel-description>
+			      </mat-panel-description>
+			    </mat-expansion-panel-header>
+			     
+			    <div style="margin-left: 20px">
+	              <mat-checkbox [checked]='baptism' [(ngModel)]="baptism">
+	                <p>Baptism</p>
+	              </mat-checkbox>
+	              <div style="height: 0px"></div>
+	              <mat-checkbox [checked]='confession' [(ngModel)]="confession" >
+	                <p>Confession</p>
+	              </mat-checkbox>
+	              <div style="height: 0px"></div>
+	              <mat-checkbox [checked]='communion' [(ngModel)]="communion" >
+	                <p>Holy Communion</p>
+	              </mat-checkbox>
+	              <div style="height: 0px"></div>
+	              <mat-checkbox [checked]='confirmation' [(ngModel)]="confirmation" >
+	                <p>Confirmation</p>
+	              </mat-checkbox>	
+	              <div style="height: 20px"></div>
+	              <mat-checkbox [checked]='religiousInstruction' [(ngModel)]="religiousInstruction" >
+	                <p>Received religious instruction during elementary?</p>
+	              </mat-checkbox>	
+	            </div>
+
+
+			  <mat-divider></mat-divider><br>
+		  			<button mat-raised-button color="primary" (click)="quickSaveSacramentsReceivedPut()" style="float: right"  *ngIf="global.checkaccess(':Student:SacramentsReceivedPut')">
+		  				<i class="material-icons">edit</i> Quick Save
+		  			</button><br>&nbsp;
+			  </mat-expansion-panel>
+
+		  <mat-expansion-panel  *ngIf="global.checkaccess(':Student:FamilyBGGet')">
+		    <mat-expansion-panel-header>
+		      <mat-panel-title>
+		        Family Background
+		      </mat-panel-title>
+		      <mat-panel-description>
+		      </mat-panel-description>
+		    </mat-expansion-panel-header>
+
+		    <table id="student">
+		    	<tr>
+			    	<th>
+			    		FAMILY MEMBER NAME
+			    	</th>
+			    	<th>
+			    		RELATIONSHIP
+			    	</th>
+			    	<th style="width: 180px;text-align: center;" >
+			    		- ACTION - 
+			    	</th>
+			    </tr>
+			    <tr *ngFor="let f of familyarray">
+			    	<td>{{f.fullName}}</td>
+			    	<td>{{f.relDesc}}</td>
+			    	<td style="text-align: center;">
+			    		<button mat-raised-button color="primary" (click)="openedit(f.memberIdNumber,f.relDesc)" style="width: 80px;color:white;" class="buttondesign" [disabled]="codeenable" *ngIf="(global.checkaccess(':Student:ParentGuardianPut')||global.checkaccess(':Student:ParentGuardianPut')||global.checkaccess(':Student:ParentGuardianPut'))&&f.relDesc!='Sibling'"><i class="material-icons" >edit
+                        </i> 
+                        <span style="margin-top: 7px"> Update&nbsp;&nbsp;</span></button>
+
+                        <button mat-raised-button color="primary" (click)="openedit(f.memberIdNumber,f.relDesc)" style="width: 80px;color:white;" class="buttondesign" [disabled]="codeenable" *ngIf="(global.checkaccess(':Student:ParentGuardianPut')||global.checkaccess(':Student:ParentGuardianPut')||global.checkaccess(':Student:ParentGuardianPut'))&&f.relDesc=='Sibling'"><i class="material-icons" >view_module
+                        </i> 
+                        <span style="margin-top: 7px"> View&nbsp;&nbsp;</span></button>
+
+			    		<button mat-raised-button (click)="deletefamily(f.memberIdNumber)" style="width: 80px;background-color:#990000;color:white;" class="buttondesign" [disabled]="codeenable"  *ngIf="global.checkaccess(':Student:FamilyMemberDelete')"><i class="material-icons">delete
+                        </i> 
+                        <span style="margin-top: 7px"> Remove&nbsp;&nbsp;</span></button>
+			    	</td>
+			    </tr>
+		    </table>
+		    <br>
+
+	  			<button mat-raised-button color="primary" (click)="openDialog2(1)" style="float: left;margin-right: 5px"  *ngIf="global.checkaccess(':Student:ParentGuardianPost')">
+	  				<i class="material-icons">add</i> Add Parent
+	  			</button>&nbsp; &nbsp;
+	  			<button mat-raised-button color="primary" (click)="openDialogguardian(1)" style="float: left;margin-right: 5px"  *ngIf="global.checkaccess(':Student:ParentGuardianPost')">
+	  				<i class="material-icons">add</i> Add Guardian
+	  			</button>&nbsp; &nbsp;
+	  			<button mat-raised-button color="primary" (click)="openDialogfamilymember(1)" style="float: left"  *ngIf="global.checkaccess(':Student:FamilyMemberPost')">
+	  				<i class="material-icons">add</i> Add Sibling
+	  			</button><br>&nbsp;
+		  </mat-expansion-panel>
+
+		  <mat-expansion-panel  *ngIf="global.checkaccess(':Student:EducationalBGGet') && global.domain!='HIGHSCHOOL'">
+		    <mat-expansion-panel-header>
+		      <mat-panel-title>
+		        Educational Background
+		      </mat-panel-title>
+		      <mat-panel-description>
+		      </mat-panel-description>
+		    </mat-expansion-panel-header>
+		    <table id="student">
+		    	<tr>
+			    	<th>
+			    		CURRICULUM
+			    	</th>
+			    	<th>
+			    		NAME OF SCHOOL
+			    	</th>
+			    	<th>
+			    		YEAR
+			    	</th>
+			    	<th style="width: 180px;text-align: center;" >
+			    		- ACTION - 
+			    	</th>
+			    </tr>
+			    <tr *ngFor="let f of educarray">
+			    	<td>{{f.programName}}</td>
+			    	<td>{{f.schoolName}}</td>
+			    	<td>{{f.yearGraduated}}</td>
+			    	<td style="text-align: center;">
+
+			    		<button mat-raised-button color="primary" (click)="openDialog3(f,1)" style="width: 80px;color:white;" class="buttondesign" [disabled]="codeenable"   *ngIf="global.checkaccess(':Student:EducationalBGPost')"><i class="material-icons">edit
+                        </i> 
+                        <span style="margin-top: 7px"> Update&nbsp;&nbsp;</span></button>
+
+			    		<button mat-raised-button (click)="deleteeduc(f.programID)" style="width: 80px;background-color:#990000;color:white;" class="buttondesign" [disabled]="codeenable"  *ngIf="global.checkaccess(':Student:EducationalBGDelete')"><i class="material-icons">delete
+                        </i> 
+                        <span style="margin-top: 7px"> Remove&nbsp;&nbsp;</span></button></td>
+			    </tr>
+		    </table>
+		    <br>
+
+	  			<button mat-raised-button color="primary" (click)="openDialog3(null,0)" style="float: left"  *ngIf="global.checkaccess(':Student:EducationalBGPut')">
+	  				<i class="material-icons">add</i> Add Educational Background
+	  			</button><br>&nbsp;
+		  </mat-expansion-panel>
+
+
+		  <mat-expansion-panel  *ngIf="global.domain=='HIGHSCHOOL'">
+		    <mat-expansion-panel-header>
+		      <mat-panel-title>
+		        Educational Background
+		      </mat-panel-title>
+		      <mat-panel-description>
+		      </mat-panel-description>
+		    </mat-expansion-panel-header>
+		    <table class="example-full-width" cellspacing="0">
+		   	
+			  <tr>
+			    <td style="padding-right: 20px;" colspan="2">
+
+		    	<form class="example-form">
+					  <mat-form-field class="example-full-width">
+					    <input type="text" placeholder="School Graduated From" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto">
+					    <mat-autocomplete #auto="matAutocomplete">
+					      <mat-option *ngFor="let option of filteredOptions | async" [value]="option"  (click)="getindex(option)">
+					        {{option}}
+					      </mat-option>
+					    </mat-autocomplete>
+					  </mat-form-field>
+					</form>
+				</td>
+			  </tr>
+			  <tr>
+			    <td style="padding-right: 20px;" colspan="2">
+				    <mat-form-field class="example-full-width">
+				      <input matInput [(ngModel)]="sgfAddress" placeholder="Address" readonly="readonly">
+				    </mat-form-field>
+				</td>
+			  </tr>
+
+		   	<tr>
+			    <td style="padding-right: 20px">
+				    <mat-form-field class="example-full-width">
+				      <input matInput [(ngModel)]="sgfsy" placeholder="School Year" autocomplete="off">
+				    </mat-form-field>
+				</td>
+			    <td style="padding-right: 20px">
+				    <mat-form-field class="example-full-width">
+				      <input matInput [(ngModel)]="average" placeholder="Average" autocomplete="off" type="number">
+				    </mat-form-field>
+				</td>
+			  </tr>
+			  <tr>
+			  	<td colspan="2">
+			  		<div style="height: 10px"></div>
+			  		<b>For Transferee Only:</b>
+			  		<div style="height: 10px"></div>
+			  	</td>
+			  </tr>
+			  <tr>
+			    <td style="padding-right: 20px;" colspan="2">
+
+			    		<form class="example-form2">
+						  <mat-form-field class="example-full-width">
+						    <input type="text" placeholder="School Last Attended" aria-label="Number" matInput [formControl]="myControl2" [matAutocomplete]="auto2">
+						    <mat-autocomplete #auto2="matAutocomplete">
+						      <mat-option *ngFor="let option of filteredOptions2 | async" [value]="option"  (click)="getindex2(option)">
+						        {{option}}
+						      </mat-option>
+						    </mat-autocomplete>
+						  </mat-form-field>
+						</form>
+				</td>
+			  </tr>
+			  <tr>
+			    <td style="padding-right: 20px;" colspan="2">
+				    <mat-form-field class="example-full-width">
+				      <input matInput [(ngModel)]="lsaAddress" placeholder="Address" autocomplete="off" readonly="readonly">
+				    </mat-form-field>
+				</td>
+			  </tr>
+			  <tr>
+			    <td style="padding-right: 20px;" colspan="1">
+				    <mat-form-field class="example-full-width">
+				      <input matInput [(ngModel)]="slaSy" placeholder="School Year" autocomplete="off">
+				    </mat-form-field>
+				</td>
+				<td></td>
+			  </tr>
+			</table>
+
+		    <br>
+
+		  			<button mat-raised-button color="primary" (click)="quickSaveEducationalBGHSPut()" style="float: right"  *ngIf="global.checkaccess(':Student:EducationalBGHSPut')">
+		  				<i class="material-icons">edit</i> Quick Save
+		  			</button><br>&nbsp;
+		  </mat-expansion-panel>
+
+		  <mat-expansion-panel  *ngIf="global.checkaccess(':Student:EnrollmentHistoryGet')">
+		    <mat-expansion-panel-header>
+		      <mat-panel-title>
+		      	USL Enrollment History
+		      </mat-panel-title>
+		      <mat-panel-description>
+		      </mat-panel-description>
+		    </mat-expansion-panel-header>
+		   
+			      <table class="apptable">
+			        <tr>
+			          <th style="width: 200px">School Year</th>
+			          <th>Course</th>
+			          <th style="width: 100px">Year</th>
+			          <th style="width: 100px">Status</th>
+			        </tr>
+			        <tr *ngFor="let element of tableArr2">
+			          <td>
+			            {{ getformat(element.schoolYear) }}
+			          </td>
+			          <td>
+			            {{element.course}}
+			          </td>
+			          <td>
+			            {{element.yearOrGradeLevel}}
+			          </td>
+			          <td>
+			            {{element.status}}
+			          </td>
+			        </tr>
+			      </table>
+			                  <mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="g==1"></mat-spinner>
+
+		  </mat-expansion-panel>
+
+		</mat-accordion>
+
+
+  </mat-card-content>
+</mat-card>
+
+</div>

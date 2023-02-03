@@ -1,0 +1,73 @@
+.example-form {
+  min-width: 150px;
+  max-width: 700px;
+  width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+}
+.example-full-width2 {
+  width: 175px;
+}
+.example-full-width3 {
+  width: 60px;
+}
+
+::ng-deep .mat-card-header {
+    background-color: #294a70 !important;
+    padding: 15px 5px 5px 5px !important;
+    color:white;
+}
+::ng-deep .mat-card-header * {
+    color:white;
+}
+
+::ng-deep .mat-card {
+    padding: 0 !important;
+}
+
+::ng-deep .mat-card-content {
+    padding: 15px !important;
+}
+
+.mat-form-field-infix{
+  width: auto !important;
+}
+
+.example-full-widthminus{
+  width: calc(100% - 50px)
+}
+
+mat-header-cell:nth-child(1), mat-cell:nth-child(1),mat-header-cell:nth-child(3), mat-cell:nth-child(3),mat-header-cell:nth-child(4), mat-cell:nth-child(4){
+    flex: 0 0 100px;
+}
+
+.mat-form-field{
+  margin-bottom: -20px;
+}
+.example-box {
+  position: absolute;
+  width: 500px;
+  border: solid 1px #ccc;
+  color: rgba(0, 0, 0, 0.87);
+  cursor: move;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: #fff;
+  border-radius: 4px;
+  z-index: 1;
+  transition: box-shadow 200ms cubic-bezier(0, 0, 0.2, 1);
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
+              0 2px 2px 0 rgba(0, 0, 0, 0.14),
+              0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  overflow: none
+}
+
+.example-box:active {
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+              0 8px 10px 1px rgba(0, 0, 0, 0.14),
+              0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}

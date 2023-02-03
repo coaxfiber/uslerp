@@ -1,0 +1,83 @@
+  <mat-card class="example-card">
+  <mat-card-header >
+    <mat-card-title><b>G9 Elective Manager </b></mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content class='colo' >
+  	<mat-divider></mat-divider>
+  	<table style="width: 100%">
+  		<tr>
+		    <td style="width: 200px"><mat-form-field class="example-full-widthminus">
+		      <input autofocus matInput placeholder="Search ID# / Name" value="" [(ngModel)]="id" (keyup)="keyDownFunction()" autocomplete="off">
+		    </mat-form-field>
+		    <button mat-mini-fab color="primary">
+			    <mat-icon>search</mat-icon>
+			  </button></td>
+  			<td>
+		  <table style="width: 100%">
+		  <tr>
+		  	<td style="width: 180px">
+          <mat-form-field appearance="outline" style="width: 100%">
+            <mat-label>Filter Elective</mat-label>
+            <mat-select [(ngModel)]="elective" (ngModelChange)='keyDownFunction()'>
+              <mat-option  value="">- All -</mat-option>
+              <mat-option *ngFor="let a of electivelist" value="{{a.id}}">{{a.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>          
+		  	</td>
+        <td style="width: 90px" *ngIf='tableArr!=undefined'>{{tableArr.length}} record(s)</td>
+        <td>
+        <button mat-raised-button (click)="exportexcel()" style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; padding: 0;margin-top: 15px;background-color:#006600;color: white;float: right;" >
+          &nbsp;&nbsp;<i class="material-icons">cloud_download
+          </i> <span style="margin-top: 7px"> Export to excel&nbsp;&nbsp;&nbsp;</span></button>   
+        </td>
+		  </tr>
+		  </table>
+  			</td>
+  		</tr>
+  	</table>
+      <div style="height: 10px"></div>
+
+    
+      <div style="max-height: calc(100vh - 360px);overflow-y: scroll;">
+    <table class="apptable" id="excel-table" style="overflow-x: scroll !important;max-width: 1200px;min-width: 850px" >
+	    <tr>
+        <th style="width:80px">ID Number</th>
+        <th style="min-width:135px">Full name</th>
+        <th style="width:150px">Section</th>
+        <th style="min-width:135px">Elective</th>
+        <th style="width:135px">Date Registered</th>
+        <th style="min-width:135px">Date Updated</th>
+	      <th style="min-width:200px;text-align: center;" *ngIf="hide">- Action -</th>
+	    </tr>
+	    			<tr *ngFor="let a of tableArr">
+                      <td >{{a.idNumber}}</td>
+                      <td >{{ a.fullName }}</td>
+                      <td >{{ a.section }}</td>
+                      <td >{{ a.name }}</td>
+                      <td >{{a.dateRegistered | date: 'mediumDate'}}</td>
+                      <td ><span *ngIf='!(a.dateUpdated=="0001-01-01T00:00:00")'>{{a.dateUpdated | date: 'mediumDate'}}</span></td>
+                                           
+                      <td style="text-align: center;"  *ngIf="hide">
+                          
+                          <button mat-raised-button style="width: 80px;color:white;background-color:#006400;" class="buttondesign" (click)="openDialog(a.electiveId,a.idNumber,a.fullName)"  *ngIf="global.checkaccess(':Enrollment:HSStudentElectivePost')">
+                          <i class="material-icons" >edit</i> 
+                          <span style="margin-top: 7px"> Update&nbsp;&nbsp;</span>
+                              </button>
+
+                              <button mat-raised-button style="width: 80px;background-color:#990000;color:white;margin-top: 5px" class="buttondesign" (click)="swalConfirm('Confirm Delete!','Remove selected elective of '+a.fullName,a.electiveId,a.idNumber)" *ngIf="global.checkaccess(':Enrollment:HSStudentElectiveDelete')">
+                                <i class="material-icons">delete</i> 
+                                  <span style="margin-top: 7px"> Delete&nbsp;&nbsp;</span>
+                              </button>
+                    
+                      </td>
+
+                    </tr>
+                </table>
+                  <mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="tableArr===undefined"></mat-spinner>
+               <div *ngIf="tableArr!=undefined">
+                <p *ngIf="tableArr.length===0" style="text-align: center;"><i>- No result found! -</i></p>
+              </div>
+  </div>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,164 @@
+<mat-card class="example-card" id="addcur" style='padding: 0 !important;max-height: calc(100vh - 300px);overflow-y: scroll;'>
+  <mat-card-header >
+    <mat-card-title><b *ngIf="data.data==0">Add Subject</b><b *ngIf="data.data==1">Update Subject</b></mat-card-title>
+  </mat-card-header>
+  <style type="text/css">
+  	mat-form-field{
+  		margin-bottom: -20px;
+  	}
+  </style>
+  <mat-card-content class='colo'>
+				<table style="width: 100%">
+
+					<tr>
+						<td style="width:25%" colspan="1">
+						  	<mat-form-field style="width: 100%"  appearance="outline"> 
+   							  <mat-label>Program ID</mat-label>
+						      <input matInput placeholder=""  [(ngModel)]="progid" autocomplete="off" maxlength="6" disabled="disabled">
+						    </mat-form-field>
+						</td>
+						<td  style="width:75%" colspan="3">
+						<mat-form-field style="width: 100%"  appearance="outline">
+   							  <mat-label>Course Code/Program Title</mat-label>
+						      <input matInput placeholder="" autocomplete="off" [(ngModel)]="progtitle" disabled="disabled">
+						    </mat-form-field>	
+						</td>
+					</tr>
+
+					<tr>
+						<td style="width:25%" colspan="1">
+						  	<mat-form-field style="width: 100%"  appearance="outline"> 
+   							  <mat-label>Subject ID</mat-label>
+						      <input matInput placeholder=""  [(ngModel)]="subjectId" autocomplete="off"  >
+						    </mat-form-field>
+						</td>
+						<td   style="width:75%" colspan="3">
+						<mat-form-field style="width: 100%"  appearance="outline">
+   							  <mat-label>Subject Title</mat-label>
+						      <input matInput placeholder="" autocomplete="off" [(ngModel)]="subjectTitle" >
+						    </mat-form-field>	
+						</td>
+					</tr>
+					</table>
+					<table style="width: 100%">
+					<tr>
+						<td style="width:50%" colspan="2">
+                          <mat-form-field style="width: 110px;" appearance="outline">
+                          <mat-label>Year level</mat-label>
+                          <mat-select [(ngModel)]="yearlevel"  >
+                            <mat-option  value='1'>
+                              1
+                            </mat-option>
+                            <mat-option  value='2'>
+                              2
+                            </mat-option>
+                            <mat-option  value='3'>
+                              3
+                            </mat-option>
+                            <mat-option  value='4'>
+                              4
+                            </mat-option>
+                            <mat-option  value='5'>
+                             5
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                        &nbsp;
+                          <mat-form-field style="width: 110px;" appearance="outline">
+                          <mat-label>Term</mat-label>
+                          <mat-select [(ngModel)]="term"  >
+                            <mat-option  value='1'>
+                              1 (First Semester)
+                            </mat-option>
+                            <mat-option  value='2'>
+                              2 (Second Semester)
+                            </mat-option>
+                            <mat-option  value='3'>
+                              3 (Summer)
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+						</td>
+						<td  style="width:50%" colspan="2">
+                          <mat-form-field style="width: 100%;" appearance="outline">
+                          <mat-label>Subject Type
+                                <mat-spinner style="margin-right: auto;"  [diameter]="20" *ngIf="arraysubtype===undefined"></mat-spinner></mat-label>
+                          <mat-select [(ngModel)]="subtype"  >
+                            <mat-option  value="">
+                            	&nbsp;
+                            </mat-option>
+                            <mat-option  value="{{x.id}}" *ngFor="let x of arraysubtype">
+                            	{{x.subjectTypeDesc}}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+						</td>
+					</tr>
+					</table>
+					<table style="width: 100%">
+					<tr>
+						<td style="width:75%" colspan="3">
+                          <mat-form-field style="width: 100%" appearance="outline">
+                          <mat-label>Department
+                                <mat-spinner style="margin-right: auto;"  [diameter]="20" *ngIf="arraydept===undefined"></mat-spinner></mat-label>
+                          <mat-select [(ngModel)]="department">
+                            <mat-option  [value]="x.departmentId" *ngFor="let x of arraydept">
+                              {{x.departmentCode}} - {{x.departmentName}}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+						</td>
+						<td   colspan="1">
+						  	<mat-form-field style="width: 120px"  appearance="outline"> 
+   							  <mat-label>Hours</mat-label>
+						      <input matInput placeholder=""  [(ngModel)]="hours" autocomplete="off" type="number" >
+						    </mat-form-field>
+						</td>
+					</tr>
+				</table>
+				<table style="width: 100%">
+					<tr>
+						<td style="width:25%" colspan="1">
+						  	<mat-form-field style="width: 150px"  appearance="outline"> 
+   							  <mat-label>TFR</mat-label>
+						      <input matInput placeholder=""  [(ngModel)]="tfr" autocomplete="off" type="number">
+						    </mat-form-field>
+						</td>
+
+						<td style="width:25%" colspan="1">
+						  	<mat-form-field style="width: 150px"  appearance="outline"> 
+   							  <mat-label>LFR</mat-label>
+						      <input matInput placeholder=""  [(ngModel)]="lfr" autocomplete="off" type="number">
+						    </mat-form-field>
+						</td>
+						<td style="width:25%" colspan="1">
+						  	<mat-form-field style="width: 170px"  appearance="outline"> 
+   							  <mat-label>Lecture Units</mat-label>
+						      <input matInput placeholder=""  [(ngModel)]="lecUnits" autocomplete="off" type="number" >
+						    </mat-form-field>
+						</td>
+						<td></td>
+					</tr><tr>
+						<td style="width:25%" colspan="1">
+						  	<mat-form-field style="width: 150px"  appearance="outline"> 
+   							  <mat-label>Laboratory Units</mat-label>
+						      <input matInput placeholder=""  [(ngModel)]="labUnits" autocomplete="off" type="number" >
+						    </mat-form-field>
+						</td>
+						<td style="width:75%" colspan="3">
+						  	<mat-form-field style="width: 100%"  appearance="outline"> 
+   							  <mat-label>Laboratory Type</mat-label>
+						      <input matInput placeholder=""  [(ngModel)]="labType" autocomplete="off" type="text">
+						    </mat-form-field>
+						</td>
+						<td></td>
+					</tr>
+					
+				</table>
+ 				
+  </mat-card-content>
+</mat-card>
+	<div style="height: 20px"></div> 
+	  <button mat-raised-button (click)="close()">Cancel</button>
+	  <button mat-raised-button color="primary" form="ngForm" (click)="subpost()" style="float: right;" *ngIf="data.data==0&&global.checkaccess(':Curriculum:SubjectPost')" >Add Subject</button>
+	  <button mat-raised-button color="primary" form="ngForm" (click)="subput()" style="float: right;" *ngIf="data.data==1&&global.checkaccess(':Curriculum:SubjectPut')">Update</button><br>&nbsp;

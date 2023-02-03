@@ -1,0 +1,56 @@
+<mat-card class="example-card" id="setmanager" style="padding: 0">
+  <mat-card-header >
+    <mat-card-title><b>Application Manager</b></mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content class='colo'>
+  	<mat-divider></mat-divider>
+
+    <div style="width: 700px;height: 35px">
+	 <button mat-raised-button color="primary" class="bluebutton" 
+	 *ngIf="global.checkaccess(':ClientApplication:ClientApplicationPost')" style="float: right;"
+	 (click)="openDialogUpdate(a,1)" >
+	 	<i class="material-icons" >add</i> 
+	    <span style="margin-top: 7px"> Add Application&nbsp;&nbsp;&nbsp;</span>
+	 </button>
+	</div>
+     
+    <div style="width: 700px">
+    <table class="apptable" *ngIf="array!=null"  id="excel-table">
+	    <tr>
+	      <th style="width:220px" >ID</th>
+	      <th style="width:180px">App Name</th>
+	      <th  style="width:300px;text-align: center;"  *ngIf="
+            global.checkaccess(':ClientApplication:ClientApplicationPut')">- Action -</th>
+	    </tr>
+	    
+    	<tr *ngFor="let a of array">
+            <td>{{a.id}}</td>
+            <td>{{a.userName}}</td>
+            <td *ngIf="global.checkaccess(':ClientApplication:ClientApplicationPut')">
+				
+				<button mat-raised-button class="bluebutton" (click)="openDialogUpdate(a,2)" *ngIf="global.checkaccess(':ClientApplication:ClientApplicationPut')">
+					&nbsp;&nbsp;<i class="material-icons" >edit</i> 
+                	<span style="margin-top: 7px"> Update&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            	</button>
+
+				<button mat-raised-button style="width: 80px;color:white;background-color:#006400;" class="buttondesign" (click)="openDialogUpdate(a,3)" *ngIf="global.checkaccess(':ClientApplication:AccessLists')&&global.checkaccess(':ClientApplication:ClientApplicationAccessPut')">
+					<i class="material-icons" >edit</i> 
+					<span style="margin-top: 7px"> Assign&nbsp;&nbsp;</span>
+            	</button>
+
+             	<button mat-raised-button style="width: 80px;background-color:#990000;color:white;" class="buttondesign"  (click)="removeapp(a.id)" *ngIf="global.checkaccess(':ClientApplication:ClientApplicationDelete')">
+             		<i class="material-icons">delete</i> 
+                	<span style="margin-top: 7px"> Remove&nbsp;&nbsp;</span>
+            	</button>
+            </td>
+        </tr>
+
+    </table>    
+    </div>           
+  <mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="array===undefined"></mat-spinner>
+  <div *ngIf="array!=undefined">
+    <p *ngIf="array.length===0" style="text-align: center;"><i>- No result found! -</i></p>
+  </div>
+  </mat-card-content>
+</mat-card>

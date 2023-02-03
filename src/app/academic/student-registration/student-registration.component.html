@@ -1,0 +1,340 @@
+  <mat-card class="example-card">
+  <mat-card-header >
+    <mat-card-title><b>Student Registration</b></mat-card-title>
+    <mat-card-subtitle>This page allows you to register old STUDENTS.</mat-card-subtitle>
+  </mat-card-header>
+  
+  <mat-card-content class='colo'>
+  	<mat-divider></mat-divider>
+  	<br>
+    <table style="width: 600px">
+  		<tr>
+  			<td width="160">
+  				<img [src]="image" width="150" onError="this.src='assets/noimage.jpg'"/>
+  			</td>
+  			<td>
+		  <table class="example-full-width" cellspacing="0">
+		  <tr>
+		    <td width="50%"><mat-form-field class="example-full-widthminus">
+		      <input autofocus matInput #idno2 maxlength="7" placeholder="ID Number" value="" [(ngModel)]="id" name="idno" required="required"  (keydown)="keyDownFunction($event)">
+		    </mat-form-field>
+		    <button mat-mini-fab color="primary" (click)="studentlookup()">
+			    <mat-icon>search</mat-icon>
+			  </button></td>
+        <td style="padding-left: 10px">
+            <b style="float: right;font-size: 12px;background-color: #294a70;color: white;padding: 3px 6px 3px 6px;border-radius:5px" *ngIf="!es.includes('TO SEE OSAS') && es != ''">{{ es }}</b>
+            <b style="float: right;font-size: 12px;background-color: #ff0000;color: white;padding: 3px 6px 3px 6px;border-radius:5px" *ngIf="es.includes('TO SEE OSAS')">{{ es }}</b>
+        </td>
+		  </tr>
+		  </table>
+
+    <h3 *ngIf="lname!=''" style="margin: 0px">{{lname}}, {{fname}} {{mname}} {{suffix}}</h3>
+    <div style="height: 5px"></div>
+    <table class="example-full-width" >
+        <tr>
+          <td style="width:50%">
+            <mat-form-field>
+              <mat-select [(ngModel)]="yearlevel" name="yearlevel" placeholder="Year/Grade" >
+                <mat-option value="{{f.year}}"  *ngFor="let f of yeardrop" (click)='getcourses2(f.year)'>
+                  {{f.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </td>
+          <td style="width:50%">
+          <mat-form-field class="example-full-width">
+              <mat-select [(ngModel)]="type" name="type" placeholder="Type">
+                  <mat-option value="1">
+                    Regular
+                  </mat-option>
+                  <mat-option value="2">
+                    Transferee
+                  </mat-option>
+                  <mat-option value="3">
+                    Cross Enrollee
+                  </mat-option>
+            </mat-select>
+          </mat-form-field>
+          </td>
+        </tr>
+        
+    </table>
+    <table style="width: 100%;margin-top: -15px">
+      <tr>
+          <td>
+            <mat-form-field  style="width:100%">
+              <mat-select placeholder="{{coursetitle}}" [(ngModel)]="programid"  >
+                <mat-option value="{{f.programID}}"  *ngFor="let f of arraycourses">
+                  {{f.course}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </td>
+        </tr>
+    </table>
+  			</td>
+  		</tr>
+  	</table>
+    <div style="height: 5px;"></div>
+    <!--||warndisplay1==null-->
+            <!--<button mat-raised-button color="default" (click)="alert()">Addmission Summary</button>-->
+            &nbsp;<button mat-raised-button color="primary" (click)="admitstudent()"  [disabled]="admit" > <i class="material-icons iconsize">assignment_ind</i> Register</button>
+            &nbsp;<button mat-raised-button (click)="showgrade()"  *ngIf="global.checkaccess(':Student:AcademicHistoryGet')"> <i class="material-icons iconsize">library_books</i> Academic History</button>
+
+            &nbsp;<button mat-raised-button (click)="lastsy()" *ngIf="global.checkaccess(':Student:AcademicHistoryGet')" [disabled]="tableArr==undefined"> <i class="material-icons iconsize">vertical_split</i> Grades from the Last SY of Attendance</button>
+
+            &nbsp;<button mat-raised-button (click)="enrollmenthistory()" *ngIf="global.checkaccess(':Student:EnrollmentHistoryGet')" [disabled]="tableArr2==undefined"> <i class="material-icons iconsize">toc</i> Enrollment History</button>
+
+   <div style="height:15px"></div>
+  <mat-divider></mat-divider>
+  <mat-tab-group>
+  <mat-tab label="General"  *ngIf="global.checkaccess(':Admission:RetentionPolicyLastGet')&&lname!=''">
+    
+    <div style="height: 10px"></div>
+    <table>
+      <tr>
+        <td style="width: 460px"  valign="top">
+          <mat-expansion-panel  [expanded]="true">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <b style="color: #294a70">Retention Policy Last School Year</b>
+              </mat-panel-title>
+              <mat-panel-description>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <p *ngIf="warndisplay1==null" style="text-align: left;">
+              - Not yet evaluated - 
+            </p>
+          <div  *ngIf="warndisplay1!=undefined">
+          <table class="apptable" *ngIf="warndisplay1!=null" style="width: 100%">
+            <tr>
+              <th style="width: 400px">
+                Context
+              </th>
+              <th style="width: 60px">
+                Result
+              </th>
+            </tr>
+            <tr [style.background-color]="redcount(warndisplay1.blackListedStopped,2)" >
+              <td>
+                Blacklisted(Stopped):
+              </td>
+              <td>
+                {{warndisplay1.blackListedStopped}}
+              </td>
+            </tr>
+            <tr [style.background-color]="redcount(warndisplay1.blacklistedViolation,2)" >
+              <td>
+                Blacklisted(Violation):
+              </td>
+              <td>
+                {{warndisplay1.blacklistedViolation}}
+              </td>
+            </tr>
+            <tr  [style.background-color]="redcount(warndisplay1.dropped_Count,2)" >
+              <td>
+                Drop Count:
+              </td>
+              <td>
+                {{warndisplay1.dropped_Count}}
+              </td>
+            </tr>
+            <tr  [style.background-color]="redcount(warndisplay1.evaluated,0)">
+              <td>
+                Evaluated
+              </td>
+              <td>
+                {{warndisplay1.evaluated}}
+              </td>
+            </tr>
+            <tr [style.background-color]="redcount(warndisplay1.failingMarks_Count,2)">
+              <td>
+                Failing Marks Count
+              </td>
+              <td>
+                {{warndisplay1.failingMarks_Count}}
+              </td>
+            </tr>
+            <tr [style.background-color]="redcount(warndisplay1.nfE_Count,2)">
+              <td>
+                NFE Count:
+              </td>
+              <td>
+                {{warndisplay1.nfE_Count}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Percent Failed
+              </td>
+              <td>
+                {{warndisplay1.percentFailed}}%
+              </td>
+            </tr>
+            <tr  [style.background-color]="redcount(warndisplay1.retentionPolicyAverage,1)">
+              <td>
+                Retention Policy Average
+              </td>
+              <td>
+                {{warndisplay1.retentionPolicyAverage}}
+              </td>
+            </tr>
+            <tr  [style.background-color]="redcount(warndisplay1.retentionPolicyNoGradeLowerThan_Count,2)">
+              <td>
+               Retention Policy (No Grade Lower Than Count)
+              </td>
+              <td>
+                {{warndisplay1.retentionPolicyNoGradeLowerThan_Count}}
+              </td>
+            </tr>
+            <tr  [style.background-color]="redcount(warndisplay1.subjectNotYetTaken_Count,2)">
+              <td>
+               Subject Not Yet Taken Count
+              </td>
+              <td>
+                {{warndisplay1.subjectNotYetTaken_Count}}
+              </td>
+            </tr>
+          </table>
+        </div>
+          <mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="warndisplay1===undefined"></mat-spinner> 
+        </mat-expansion-panel>
+        </td>
+        <td style="width: 360px" valign="top">
+           <mat-expansion-panel   [expanded]="true">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <b style="color: #294a70">Retention Policy Whole School Year</b>
+              </mat-panel-title>
+              <mat-panel-description>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+          <table class="apptable" *ngIf="warndisplay2!=undefined" style="width: 360px">
+            <tr>
+              <th style="width: 300px">
+                Context
+              </th>
+              <th style="width: 60px">
+                Result
+              </th>
+            </tr>
+            <tr>
+              <td>
+                Drop Count:
+              </td>
+              <td>
+                {{warndisplay2.dropped_Count}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Failing Marks Count
+              </td>
+              <td>
+                {{warndisplay2.failingMarks_Count}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                NFE Count:
+              </td>
+              <td>
+                {{warndisplay2.nfE_Count}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+               Subject Not Yet Taken Count
+              </td>
+              <td>
+                {{warndisplay2.subjectNotYearTaken_Count}}
+              </td>
+            </tr>
+          </table>
+          <mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="warndisplay2===undefined"></mat-spinner> 
+        </mat-expansion-panel>
+        </td>
+      </tr>
+    </table>
+    
+    
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <b style="color: #294a70">Retention Policy Specific Subject Type</b>
+              </mat-panel-title>
+              <mat-panel-description>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+                <div  *ngIf="warndisplay3!=undefined">
+                 <table class="apptable" style="width: 100%">
+                  <tr>
+                    <th style="width: 100px;text-align: center;">
+                      Subject ID
+                    </th>
+                    <th>
+                      Subject Title
+                    </th>
+                    <th style="width: 100px;text-align: center;">
+                      Subject Type
+                    </th>
+                    <th style="width: 150px;text-align: center;">
+                      Policy Grade Not Lower Than
+                    </th>
+                    <th style="width: 150px;text-align: center;">
+                      Retake Grade Not Lower Than
+                    </th>
+                    <th style="width: 80px;text-align: center;  ">
+                     Grade
+                    </th>
+                  </tr>
+                </table>
+                <table  *ngFor="let w of warndisplay3; let i=index" class="apptable" style="width: 100%">
+                    <tr *ngIf="yearfunc(i)" style="text-align: center">
+                      <td colspan="6">
+                        <b>{{  w.year }}</b>
+                      </td>
+                    </tr>
+                    <tr *ngIf="semfunc(i)" bgcolor="#f4f8fd">
+                      <td colspan="6">
+                        <b><i>{{  w.term }}</i></b>
+                      </td>
+                    </tr>
+                  <tr>
+                    <td style="width: 100px;text-align: center; ">
+                      {{w.subjectId}}
+                    </td>
+                    <td>
+                      {{w.subjectTitle}}
+                    </td>
+                    <td style="width: 100px;text-align: center; ">
+                      {{w.subjectType}}
+                    </td>
+                    <td style="width: 150px;text-align: center; ">
+                      {{w.policy_GradeNotLowerThan}}
+                    </td>
+                    <td style="width: 150px;text-align: center; ">
+                      {{w.retake_GradeNotLowerThan}}
+                    </td>
+                    <td style="width: 80px;text-align: center; ">
+                      {{w.grade}}
+                    </td>
+                  </tr>
+                  </table>
+                  </div>
+                <mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="warndisplay3===undefined"></mat-spinner> 
+                <div style="height: 10px"></div>
+                <div *ngIf="warndisplay3!=undefined">
+                  <p  *ngIf="warndisplay3.length===0" style="text-align: center;">
+                    - no results found! -
+                  </p>
+                </div>
+            </mat-expansion-panel>
+
+          
+    
+         
+      
+  </mat-tab>
+</mat-tab-group>
+            

@@ -1,0 +1,186 @@
+  <mat-card class="example-card">
+  <mat-card-header >
+    <mat-card-title><b>Enrollment Summary</b></mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content class='colo'>
+  	<mat-divider></mat-divider>
+     <table style="width: 900px">
+       <tr>
+         <td style="width: 325px">
+             <mat-form-field style="width: 325px" appearance="outline">
+			      <mat-label>- School Year -</mat-label>
+			      <mat-select [(ngModel)]="sy">
+			        <mat-option *ngFor="let x of global.allsyoptions" [value]="x.syWithSem">
+			          {{ global.syDisplay(x.syWithSem) }}
+			        </mat-option>
+			      </mat-select>
+			    </mat-form-field>
+         </td>
+         <td style="width: 200px">
+            <mat-form-field style="width: 180px" appearance="outline" >
+              <mat-label>Program Level</mat-label>
+              <mat-select  [(ngModel)]="proglevel">
+                <mat-option value="ALL">
+                  - All -
+                </mat-option>
+                <mat-option value="ELEMENTARY">
+                  Elementary
+                </mat-option>
+                <mat-option value="HIGHSCHOOL">
+                  High School
+                </mat-option>
+                <mat-option value="COLLEGE">
+                  College
+                </mat-option>
+                <mat-option value="GRADUATE SCHOOL">
+                  Graduate School
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+         </td>
+         <td valign="top" style="width: 100px">
+          <button mat-raised-button (click)="generate()"  style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; padding: 0;background-color:#294a70;color: white;margin-top: 15px;margin-left: 5px">
+                  &nbsp;&nbsp;
+                  <span style="margin-top: 7px"> Generate&nbsp;&nbsp;&nbsp;</span>
+              </button>
+         </td>
+         <td valign="top">
+         </td>
+       </tr>
+     </table>
+  <div style="width: 100%;height: calc(100vh - 340px); overflow-y: scroll;margin-top: -20px"  *ngIf="array!=undefined&&array!=null">
+    
+
+    <table id="excel-table" style="width: 900px">
+      <tr *ngFor="let a of array; let i = index" >
+        <td >
+          <table class="apptable" style="width: 100%;width: 900px">
+      <tr>
+        <td style="min-width:100px;background-color: #666666; color:white;border: 1px;border-color: black;" colspan="9" *ngIf="checkdep(i,a.departmentName)&&a.departmentName=='Elementary Department'">
+          <b>{{a.departmentName}}</b>
+        </td>
+        <td style="min-width:100px;background-color: #666666; color:white;border: 1px;border-color: black;" colspan="9" *ngIf="checkdep(i,a.departmentName)&&a.departmentName=='Graduate School'">
+          <b>{{a.departmentName}}</b>
+        </td>
+        <td style="min-width:100px;background-color: #666666; color:white;border: 1px;border-color: black;" colspan="9" *ngIf="checkdep(i,a.departmentName)&&a.departmentName=='Dinggin Ka Learning Center'">
+          <b>{{a.departmentName}}</b>
+        </td>
+        <td style="min-width:100px;background-color: #ff0000; color:white;border: 1px;border-color: black;" colspan="9" *ngIf="checkdep(i,a.departmentName)&&a.departmentName=='High School Department'">
+          <b>{{a.departmentName}}</b>
+        </td>
+        <td style="min-width:100px;background-color: #cc9900; color:white;border: 1px;border-color: black;" colspan="9" *ngIf="checkdep(i,a.departmentName)&&(a.departmentName=='School of Accountancy, Business and Hospitality'||a.departmentName=='School of Education, Arts and Sciences')">
+          <b>{{a.departmentName}}</b>
+        </td>
+        <td style="min-width:100px;background-color: #0000ff; color:white;border: 1px;border-color: black;" colspan="9" *ngIf="checkdep(i,a.departmentName)&&a.departmentName=='School of Health and Allied Sciences'">
+          <b>{{a.departmentName}}</b>
+        </td>
+        <td style="min-width:100px;background-color: #660000; color:white;border: 1px;border-color: black;" colspan="9" *ngIf="checkdep(i,a.departmentName)&&a.departmentName=='School of Engineering, Architecture, Interior Design and Information Technology Education'">
+          <b>{{a.departmentName}}</b>
+        </td>
+      </tr>
+      <tr *ngIf="checkdep(i,a.departmentName)"> 
+        <th style="min-width:100px;text-align: center;" rowspan="2">Curriculum</th>
+        <th colspan="6" style="text-align: center;" *ngIf="a.departmentName!='Elementary Department'">
+          <span *ngIf="a.programLevel!='00'&&a.programLevel!='10'&&a.programLevel!='20'">
+            Year
+          </span>
+          <span *ngIf="a.programLevel=='00'||a.programLevel=='10'||a.programLevel=='20'">
+            Grade
+          </span>
+        </th>
+        <th colspan="7" style="text-align: center;" 
+        *ngIf="a.departmentName=='Elementary Department'">
+          <span>
+            Grade
+          </span>
+        </th>
+        <th style="width:50px" rowspan="2">TOTAL</th>
+      </tr>
+      <tr *ngIf="checkdep(i,a.departmentName)&&a.programLevel!='20'">
+          <th style="width:62px"
+          *ngIf="a.departmentName=='Elementary Department'"><span>Kinder</span></th>
+          <th style="width:35px"><span>1st</span></th>
+          <th style="width:35px"><span>2nd</span></th>
+          <th style="width:35px"><span>3rd</span></th>
+          <th style="width:35px"><span>4th</span></th>
+          <th style="width:35px"><span>5th</span></th>
+          <th style="width:35px"><span>6th</span></th>
+      </tr>
+      <tr *ngIf="checkdep(i,a.departmentName)&&a.programLevel=='20'">
+          <th style="width:35px"><span>7</span></th>
+          <th style="width:35px"><span>8</span></th>
+          <th style="width:35px"><span>9</span></th>
+          <th style="width:35px"><span>10</span></th>
+          <th style="width:35px"><span>11</span></th>
+          <th style="width:35px"><span>12</span></th>
+      </tr>
+      <tr>
+            <td style="min-width:100px;">{{a.course}}</td>
+            <td style="width:62px" 
+              *ngIf="a.course=='Pre-School'">{{a.firstYear}}
+            </td><td style="width:35px" 
+              *ngIf="a.course=='Pre-School'">0
+            </td>
+            <td style="width:61px" *ngIf="a.course=='Primary Education'">{{a.f0 + a.m0}}</td>
+            <td style="width:35px" *ngIf="a.course!='Pre-School'">{{a.firstYear}}</td>
+            <td style="width:35px">{{a.secondYear}}</td>
+            <td style="width:35px">{{a.thirdYear}}</td>
+            <td style="width:35px">{{a.fourthYear}}</td>
+            <td style="width:35px">{{a.fifthYear}}</td>
+            <td style="width:35px">{{a.sixthYear}}</td>
+            <td style="width:50px"  *ngIf="a.course!='Primary Education'"><b>{{a.firstYear+a.secondYear+a.thirdYear+a.fourthYear+a.fifthYear+a.sixthYear}}</b></td>
+            <td style="width:50px"  *ngIf="a.course=='Primary Education'"><b>{{a.firstYear+a.secondYear+a.thirdYear+a.fourthYear+a.fifthYear+a.sixthYear+a.f0 + a.m0}}</b></td>
+        </tr>
+
+       <tr *ngIf="checkdep2(i,a.departmentName)" style="background-color: #c4c4c4">
+            <td style="min-width:100px;"><b>DEPARTMENT TOTAL</b></td>
+            <td style="width:61px" *ngIf="a.course=='Primary Education'"><b>{{gettotalcourse2('Pre-School')}}</b></td>
+            <td style="width:35px" 
+              *ngIf="a.departmentName=='Elementary Department'"><b>{{gettotalcourse('Primary Education')}}</b></td>
+            <td style="width:35px" 
+              *ngIf="a.departmentName!='Elementary Department'"><b>{{gettotal1st(a.departmentName)}}</b></td>
+            <td style="width:35px"><b>{{gettotal2nd(a.departmentName)}}</b></td>
+            <td style="width:35px"><b>{{gettotal3rd(a.departmentName)}}</b></td>
+            <td style="width:35px"><b>{{gettotal4th(a.departmentName)}}</b></td>
+            <td style="width:35px"><b>{{gettotal5th(a.departmentName)}}</b></td>
+            <td style="width:35px"><b>{{gettotal6th(a.departmentName)}}</b></td>
+            <td style="width:50px"><b>{{gettotal(a.departmentName)}}</b></td>
+        </tr>
+            </table> 
+        </td>
+      </tr>
+    </table>
+
+  <style type="text/css">
+    .link{
+       text-decoration : none;
+       
+    }
+  </style>
+  <br><br>
+  <table *ngIf="proglevel!='ALL'">
+    <tr *ngIf="admitted.length!=0">
+      <td>
+        Admitted:
+      </td>
+      <td>
+        <b><a href="javascript:void(0)" (click)="openDialogAdmitted(0)" class="link">{{ admitted.length }} students</a></b>
+      </td>
+    </tr>
+    <tr *ngIf="enrolled.length!=0" >
+      <td>
+        Paid/Enrolled:
+      </td>
+      <td>
+         <b><a href="javascript:void(0)" (click)="openDialogAdmitted(1)" class="link">{{ enrolled.length }} students</a></b>
+      </td>
+    </tr>
+  </table>
+    </div>                   
+  <mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="array===undefined"></mat-spinner>
+  <div *ngIf="array!=undefined">
+    <p *ngIf="array.length===0" style="text-align: center;"><i>- No result found! -</i></p>
+  </div>
+  </mat-card-content>
+</mat-card>

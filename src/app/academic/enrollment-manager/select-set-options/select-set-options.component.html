@@ -1,0 +1,43 @@
+<mat-card class="example-card">
+   <mat-card-header >
+    <mat-card-title><b>Confirm Set Codes</b></mat-card-title>
+  </mat-card-header>
+  <mat-card-content class='colo'>
+    <div  style="height: calc(100vh - 200px);overflow-x: auto">
+  	<table style="width: 100%" class="apptable">
+  		<tr>
+			<th>Code</th>
+			<th style="width: 80px">Subject ID</th>
+			<th>Subject Title</th>
+			<th style="width: 40px">Units</th>
+			<th style="width: 40px">Day</th>
+			<th style="width: 80px">Time</th>
+			<th style="width: 40px">Room</th>
+			<th style="width: 40px">Size</th>
+			<th style="width: 60px">Available Slot</th>
+		</tr>
+  		<tr  *ngFor="let x of data2;let i=index" >
+  			<td>
+		       <span *ngIf="!showhide(i)">
+		       	<mat-checkbox [disabled]="checkdisabled(x.availableSlot)" [checked]='checkthis(x.availableSlot)' (click)="clickcheck(i)">{{x.codeNo}}</mat-checkbox>
+		       </span>
+  			</td>
+  			<td style="text-align: center;"><span *ngIf="!showhide(i)">{{x.subjectId}}</span></td>
+  			<td><span *ngIf="!showhide(i)">{{x.subjectTitle}}</span></td>
+  			<td style="text-align: center;"><span *ngIf="!showhide(i)">{{x.units}}</span></td>
+  			<td style="text-align: center;">{{x.day}}</td>
+  			<td style="text-align: center;">{{x.time}}</td>
+  			<td style="text-align: center;">{{x.roomNumber}}</td>
+  			<td style="text-align: center;">
+  				<span *ngIf="!showhide(i)">{{x.oe + x.res}}/{{x.classSize}}</span>
+  			</td>
+  			<td style="text-align: center;"><span *ngIf="!showhide(i)">{{x.availableSlot}}</span></td>
+  		</tr>
+  	</table>
+    </div>
+  </mat-card-content>
+</mat-card>
+  		<button mat-raised-button (click)="onNoClickclose()" color="warning" style="float: left;">Close</button>
+
+        <button mat-raised-button (click)="confirm()" color="primary" style="float: right;">Confirm</button>
+ 

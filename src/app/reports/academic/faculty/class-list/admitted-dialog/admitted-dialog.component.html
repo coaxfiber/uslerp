@@ -1,0 +1,44 @@
+<div  id="aSaT" style=""> <mat-card class="example-card"> <mat-card-header >
+<mat-card-title><b>Admitted Students</b></mat-card-title> </mat-card-header>
+<div style="height: 10px"></div>
+	<mat-card-content class='colo'>
+
+		<table class="apptable" id="childrenCSS">
+          <tr>
+            <th style="text-align: center; width: 100px">
+              ID NUMBER
+            </th>
+            <th style="text-align: center;">
+              STUDENT'S NAME
+            </th>
+            <th style="text-align: center;width: 15%">
+              COURSE & YR.
+            </th>
+            <th style="text-align: center;width: 25%">
+              LEARNING MODALITY
+            </th>
+          </tr>
+            <tr *ngFor="let x of admittedStudentsList | paginate: admittedConfig">
+            <td>{{x.idNumber}}</td>
+            <td>{{x.fullName}}</td>
+            <td>{{x.course}} {{x.yearOrGradeLevel}}</td>
+            <td>{{x.preferredLearningModality}}</td>
+          </tr>
+        </table>
+        <pagination-controls (pageChange)="admittedPageChanged($event)" style="float: right;"></pagination-controls>
+
+      <br>
+	  <strong>Total:</strong>{{admittedStudentsList.length}} {{stud}}
+
+	</mat-card-content>
+</mat-card>
+</div>
+<div mat-dialog-actions >
+	<table width="100%">
+		<tr>
+			<td align="right">
+				<button mat-raised-button (click)="onNoClickclose()" color="warning">Close</button>
+			</td>
+		</tr>
+	</table>
+</div>

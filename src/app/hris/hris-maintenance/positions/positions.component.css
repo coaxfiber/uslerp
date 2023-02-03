@@ -1,0 +1,116 @@
+
+
+.example-full-width {
+  width: 100%;
+}
+.example-full-width2 {
+  width: 40%;
+}
+.example-full-width3 {
+  width: 60px;
+}
+::ng-deep .mat-card-header {
+    background-color: #294a70 !important;
+    padding: 15px 5px 5px 5px !important;
+    color:white;
+}
+::ng-deep .mat-card-header * {
+    color:white;
+}
+
+::ng-deep .mat-card {
+    padding: 0 !important;
+}
+
+::ng-deep .mat-card-content {
+    padding: 15px !important;
+}
+
+.mat-form-field-infix{
+  width: auto !important;
+}
+
+.btnstyle{
+  font-size:11px;
+  width: 70px;
+  min-width:18px;
+  line-height: 15px;
+  height: 28px;
+  padding: 0;
+  margin-left: 5px
+}
+.tdalign{
+  vertical-align: top;
+text-align: left;
+  }
+
+ #fixed_header{
+    table-layout: fixed;
+    border-collapse: collapse;
+} #fixed_header tbody{
+  display:block;
+  width: 100%;
+  overflow: auto;
+  height: 500px;
+} #fixed_header thead tr {
+   display: block;
+}
+
+#fixed_header th, .fixed_header td {
+  width: 40%;
+}
+
+
+
+.container {
+  .panel-body {
+    height: 300px;
+    padding: 0px; 
+    &.panel-regular-table {
+      overflow-y: auto;
+    }
+    table.flex-table {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      thead,
+      tbody {
+        display: block;
+      }
+      thead {
+        margin-right: 0px;
+      }
+      tbody {
+        flex: 1;
+        overflow-y: scroll;
+      }
+      tr {
+        width: 100% ;
+        display: flex;
+        td,
+        th {
+          display: block;
+          flex: 1;
+        }
+      }
+    }
+    table.flex-widths {
+      &.flex-table-aligned {
+        thead > tr {
+          overflow-y: scroll;
+          overflow-x: hidden;
+        }
+      }
+      tr {
+        td, th {
+          &:nth-child(2) {
+            flex: 3;
+          }
+          &:nth-child(4) {
+            flex: 2;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+#ares{
+
+	mat-form-field{
+		width: 100%
+	}
+	.mat-card-header {
+    background-color: #294a70 !important;
+    padding: 15px 5px 5px 5px !important;
+    color: white;
+}
+}
+#ares{
+	overflow-y: scroll;
+	max-height: 90vh
+}
+
+.example-full-width {
+  width: 100%;
+}
+.example-full-width2 {
+  width: 175px;
+}
+.example-full-width3 {
+  width: 60px;
+}

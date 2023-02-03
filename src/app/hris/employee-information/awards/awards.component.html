@@ -1,0 +1,70 @@
+<div  id="ares" style="">
+<mat-card class="example-card">
+   <mat-card-header >
+    <mat-card-title><b>{{type}} Speaking Engagement</b></mat-card-title>
+  </mat-card-header>
+  <div style="height: 10px"></div>
+  <mat-card-content class='colo'>
+		  <table  cellspacing="0" style="width: 100%">
+		  <tr>
+		    <td width="100%" colspan="2">
+			  	<mat-form-field class="example-full-width">
+			      <input matInput placeholder="Award Title"  [(ngModel)]="EventTitle">
+			    </mat-form-field>
+		    </td>
+		  </tr>
+		  <tr>
+		    <td width="100%" colspan="2">
+			  	<mat-form-field class="example-full-width">
+			      <input matInput placeholder="Award Received"  [(ngModel)]="AwardReceived">
+			    </mat-form-field>
+		    </td>
+		  </tr>
+		  <tr>
+		    <td width="100%" colspan="2">
+			  	<mat-form-field class="example-full-width">
+			      <input matInput placeholder="Awarding Body"  [(ngModel)]="AwardingBody">
+			    </mat-form-field>
+		    </td>
+		  </tr>
+		  <tr>
+		    <td width="100%" colspan="2">
+			  	<mat-form-field class="example-full-width">
+			      <input matInput placeholder="Venue"  [(ngModel)]="Venue">
+			    </mat-form-field>
+		    </td>
+		  </tr>
+		  <tr>
+		    <td width="50%" style="padding-left: 5px">
+		    	<mat-form-field class="example-full-width">
+			      <input matInput [matDatepicker]="picker" placeholder="Date Awarded" (click)="picker.open()"  [(ngModel)]="DateAwarded" name="DateAwarded" required>
+					  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+					  <mat-datepicker #picker></mat-datepicker>
+			    </mat-form-field>
+		    </td>
+		    <td></td>
+		  </tr>
+		  <tr *ngIf="type==='Update'">
+		  	<td>
+		  		Status: &nbsp;
+		  		<mat-slide-toggle [checked]="statusid===1" (change)="checked()">
+		            <span *ngIf="statusid==1||statusid==null">Approved</span>
+			            <span *ngIf="statusid==0">For approval</span>
+		          </mat-slide-toggle>
+		  	</td>
+		  </tr>
+		</table>
+		  
+	</mat-card-content>
+</mat-card>
+</div>
+<div mat-dialog-actions >
+	<table width="100%">
+		<tr>
+			<td align="right">
+				<button mat-raised-button (click)="onNoClickclose()" color="warning">Close</button>
+  				<button mat-raised-button color="primary" (click)="save()" >Save</button>
+			</td>
+		</tr>
+	</table>
+</div>

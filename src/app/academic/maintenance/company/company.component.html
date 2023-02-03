@@ -1,0 +1,71 @@
+<mat-card class="example-card" id="company" style="padding: 0">
+  <mat-card-header >
+    <mat-card-title><b>Company Maintenance</b></mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content class='colo'>
+  	<mat-divider></mat-divider>
+      <table style="width: 700px">
+		  <tr>
+		    <td style="width: 200px">
+		        <mat-form-field style="width: 100%">
+		          <input matInput placeholder="Search" value="" [(ngModel)]="search" autocomplete="off"  (keyup)="keyDownFunction($event)">
+		        </mat-form-field>
+		    </td>
+		    <td style="width: 200px">
+		      <button mat-raised-button color="primary"  (click)="keyDownFunction('onoutfocus')" style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; padding: 0;margin-left: 5px">&nbsp;<i class="material-icons">search
+		          </i>&nbsp;</button>
+		    </td>
+		    <td>
+		    	<button mat-raised-button color="primary" class="bluebutton" 
+				   *ngIf="global.checkaccess(':Maintenance:CompanyPost')" style="float: right;"
+				 (click)="openDialog(0)" >
+				 	<i class="material-icons" >add</i> 
+				    <span style="margin-top: 7px"> Add Company&nbsp;&nbsp;&nbsp;</span>
+				 </button>
+		    </td>
+		  </tr>
+ 	</table>
+	 
+      <div style="max-height: calc(100vh - 385px);overflow-y: scroll;width: 720px;">
+      <table class="apptable" style="width: 700px">
+        <tr>
+          <th style="width: 100px">Company ID</th>
+          <th style="min-width: 150px">Comany Name</th>
+          <th style="width: 180px;text-align: center;">- Action -</th>
+        </tr>
+        <tr *ngFor="let x of tablearray">
+          <td>
+            <b>{{x.companyId}}</b>
+          </td>
+          <td>{{x.companyName}}</td>
+          <td>
+          	<button mat-raised-button style="width: 80px;color:white;background-color:#006400;" class="buttondesign" (click)="openDialog(1,x)" *ngIf="global.checkaccess(':Maintenance:CompanyPut')">
+					<i class="material-icons" >edit</i> 
+					<span style="margin-top: 7px"> Update&nbsp;&nbsp;</span>
+            	</button>
+
+             	<button mat-raised-button style="width: 80px;background-color:#990000;color:white;" class="buttondesign"  (click)="delcompany(x.companyName,x.companyId)"  *ngIf="global.checkaccess(':Maintenance:CompanyDelete')">
+             		<i class="material-icons">delete</i> 
+                	<span style="margin-top: 7px"> Delete&nbsp;&nbsp;</span>
+            	</button>
+          </td>
+          
+        </tr>
+      </table>
+      </div>
+      <div style="width: 700px">
+        <mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="tablearray==undefined"></mat-spinner>
+        <div *ngIf="tablearray!=undefined">
+        	<p style="text-align: center;"  *ngIf="tablearray.length==0">- No company record found -</p>
+        </div>
+      </div>
+      <div style="width: 700px">
+      	<div style="height: 20px"></div>
+      	Page Size: <input type="number" min="1" [(ngModel)]="pagesize" style="width: 50px"> &nbsp;&nbsp;
+      	Page Number: <input type="number" min="1" [(ngModel)]="pageno" style="width: 50px" max="{{totalpageno}}"> &nbsp;&nbsp;
+      	<button (click)="getcompanylist()" style="background-color: #294a70;color: white;border: none;padding-bottom: 3px;padding-top: 3px">Load Data</button>
+      	<div style="float: right;">Total Page Number: <b>{{totalpageno}}</b></div>
+      </div>
+  </mat-card-content>
+</mat-card>

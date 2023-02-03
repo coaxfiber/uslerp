@@ -1,0 +1,249 @@
+<mat-card class="example-card">
+  <mat-card-header >
+    <mat-card-title><b>Leave Management</b></mat-card-title>
+    <mat-card-subtitle>Use to manage employee's leave information/details</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content class='colo'>
+  	<mat-divider></mat-divider>
+		  		<div>
+			  		<table style="margin: 0 0 0 10px">
+				  		<tr>
+				  			<td width="160" align="top" height="340">
+				  				<span class="sit-in-the-corner">
+				  					<img width="120" height="120" [src]="image" onError="this.src='assets/noimage.jpg'"><br>
+									<img width="120" height="40" [src]="signature" onError="this.src='assets/nosignature.jpg'">
+				  				</span>
+				  			</td>
+				  			<td>
+								<form class="example-form" id="ngForm" #documentEditForm="ngForm" style="margin-top: 5px;"> 
+								  <mat-form-field class="txtid">
+								      <!-- <input matInput #idno maxlength="7" placeholder="ID Number" [(ngModel)]="id"  value="" name="idno" required="required"  (keydown)="keyDownFunction($event)" [disabled]="isDisabled"> -->
+								      <input matInput #idno maxlength="7" placeholder="ID Number" [(ngModel)]="id"  value="" name="idno" required="required"  (keydown)="keyDownFunction($event)">
+								      <mat-hint align="start">{{idno.value.length}} / 7</mat-hint>
+								    </mat-form-field>	
+
+								  <button mat-mini-fab color="primary" (click)="employeelookup()">
+										    <mat-icon>search</mat-icon>
+									</button>
+								</form>
+							  	<div style="height: 120px; margin-top: -15px">
+							  		<table class="tblInfo"  id="hr" *ngIf="name!=''">
+								  		<tr>
+									  		<td id="info1stCol">
+									  			<div class="BasicInformationDisplay">
+											  		<h1 id="EmpFullName">{{name}}</h1>
+											  		<p id="EmpPosition">{{position}}</p>
+											  		<hr id="hr" *ngIf="name!=''">
+											  		<h3 id="EmpIDnumber">{{idnumber}}</h3>
+									  				<p id="DTRIDnum">{{dtridnum}}</p>
+											  	</div>
+									  		</td>
+								  		</tr>
+								  	</table>
+							  	</div>
+							  	<table width="470px"  id="hr" *ngIf="name!=''">
+							  		<tr>
+							  			<td width="340px"><h4>Available leave credits</h4></td>
+							  			<td align="right" width="70px">
+							  				<!-- <button mat-raised-button color="primary" class="btnstyle" (click)="editLeaveOpenDialog()">
+								    			<i class="material-icons">edit</i><span style="margin-top: 7px">Edit&nbsp;&nbsp;&nbsp;</span>
+								    		</button> -->
+							  			</td>
+							  			<td align="right" width="70px">
+							  				<!-- <button mat-raised-button class="btnstyle" id="redbtn">
+								    			<i class="material-icons">replay</i><span style="margin-top: 7px">Reset&nbsp;&nbsp;&nbsp;</span>
+								    		</button> -->
+							  			</td>
+							  		</tr>
+							  	</table>
+							    <table class="leaveCredits"  id="hr" *ngIf="name!=''">
+				  					<tr>
+				  						<table 	id="childrenCSS">
+				  							<tr align="center">
+				  								<th id="tableHeaderCss"></th>
+				  								<th id="tableHeaderCss">Days</th>
+				  								<th id="tableHeaderCss">Hours</th>
+				  								<th id="tableHeaderCss">Minutes</th>
+				  							</tr>
+				  							<tr>
+				  								<td align="right" style="background-color: #294a70" id="rowHeaderCss">Sick Leave</td>
+				  								<td align="center">{{slDay}}</td>
+				  								<td align="center">{{slHour}}</td>
+				  								<td align="center">{{slMin}}</td>
+				  							</tr>
+				  							<tr>
+				  								<td align="right" style="background-color: #294a70" id="rowHeaderCss">Vacation Leave</td>
+				  								<td align="center">{{vlDay}}</td>
+				  								<td align="center">{{vlHour}}</td>
+				  								<td align="center">{{vlMin}}</td>
+				  							</tr>
+				  						</table>
+				  					</tr>
+				  				</table>
+				  			</td>
+				  		</tr>
+				  	</table>
+			    </div>
+			    <mat-divider></mat-divider>
+			    <div style="margin: 10px 15px 0 15px" id="hr" *ngIf="name!=''">
+			    	<mat-accordion style="overflow: hidden">
+				    	<mat-expansion-panel [expanded]="true">
+						    <mat-expansion-panel-header>
+						      <mat-panel-title>
+						         Pending Leaves
+						      </mat-panel-title>
+						    </mat-expansion-panel-header>
+
+						    <p  style="color: red;font-size: 12px;margin-top: -20px">*Note: Click on the record to take action.</p>
+						    <table class="apptable" id="childrenCSS">
+						        <tr>
+							    	<th style="text-align: center; width: 8%">
+							    		DATE FILED
+							    	</th>
+							    	<th style="text-align: center; width: 8%">
+							    		LEAVE TYPE
+							    	</th>
+							    	<th style="text-align: center;">
+							    		REASON
+							    	</th>
+							    	<th style="text-align: center;width: 14%">
+							    		DATE OF LEAVE
+							    	</th>
+							    	<th style="text-align: center;width: 8%">
+							    		FROM
+							    	</th>
+							    	<th style="text-align: center;width: 8%">
+							    		TO
+							    	</th>
+							    	<th style="text-align: center;width: 5%">
+							    		TOTAL MINUTES
+							    	</th>
+							    	<th *ngIf="VPAdmin===false">
+							    		ACTION/STATUS
+							    	</th>
+							    	<th *ngIf="VPAdmin" style="text-align: center;width: 20%">
+							    		HoF ACTION/STATUS
+							    	</th>
+							    </tr>
+							    <ng-container *ngIf='VPAdmin; else VPAdminn'>
+							    	<tr *ngFor="let x of filteredVPPendingLeaveArr;let i = index;" (click)="actionTakenHoF(i,x)">
+								    	<td *ngIf="compare(i,x)==false" style="text-align: center">{{x.dateFiled | date: 'MM/dd/yyyy'}}</td>
+							            <td *ngIf="compare(i,x)" ></td>
+								    	<td *ngIf="compare(i,x)==false" >{{x.leaveTypeDescription}}</td>
+							            <td *ngIf="compare(i,x)" ></td>
+								    	<td *ngIf="compare(i,x)==false" >{{x.leaveDescription}}</td>
+							            <td *ngIf="compare(i,x)" ></td>
+							            <td style="text-align: center">{{x.daterange}}</td>
+								        <td style="text-align: center">{{validateTimeAMPM(x.startDate.substring(11,16))}}</td>
+									   	<td style="text-align: center">{{validateTimeAMPM(x.endDate.substring(11,16))}}</td>
+								    	<td>{{x.totalMinutes}}</td>
+								    	<td>Approved by Head of Office<br>{{x.actionTaken}}</td>
+								    	
+								    </tr>
+							    </ng-container>
+
+							    <ng-template #VPAdminn>
+							    	<ng-container>
+							    		<tr *ngFor="let x of filteredPendingLeaveArr;let i = index;" (click)="actionTakenHoF(i,x)">
+							            	<td *ngIf="compare(i,x)==false" style="text-align: center">{{x.dateFiled | date: 'MM/dd/yyyy'}}</td>
+								            <td *ngIf="compare(i,x)" ></td>
+									    	<td *ngIf="compare(i,x)==false" >{{x.leaveTypeDescription}}</td>
+								            <td *ngIf="compare(i,x)" ></td>
+									    	<td *ngIf="compare(i,x)==false" >{{x.leaveDescription}}</td>
+								            <td *ngIf="compare(i,x)" ></td>
+
+								            <!-- <td style="text-align: center">{{x.dateFiled | date: 'MM/dd/yyyy'}}</td>
+									    	<td>{{x.leaveTypeDescription}}</td>
+									    	<td>{{x.leaveDescription}}</td> -->
+									    	<td style="text-align: center">{{x.daterange}}</td>
+								            <td style="text-align: center">{{validateTimeAMPM(x.startDate.substring(11,16))}}</td>
+									    	<td style="text-align: center">{{validateTimeAMPM(x.endDate.substring(11,16))}}</td>
+									    	<td>{{x.totalMinutes}}</td>
+									    	<!-- <td *ngIf="validateActionTaken(x.dateApprovedHeadOfOffice)">Pending</td> -->
+									    	<!-- <td *ngIf="actionTrigger">{{x.actionTaken}}</td> -->
+								            <td *ngIf="validateRoute(x) == false"></td>
+									    	<td *ngIf="routetrigger">For approval</td>
+									    	<!--  -->					    					
+								        </tr>
+							    	</ng-container>
+							    </ng-template>
+							    
+					            
+					        </table>
+
+						</mat-expansion-panel>
+				    	
+				    	<mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+						    <mat-expansion-panel-header>
+						      <mat-panel-title>
+						         Leave History
+						      </mat-panel-title>
+						    </mat-expansion-panel-header>
+
+							    <ng-container *ngIf="LHistoryArr!=null ; else LhisNone">
+					    		
+
+						    	<table class="apptable" id="childrenCSS">
+						          	<tr>
+								    	<th style="text-align: center; width: 8%">
+								    		DATE FILED
+								    	</th>
+								    	<th style="text-align: center; width: 8%">
+								    		LEAVE TYPE
+								    	</th>
+								    	<th style="text-align: center;">
+								    		REASON
+								    	</th>
+								    	<th style="text-align: center;width: 10%">
+								    		FROM
+								    	</th>
+								    	<th style="text-align: center;width: 10%">
+								    		TO
+								    	</th>
+								    	<th style="text-align: center;width: 5%">
+								    		TOTAL MINUTES
+								    	</th>
+								    	<th style="text-align: center;width: 15%">
+								    		ACTION
+								    	</th>
+								    	<th style="text-align: center;width: 120px">
+								    		REMARKS
+								    	</th>
+								    </tr>
+								    
+							        <tr *ngFor="let x of filteredLeaveHistoryArr | paginate: LeaveHistoryConfig">
+									    	<td style="text-align: center">{{x.dateFiled | date: 'MM/dd/yyyy'}}</td>
+									    	<td>{{x.leaveTypeDescription}}</td>
+									    	<td>{{x.leaveDescription}}</td>
+									    	<td style="text-align: center">{{x.startDate | date: 'MM/dd/yyyy hh:ss'}}</td>
+									    	<td style="text-align: center">{{x.endDate | date: 'MM/dd/yyyy hh:ss'}}</td>
+									    	<td>{{x.totalMinutes}}</td>
+									    	<td>{{validateAction(x.actionTaken,x.cancelledRemarks_HoF)}}</td>
+									    	<td>{{validateRemark(x.remarks,x.cancelledRemarks_HoF)}}</td>
+									    	
+								    </tr>
+						        </table>
+						        <pagination-controls (pageChange)="LeaveHistoryPageChanged($event)" style="float: right;"></pagination-controls>
+							    <br>
+					    	</ng-container>
+					    	<ng-template #LhisNone>
+					    		<ng-container>
+					    			<table width="100%">
+					    				<tr align="center">
+					    					<td>
+					    						<h3>No leave history available</h3>
+					    					</td>
+					    				</tr>
+					    			</table>
+					    		</ng-container>
+					    	</ng-template>
+						</mat-expansion-panel>
+
+			    	</mat-accordion>
+			    	
+			    </div>
+		<!-- </mat-tab> -->
+  	<!-- </mat-tab-group> -->
+  </mat-card-content>
+</mat-card>

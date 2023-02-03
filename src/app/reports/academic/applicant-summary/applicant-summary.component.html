@@ -1,0 +1,91 @@
+  <mat-card class="example-card">
+  <mat-card-header >
+    <mat-card-title><b>Applicant Summary</b></mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content class='colo'>
+  	<mat-divider></mat-divider>
+    <table style="width: 850px;">
+    	<tr>
+    		<td style="width: 200px">
+			    <mat-form-field class="example-full-width"  appearance="outline" style="width: 200px">
+			    <input readonly matInput [matDatepicker]="picker" placeholder="Start Date" (click)="picker.open()"  [(ngModel)]="sdate" name="bdate">
+				  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+				  <mat-datepicker #picker ></mat-datepicker>
+			    </mat-form-field>
+    		</td>
+        <td style="width: 200px">
+          <mat-form-field class="example-full-width"  appearance="outline" style="width: 200px">
+          <input readonly matInput [matDatepicker]="picker2" placeholder="End Date" (click)="picker2.open()" [(ngModel)]="edate" name="bdate">
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
+        </td>
+    		<td style="width: 100px" valign="top">
+				  <button mat-raised-button (click)="checktogenerate()" style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; padding: 0;background-color:#294a70;color: white;margin-left: 10px;margin-top: 15px">
+		          		&nbsp;&nbsp;<i class="material-icons">date_range</i>
+		          		<span style="margin-top: 7px"> Generate&nbsp;&nbsp;&nbsp;</span>
+		          </button>
+    		</td>
+        <td>
+          <button mat-raised-button (click)="export()" style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; padding: 0;margin-left: 5px;background-color:#006600;color: white;float: right;margin-bottom: 5px;margin-top: -10px"  *ngIf="array!=null&&array.length!=0">
+          &nbsp;&nbsp;<i class="material-icons">cloud_download
+          </i>
+          <span style="margin-top: 7px"> Export to excel&nbsp;&nbsp;&nbsp;</span>
+      </button>
+        </td>
+  		</tr>
+    </table>
+    <div style="margin-top: -15px;text-align: center;">
+    </div>
+      
+
+      <!-- <mat-form-field style="width: 70px;" appearance="outline">
+      <mat-label>filter</mat-label>
+      <mat-select>
+        <mat-option  value='1'>
+          1
+        </mat-option>
+        
+      </mat-select>
+      </mat-form-field> -->
+    <div style="width: 100%;max-height: calc(100vh - 365px); overflow-y: scroll;margin-top: -20px">
+      <table>
+        <tr>
+          <td style="padding-right: 10px">
+            
+            <table class="apptable" *ngIf="array!=null" style="width: 500px">
+              <tr>
+                <th style="width:150px">Department</th>
+                <th style="width:200px">Preffered course</th>
+                <th style="width:150px">Applicant count</th>
+              </tr>
+              <tr *ngFor="let a of array2">
+                    <td>{{a.department}}</td>
+                    <td>{{a.preferredCourse}}</td>
+                    <td>{{a.applicant_Count}}</td>
+                </tr>
+            </table> 
+          </td>
+          <td valign="top">
+            
+            <table class="apptable" *ngIf="array!=null" style="width: 350px">
+              <tr>
+                <th style="width:200px">Program Level</th>
+                <th style="width:150px">Applicant count</th>
+              </tr>
+              <tr *ngFor="let a of array">
+                    <td>{{a.progLevelDesc}}</td>
+                    <td>{{a.applicant_Count}}</td>
+                </tr>
+            </table>    
+          </td>
+        </tr>
+      </table>
+    </div>              
+  <mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="array===undefined"></mat-spinner>
+  <div *ngIf="array!=undefined">
+    <p *ngIf="array.length===0" style="text-align: center;width: 850px"><i>- No result found! -</i></p>
+  </div>
+  </mat-card-content>
+</mat-card>

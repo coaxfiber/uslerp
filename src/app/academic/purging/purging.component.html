@@ -1,0 +1,51 @@
+<mat-card class="example-card" id="purging" style="padding: 0">
+  <mat-card-header >
+    <mat-card-title><b>Purging - {{ global.domain }}</b></mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content class='colo'>
+  	<mat-divider></mat-divider>
+      <div style="height: 10px"></div>
+      <div style="max-height: calc(100vh - 315px);overflow-y: scroll;">
+      <table class="apptable">
+        <tr>
+          <th style="width: 100px">ID Number</th>
+          <th style="min-width: 150px">Full Name</th>
+          <th style="width: 60px">Gender</th>
+          <th style="width: 100px">Course/Year</th>
+          <th style="width: 75px">Enrolled Subjects</th>
+        </tr>
+        <tr *ngFor="let x of purge">
+          <td>
+            <b>{{x.idNumber}}</b>
+          </td>
+          <td>{{x.fullName}}</td>
+          <td>{{x.gender}}</td>
+          <td>{{x.course}} - {{x.yearOrGradeLevel}}</td>
+          <td style="text-align: right;">{{x.enrolledSubjects_Count}}</td>
+          
+        </tr>
+      </table>
+      </div>
+
+        <mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="purge===undefined"></mat-spinner>
+        <div *ngIf="purge!=undefined">
+        	<p style="text-align: center;"  *ngIf="purge.length==0">- No enrollment record found -</p>
+      		<div style="height: 10px"></div>
+	      <button mat-raised-button style="width: 115px;color:white;background-color:#006400;" class="buttondesign" (click)="exportAsXLSX()"  *ngIf="purge.length>0"><i class="material-icons" >save_alt</i> 
+	      <span style="margin-top: 7px"> Download List&nbsp;</span></button>
+
+        <button mat-raised-button style="float: right;width: 80px;color:white;background-color: #294a70" class="buttondesign" (click)="purgethis()"  *ngIf="purge.length>0 && global.checkaccess(':Enrollment:EnrollmentPurge') && global.domain=='COLLEGE'" ><i class="material-icons" >select_all</i> 
+        <span style="margin-top: 7px"> Purge&nbsp;&nbsp;</span></button>
+
+        <button mat-raised-button style="float: right;width: 80px;color:white;background-color: #294a70" class="buttondesign" (click)="purgethis()"  *ngIf="purge.length>0 && global.checkaccess(':Enrollment:GSEnrollmentPurge') && global.domain=='GRADUATE SCHOOL'" ><i class="material-icons" >select_all</i> 
+        <span style="margin-top: 7px"> Purge&nbsp;&nbsp;</span></button>
+
+        </div>
+        <div *ngIf="purge===null">
+          <p style="text-align: center;margin-right: 20%;margin-left: 20%;">
+            {{message}}
+          </p>
+        </div>
+  </mat-card-content>
+</mat-card>

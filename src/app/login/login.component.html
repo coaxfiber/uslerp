@@ -1,0 +1,128 @@
+<mat-card class="example-card" id="example-card-x"  style="padding: 0">
+   <mat-card-header >
+    <mat-card-title><b>Section Uploader</b></mat-card-title>
+  </mat-card-header>
+  <mat-card-content class='colo'>
+    <mat-divider></mat-divider>
+
+        <button mat-raised-button (click)="uploadthis.click()" 
+          style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; padding: 0;margin-left: 5px;margin-top: 5px;margin-bottom: 10px;background-color:#006600;color: white;" *ngIf="global.checkaccess(':Code:ExamScheduleDelete')">
+            &nbsp;&nbsp;<i class="material-icons">cloud_upload</i> 
+            <span style="margin-top: 7px"> Upload Excel&nbsp;&nbsp;&nbsp;</span>
+        </button>
+
+        <button mat-raised-button color="primary"style="width: 130px;color:white;float: right;margin-top: 5px;" class="buttondesign" (click)="funcSave()" *ngIf="data.length>0">
+            <i class="material-icons" >done_all</i> 
+            <span style="margin-top: 7px"> Upload Section&nbsp;&nbsp;</span>
+        </button>
+
+        <div *ngIf="firstdata!=undefined" style="float: right;">             
+        <button mat-raised-button style="width: 80px;background-color:#990000;color:white;float: right;margin-top: 5px;" class="buttondesign" (click)="funcDelete()"  *ngIf="data.length>0">
+            <i class="material-icons">code</i> 
+            <span style="margin-top: 7px"> Clear&nbsp;&nbsp;</span>
+        </button>
+        </div>
+
+<input type="file" (change)="onFileChange($event)" multiple="false"  #uploadthis/>
+  
+  <div style="max-height: calc(100vh - 320px); overflow-y: scroll;">
+
+    <table class="apptable" *ngIf="datadisplay==undefined">
+    	<tr>
+    		<th style="width: 70px">
+    			ID Number
+    		</th>
+    		<th style="min-width: 150px">
+    			Name
+    		</th>
+    		<th  style="width: 80px">
+    			Year/Grade
+    		</th>
+            <th style="width: 130px">
+                Section
+            </th>
+    		<th style="width: 150px">
+    			Enrolment Status
+    		</th>
+    	</tr>
+    	<tr>
+    		<td colspan="6">
+                  <mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="firstdata===undefined"></mat-spinner>
+			         <div *ngIf="firstdata!=undefined">
+			          		<p *ngIf="firstdata.length===0" style="text-align: center;">
+			          			<i>- No Data -</i>
+			          		</p>
+			         </div>
+    		</td>
+    	</tr>
+    </table>
+	DECLARE @TempVar table( CreditAppLenderID int);<br>
+	DECLARE @IdentityValue int;<br>
+	<p *ngFor="let a of firstdata">
+		
+		-- For Credit app #{{a[1]}} <br>
+		INSERT INTO [tblCreditAppLenderSubmission] (LenderID,ApplicationId,LenderAppID,CreatedAt)<br>
+		OUTPUT INSERTED.CreditAppLenderID into @TempVar<br>
+		VALUES ({{GetID(a[0])}},{{a[1]}},'','{{a[2] | date: 'yyyy-MM-dd H:mm:ss'}}')<br>
+		select @IdentityValue = (select CreditAppLenderID from @TempVar)<br><br>
+    	<span *ngIf="a[3] != 'xxx'">
+			INSERT INTO [tblCreditAppLenderStatus] (CreditAppLenderID,LenderAvailableStatusID,StatusDateTime)<br>
+			VALUES ( @IdentityValue , {{getstatid(a[3],1,'stat')}} ,'{{getstatid(a[3],0,'date') | date: 'yyyy-MM-dd H:mm:ss'}}' );<br>
+		</span>	
+    	<span *ngIf="a[4] != 'xxx'">
+			INSERT INTO [tblCreditAppLenderStatus] (CreditAppLenderID,LenderAvailableStatusID,StatusDateTime)<br>
+			VALUES ( @IdentityValue , {{getstatid(a[4],2,'stat')}} ,'{{getstatid(a[4],0,'date') | date: 'yyyy-MM-dd H:mm:ss'}}' );<br>
+		</span>
+    	<span *ngIf="a[5] != 'xxx'">
+			INSERT INTO [tblCreditAppLenderStatus] (CreditAppLenderID,LenderAvailableStatusID,StatusDateTime)<br>
+			VALUES ( @IdentityValue , {{getstatid(a[5],3,'stat')}} ,'{{getstatid(a[5],0,'date') | date: 'yyyy-MM-dd H:mm:ss'}}' );<br>
+		</span>
+		DELETE from @TempVar;<br><br>
+	</p>
+    <table class="apptable" *ngIf="datadisplay!=undefined">
+    	<tr>
+    		<th style="width: 50px">
+    			Code
+    		</th>
+    		<th style="width: 100px">
+    			Subject ID
+    		</th>
+    		<th>
+    			Descriptive Title
+    		</th>
+    		<th style="width: 100px">
+    			Date
+    		</th>
+    		<th style="width: 100px">
+    			Time
+    		</th>
+    		<th style="width: 60px">
+    			Room
+    		</th>
+    		<th>
+    			Instructor
+    		</th>
+    	</tr>
+    	<tr *ngFor="let row of datadisplay" >
+			<td *ngFor="let val of row; let i = index">
+				<span>{{val}}</span>
+			</td>
+		</tr>
+    	<tr>
+    		<td colspan="7">
+                  <mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="datadisplay===undefined"></mat-spinner>
+			         <div *ngIf="datadisplay!=undefined">
+			          		<p *ngIf="datadisplay.length===0" style="text-align: center;">
+			          			<i>- Error reading uploaded file. -</i>
+			          		</p>
+			         </div>
+    		</td>
+    	</tr>
+    </table>
+
+   </div>
+
+   		
+
+</mat-card-content>
+</mat-card>

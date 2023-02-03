@@ -1,0 +1,51 @@
+<mat-card class="example-card" id="addcur" style='padding: 0 !important;max-height: calc(100vh - 300px);overflow-y: scroll;'>
+  <mat-card-header >
+    <mat-card-title><b>Retention Policy Subject Type for:<br>({{data.data.programId}}) {{data.data.courseCode}} - {{data.data.programTitle}}</b></mat-card-title>
+  </mat-card-header>
+  <style type="text/css">
+  	mat-form-field{
+  		margin-bottom: -20px;
+  	}
+  </style>
+  <mat-card-content class='colo' style="overflow-y: auto;">
+				                <button mat-raised-button color="primary" form="ngForm" (click)="openDialog(0,a)" style="float: right;"  
+                 *ngIf="global.checkaccess(':Curriculum:CurriculumRetentionPolicySubjectTypePost')">Add Retention Policy Subject Type</button>
+                        <div style="height: 43px"></div>
+						<table class="apptable">
+					    <tr>
+					      <th style="text-align: center;">Subject Type</th>
+					      <th style="width:90px;text-align: center;">Retake</th>
+                			<th style="width:100px;text-align: center;">Grade Not Lower Than</th>
+                			<th style="width:120px;text-align: center;">Retake Grade Not Lower Than</th>
+					      <th style="width:80px;text-align: center;">- Action -</th>
+					    </tr>
+	    			<tr *ngFor="let a of rp" style="text-align: center;">
+                      <td>{{ a.subjectTypeDesc }}</td>
+                      <td>{{a.retake}}</td>
+                      <td>{{a.gradeNotLowerThan}}</td>
+                      <td>{{ a.retake_GradeNotLowerThan }}</td>
+                      <td style="text-align: center;">
+                          <button mat-raised-button color="primary" style="font-size:11px;min-width:18px;line-height: 15px;height: 28px; padding: 0;margin-left: 5px"
+                             (click)="openDialog(1,a)" 
+                 *ngIf="global.checkaccess(':Curriculum:CurriculumRetentionPolicySubjectTypePut')">
+                                &nbsp;<i class="material-icons">launch</i>&nbsp;
+                            </button>
+                          
+                          <button mat-raised-button style="font-size:11px;min-width:18px;line-height: 15px;height: 28px; padding: 0;margin-left: 5px;background-color:#990000;color: white" 
+                           (click)="removeyl(a.id)" 
+                 *ngIf="global.checkaccess(':Curriculum:CurriculumRetentionPolicySubjectTypeDelete')">
+                              &nbsp;<i class="material-icons">delete</i>&nbsp;
+                          </button>                        
+                      </td>
+
+		                    </tr>
+		    </table>
+		                  <mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="rp===undefined"></mat-spinner>
+		               <div *ngIf="rp!=undefined">
+		                <p *ngIf="rp.length===0" style="text-align: center;"><i>- No result found! -</i></p>
+		              </div>
+  </mat-card-content>
+	  <button mat-raised-button (click)="close()" style="float: right;margin-right: 10px">Cancel</button>
+	  <br><br>
+	<div style="height: 10px"></div>
+</mat-card>

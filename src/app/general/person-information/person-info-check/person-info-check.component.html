@@ -1,0 +1,51 @@
+<mat-card class="example-card" id="form" style='padding: 0 !important;'>
+  <mat-card-header >
+    <mat-card-title><b >Possible Duplicate by Last name</b></mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content class='colo' >
+    <table>
+      
+    <td style="width: 200px">
+        <mat-form-field style="width: 100%">
+          <input matInput placeholder="Search" value="" [(ngModel)]="search" autocomplete="off"  (keyup)="keyDownFunction($event)">
+        </mat-form-field>
+    </td>
+    <td>
+      <button mat-raised-button color="primary"  (click)="keyDownFunction('onoutfocus')" style="font-size:12px;min-width:18px;line-height: 15px;height: 28px;margin-top: 4px; padding: 0;margin-left: 5px">&nbsp;<i class="material-icons">search
+          </i> 
+          <span style="margin-top: 7px"> Search&nbsp;&nbsp;&nbsp;</span></button>
+    </td>
+
+    </table>
+    <div style="max-height: calc(100vh - 350px);overflow-y: scroll;">
+    	<table class="apptable">
+        <tr  *ngIf="warning==''">
+          <th>
+            Name
+          </th>
+          <th style="width: 120px;">
+            ID Number
+          </th>
+        </tr>
+        <tr *ngFor="let a of arraydis">
+          <td>{{a.fullName.toUpperCase()}}</td>
+          <td>{{a.idNumber}}</td>
+        </tr>
+        <tr *ngIf="warning!=''">
+          <td style="text-align: center;" colspan="2">
+            {{warning}}
+          </td>
+        </tr>
+        <tr *ngIf="arraydis.length==0&&search!=''">
+          <td style="text-align: center;" colspan="2">
+            - No Result for <b>{{search}}</b> - 
+          </td>
+        </tr>
+    	</table>
+    </div>
+      <mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="array===undefined">
+      </mat-spinner>
+  	<button mat-raised-button (click)="close()" style="float: right;margin:10px">Close</button>
+  </mat-card-content>
+</mat-card>

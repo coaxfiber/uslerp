@@ -1,0 +1,90 @@
+<div  id="educbcg" style="">
+<mat-card class="example-card">
+   <mat-card-header >
+    <mat-card-title><b>Add educational attainment/background</b></mat-card-title>
+  </mat-card-header>
+  <div style="height: 10px"></div>
+  <mat-card-content class='colo'>
+	  <table  cellspacing="0" style="width: 100%">
+		  <tr >
+		    <td width="100%">
+	            <mat-form-field style="width: 100%" >
+	              <mat-label>Program Level</mat-label>
+	              <mat-select  [(ngModel)]="progLVl" >
+	                <mat-option value="{{c.programLevel}}" *ngFor="let c of progLevelArr" (click)="getProgramName(c)">
+	                  {{c.progLevelDesc}}
+	                </mat-option>
+	              </mat-select>
+	            </mat-form-field>
+		    </td>
+		  </tr>
+		  <tr>
+		  	<td width="100%">
+		  		<form class="example-form">
+					  <mat-form-field class="example-full-width">
+						    <input type="text" placeholder="Program Name" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="autoProgName" (click)="verifyClick()">
+						    <mat-autocomplete #autoProgName="matAutocomplete">
+						      <mat-option *ngFor="let option of filteredOptions | async" [value]="option" (click)="recordSelectedProgname(option)">
+						        {{option}}
+						      </mat-option>
+						    </mat-autocomplete>
+						  </mat-form-field>
+					</form>
+	            <!-- <mat-form-field style="width: 100%" >
+	              <mat-label>Program Name</mat-label>
+	              <mat-select  [(ngModel)]="progName" >
+	                <mat-option value="{{p.programTitle}}" *ngFor="let p of progNameArr" (click)="recordSelectedProgname(p)">
+	                  {{p.programTitle}}
+	                </mat-option>
+	              </mat-select>
+	            </mat-form-field> -->
+		    </td>
+		  </tr>
+		  <tr>
+		  	<td width="100%">
+	            <form class="example-form" [formGroup]='usersForm'>
+				  <mat-form-field class="example-full-width">
+				    <input matInput placeholder="School Name" [matAutocomplete]="autoSchool" formControlName='userInput'>
+				  </mat-form-field>
+				  <mat-autocomplete #autoSchool="matAutocomplete" [displayWith]="displayFn">
+				    <mat-option *ngIf="isLoading" class="is-loading"><mat-spinner diameter="50" style="margin: 5px auto 5px auto"></mat-spinner></mat-option>
+				    <ng-container *ngIf="!isLoading" >
+				      <mat-option *ngFor="let sch of filteredSchs" [value]="sch" (click)="recordSelectedSchname(sch.companyName)">
+				        <span>{{ sch.companyName }}</span>
+				      </mat-option>
+				    </ng-container>
+				  </mat-autocomplete>
+				</form>
+		    </td>
+		  </tr>
+	  </table>
+	  <table  cellspacing="0" style="width: 100%">
+	  	<tr>
+		    <td width="40%">
+			  	<mat-form-field class="example-full-width">
+			      <input matInput placeholder="Year Graduated"  [(ngModel)]="yrGrad">
+			    </mat-form-field>
+		    </td>
+		    <td width="60%">
+			  	<mat-form-field class="example-full-width">
+			      <input matInput placeholder="S.O. Number"  [(ngModel)]="sonumber">
+			    </mat-form-field>
+		    </td>
+		  </tr>
+		  <tr>
+		    <td>
+		    	<mat-form-field class="example-full-width">
+			      <input matInput placeholder="Units Earned"  [(ngModel)]="UnitsEarned">
+			    </mat-form-field>
+			</td>
+		    <td></td>
+		  </tr>
+	  </table>
+		  
+	</mat-card-content>
+</mat-card>
+</div>
+<div mat-dialog-actions style="float: right">
+  <button mat-raised-button (click)="onNoClickclose()" color="warning">Close</button>
+  <button mat-raised-button color="primary" (click)="save()" >Save</button>
+</div>

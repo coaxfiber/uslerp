@@ -1,0 +1,44 @@
+<mat-card class="example-card" id="addset" style='padding: 0 !important;'>
+  <mat-card-header >
+    <mat-card-title><b>Update Subject Mapping</b></mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content class='colo'  *ngIf="global.checkaccess(':StudentEvaluation:SubjectAcademicHistoryMappingGet')" >
+  	
+  	<div>
+  		<table style="width: 100%">
+  			<tr>
+  				<td>
+	  				<mat-form-field  style="width: 100%"  appearance="outline">
+					  <mat-label>Academic History</mat-label>
+						<input matInput placeholder="" autocomplete="off" [(ngModel)]="notcred" readonly="readonly">
+					</mat-form-field>
+  				</td>
+  			</tr>
+  			<tr>
+		          <td>
+		            <mat-form-field style="width: 100%"  appearance="outline">
+		            <mat-label>Status</mat-label>
+		                  <mat-select [(ngModel)]="status" name="status" placeholder="Status">
+		                    <mat-option value="{{f.statusId}}" *ngFor="let f of data.status" >
+		                      {{f.status}}
+		                    </mat-option>
+		                  </mat-select>
+		          </mat-form-field>
+		          </td>
+  			</tr>
+  		</table>
+	</div>
+
+	  <div style="height: 10px"></div>
+	  <mat-divider></mat-divider>
+	  <div style="height: 10px"></div>
+	  <button mat-raised-button (click)="closethis()"  style="float: left;">Close</button>
+	  <button mat-raised-button color="primary" style="float: right;" (click)="save()" [disabled]='savevar'  *ngIf="global.checkaccess(':StudentEvaluation:SubjectAcademicHistoryMappingPut')">Update Subject</button>
+    <div style="height: 30px"></div>
+
+  </mat-card-content>
+  <mat-card-content class='colo'  *ngIf="!global.checkaccess(':StudentEvaluation:SubjectAcademicHistoryMappingGet')" >
+  	<p> - Forbidden! Contact your administrator - </p>
+  	</mat-card-content>
+</mat-card>

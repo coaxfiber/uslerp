@@ -1,0 +1,121 @@
+<mat-card class="example-card" id="departments" style="padding: 0">
+  <mat-card-header >
+    <mat-card-title><b>Departments</b></mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content class='colo'>
+  	<mat-divider></mat-divider>
+  		<br>
+		
+
+		<p style="margin-top: -5px">DEPARTMENT DETAILS:</p>
+		<table cellspacing="0" style="width: 100%; margin-top:3px">
+			<tr >
+				<td width="40%">
+					<mat-form-field class="example-full-width">
+				      <input matInput placeholder="Department Name" value="" [(ngModel)]="dname" readonly="readonly" *ngIf="editctr===0" style="color: gray" #dnamefocus>
+				      <input matInput placeholder="Department Name" value="" [(ngModel)]="dname" *ngIf="editctr===1" style="color: black" #dnamefocus>
+				    </mat-form-field>
+				</td>
+				<td width="5px"></td>
+				<td width="40%">
+					<mat-form-field class="example-full-width">
+				      <input matInput placeholder="Department Head" value="" [(ngModel)]="dhead" readonly="readonly" style="color: gray">
+				    </mat-form-field>
+				</td>
+				<td width="60">
+					<button mat-mini-fab color="primary" (click)="employeelookup()" disabled="true" *ngIf="editctr===0">
+						<mat-icon>search</mat-icon>
+					</button>
+					<button mat-mini-fab color="primary" (click)="employeelookup()" *ngIf="editctr===1">
+						<mat-icon>search</mat-icon>
+					</button>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Status: &nbsp;
+			  		<mat-slide-toggle [checked]="statusid===1" (change)="checked()" [disabled]="!toggleStatus">
+			            <span *ngIf="statusid==1">Active</span>
+			            <span *ngIf="statusid==0">Not Active</span>
+			          </mat-slide-toggle>
+				</td>
+				<td></td>
+				<td>
+					<p style="color: red; margin-top: -20px; font-size: 12px" *ngIf="editctr===1">Click the magnifying glass icon to search and select a department head</p>
+				</td>
+			</tr>
+		</table>
+		<br>
+		<table>
+			<tr>
+				<td>Actions:</td>
+			</tr>
+			<tr>
+				<td>
+	    			<button mat-raised-button class="btnstyle" disabled="{{saveCTRL}}" (click)="addDept()">
+	    				<i class="material-icons">note_add</i><span style="margin-top: 7px">Add&nbsp;&nbsp;&nbsp;</span>
+		    		</button>
+
+		    		<button mat-raised-button color="primary" class="btnstyle" (click)="changeEditCtr()" disabled="{{saveCTRL}}">
+	    				<i class="material-icons">edit</i><span style="margin-top: 7px">Edit&nbsp;&nbsp;&nbsp;</span>
+		    		</button>
+
+		    		<button mat-raised-button color="warn" class="btnstyle" (click)="deleteDept()" disabled="{{saveCTRL}}">
+		    			<i class="material-icons">delete</i><span style="margin-top: 7px">Delete&nbsp;&nbsp;&nbsp;</span>
+		    		</button>
+
+	    			<button mat-raised-button color="primary" class="btnstyle" (click)="SaveEdit()" disabled="{{editCTRL}}">
+	    				<i class="material-icons">save</i><span style="margin-top: 7px">Save&nbsp;&nbsp;&nbsp;</span>
+	    			</button>
+
+	    			<button mat-raised-button color="warn" class="btnstyle" disabled="{{editCTRL}}">
+		    			<i class="material-icons">cancel</i><span style="margin-top: 7px" (click)="CancelEdit()">Cancel&nbsp;&nbsp;&nbsp;</span>
+		    		</button>
+				</td>
+			</tr>
+		</table>
+		<br>
+  	
+
+
+    <table class="apptablegrade">
+		<tr>
+	    	<th style="display: none;">
+	    		DID
+	    	</th>
+	    	<th style="display: none;">
+	    		DHID
+	    	</th>
+	    	<th width="34%" style="text-align: center;">
+	    		DEPARTMENT
+	    	</th>
+	    	<th width="40%" style="text-align: center;">
+	    		DEPARTMENT HEAD
+	    	</th>
+	    	<th width="25%" style="text-align: center;">
+	    		STATUS
+	    	</th>
+	    </tr>
+			
+	</table>
+	<div  style="max-height: calc(80vh - 250px);overflow-y: scroll;">
+	<table  *ngFor="let d of departmentArr" class="apptablegrade">
+			<tr (click)="getdeptinfo(d)">
+		    	<td style="display: none">{{d.departmentID}}</td>
+		    	<td width="34.9%" *ngIf="d.active===1">{{d.departmentName}}</td>
+		    	<td width="41.1%" *ngIf="d.active===1">{{d.departmentHead}}</td>
+		    	<td style="display: none">{{d.employeeId}}</td>
+		    	<td width="25%" *ngIf="d.active===1"  style="text-align: center;">Active</td>
+
+		    	<td width="34.9%" *ngIf="d.active===0" style="background-color: #ffd2a3;">{{d.departmentName}}</td>
+		    	<td width="41.1%" *ngIf="d.active===0" style="background-color: #ffd2a3;">{{d.departmentHead}}</td>
+		    	<td width="25%" *ngIf="d.active===0" style="background-color: #ffd2a3;text-align: center;">Not Active</td>
+		    	
+		    </tr>
+	</table>
+	</div>
+
+
+  </mat-card-content>
+</mat-card>

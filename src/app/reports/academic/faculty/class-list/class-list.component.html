@@ -1,0 +1,228 @@
+
+<mat-card class="example-card" id="ebcg"  style="padding: 0 ">
+	<mat-card-header >
+    <mat-card-title> Class List</mat-card-title>
+    <mat-card-subtitle><i>NOTE: This page displays the list of officially enrolled students for a specific class. <br>
+    </i></mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content class='colo'>
+
+    <mat-divider></mat-divider>
+    <div style="padding: 10px">
+	  	<mat-accordion>
+			<table style="width: 700px">
+		  		<tr>
+		  			<td colspan="2">
+            <mat-form-field style="width: 500px" appearance="outline">
+              <mat-label>Departments</mat-label>
+              <mat-select  [(ngModel)]="dept">
+                <mat-option value="{{a.departmentId}}" *ngFor="let a of departments2">
+                  {{a.departmentCode}} - {{a.departmentName}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+		  				<!--<form class="example-form" id="ngForm" #documentEditForm="ngForm" style="margin-top: 5px;"> 
+						     <mat-form-field class="example-full-width">
+						    	<input matInput placeholder="CODE NUMBER" [(ngModel)]="codeNo"  value="" name="codeNo" (keydown)="keyDownFunction($event)" >
+						    </mat-form-field> 
+						    
+						</form>-->
+		  			</td><!-- 
+		  			<td>
+		  				<button mat-raised-button color="primary" style="min-width: 10px;width: auto;" (click)="submit()"> Submit &nbsp;</button>
+					</td> -->
+					<td></td>
+		  		</tr>
+		  		<tr style="margin-top: -15px">
+		  			<td style="width: 10px;">
+		  				<mat-form-field style="width: 150px" appearance="outline">
+			              <mat-label>Code No.</mat-label>
+			              <input matInput  [(ngModel)]="CNum" >    
+			            </mat-form-field>
+		  			</td>
+			         <td valign="top" style="width: 150px;">
+			            <button mat-raised-button (click)="getCodeSummary()"  class="bluebutton" [disabled]='generatetemp' >
+			                  &nbsp;&nbsp;
+			                  <span style="margin-top: 7px"> Generate&nbsp;&nbsp;&nbsp;</span>
+			              </button>
+			         </td>
+					<td></td>
+		  		</tr>
+		  	</table>
+
+		  	<div *ngIf="noclasslist">
+		  		<table width="100%">
+		  			<th>
+		  				<h1>No class list available</h1>
+		  			</th>
+		  		</table>
+		  	</div>
+
+		  	<div *ngIf="showContentCollege">
+		  		<style type="text/css">
+			  		#users td{
+			  			border: 0px solid #ddd;
+			  			font-size: 12px
+			  		}
+			  		.schedule td{
+			  			font-size: 12px
+			  		}
+			  	</style>
+			  	<strong style="font-size: 14px">SUBJECT DETAILS:</strong>
+			  	<table class="apptable" id="users" border="0" style="max-width: 700px !important">
+	              <tr>
+	              </tr>
+	              <tr>
+	                <td width="150px"><b>Code</b></td>
+	                <td>{{codeNo}}</td>
+	              </tr>
+	              <tr>
+	                <td width="150px"><b>Subject ID</b></td>
+	                <td>{{subjectID}}</td>
+	              </tr>
+	              <tr>
+	                <td width="150px"><b>Descriptive Title</b></td>
+	                <td>{{descTitle}}</td>
+	              </tr>
+	              <tr>
+	                <td width="150px"><b>Lecture Units</b></td>
+	                <td>{{lecUnits}}</td>
+	              </tr>
+	              <tr>
+	                <td width="150px"><b>Laboratory Units</b></td>
+	                <td>{{labUnits}}</td>
+	              </tr>
+	            </table>
+	            <br>
+	            <strong style="font-size: 14px">ENROLLMENT:</strong>
+	            <table  class="apptable" id="users" border="0" style="max-width: 700px !important">
+	            	<tr>
+		            </tr>
+		            <tr>
+		                <td width="150px"><b>Enrolled</b></td>
+		                <td>{{officialEnrollees}}</td>
+		            </tr>
+		            <tr>
+		                <td width="150px"><b>Admitted</b></td>
+		                <td><a (click)="openAdmittedDialog()" style="color: blue; text-decoration: underline;">{{admittedStuds}} Student/s</a></td>
+		            </tr>
+	            </table>
+	            <br>
+	            <strong style="font-size: 14px">SCHEDULE:</strong>
+	            
+		            		<table class="apptable" id="users" border="0" style="width: 700px">
+		            			<tr>
+		            				<td width="15%" align="center"><strong>DAY</strong></td>
+		            				<td width="25%" align="center"><strong>TIME</strong></td>
+		            				<td width="18%" align="center"><strong>ROOM</strong></td>
+		            			</tr>
+		            			<tr *ngFor="let e of codesummaryArr">
+					            	<td align="center">{{e.day}}</td>
+					            	<td align="center">{{e.time}}</td>
+					            	<td align="center">{{e.roomNumber}}</td>
+					            </tr>
+		            		</table>
+
+	            <br>
+
+	            <mat-menu #appMenu="matMenu" xPosition="after" yPosition="below">
+		  			<button mat-menu-item class="btnAction" (click)="exportAdmittedAsXLSX()">
+		  				<p style="margin: -15px 0 0 25px!important ">&nbsp;Admitted students&nbsp;</p>
+		  			</button>
+		  			<button mat-menu-item class="btnAction" (click)="exportAsXLSX()">
+		  				<p style="margin: -15px 0 0 25px!important ">&nbsp;Offically enrolled&nbsp;</p>
+		  			</button>
+		  			<button mat-menu-item class="btnAction" (click)="exportAllAsXLSX()">
+		  				<p style="margin: -15px 0 0 25px!important ">&nbsp;Admitted and officially enrolled&nbsp;</p>
+		  			</button>
+		  		</mat-menu>
+	            
+	            <table style="width: 700px !important" border="0" id="classtable">
+	            	<tr>
+	            		<td align="right" *ngIf="showContentCollege">
+							<!-- <button  mat-button color="primary" style="min-width: 10px;width: auto;" (click)="exportAsXLSX()"><mat-icon>save_alt</mat-icon> Download Class List &nbsp;</button> -->
+
+							<button  mat-raised-button [matMenuTriggerFor]="appMenu" color="primary" class="bluebutton" style="min-width: 10px;width: 150px!important;margin-top: 0px !important">
+				    			<i class="material-icons">save_alt</i>Download Class List &nbsp;<span style="margin-top: 7px;"></span>
+				    		</button>
+						</td>
+	            	</tr>
+	            </table>
+	            <table style="width: 700px !important;margin-top: 10px" border="0" id="classtable">
+	            	<tr>
+	            		<th width="50%">FEMALE</th>
+	            		<th width="50%">MALE</th>
+	            	</tr>
+	            	<!-- <tr *ngIf="dataLoad === true"> -->
+	            	<tr>
+	            		<td align="center" style="vertical-align: top!important;">
+	            			<table width="100%" class="apptable">
+	            				<tr>
+	            					<th style="display: none!important">
+	            						asdasd
+	            					</th>
+	            					<th style="display: none!important">
+	            						asdasd
+	            					</th>
+	            				</tr>
+	            				<tr *ngFor="let e of classlistArr">
+	            					<td align="left" *ngIf="e.gender === 'F'">
+	            						<img width="70" height="70" [src]="getimage(e.idNumber)">
+	            					</td>
+	            					<td *ngIf="e.gender === 'F'">
+	            						<strong>{{e.fullName}}</strong><br>
+	            						ID Number: {{e.idNumber}}<br>
+	            						{{e.courseYr}}<br>
+	            						Learning Modality:<br>
+	            						{{e.preferredLearningModality}}
+	            					</td>
+	            				</tr>
+	            				
+	            			</table>
+	            		</td>
+	            		<td  align="center"  style="vertical-align: top!important;">
+	            			<table width="100%" class="apptable">
+	            				<tr>
+	            					<th style="display: none!important">
+	            						asdasd
+	            					</th>
+	            					<th style="display: none!important">
+	            						asdasd
+	            					</th>
+	            				</tr>
+	            				<tr *ngFor="let e of classlistArr;let x = index">
+	            					<td align="left" *ngIf="e.gender === 'M'">
+	            						<img width="70" height="70" [src]="getimage(e.idNumber)">
+	            					</td>
+	            					<td *ngIf="e.gender === 'M'">
+	            						<strong>{{e.fullName}}</strong><br>
+	            						ID Number: {{e.idNumber}}<br>
+	            						{{e.courseYr}}<br>
+	            						Learning Modality:<br>
+	            						{{e.preferredLearningModality}}
+	            					</td>
+	            				</tr>
+	            			</table>
+	            		</td>
+	            	</tr>
+	            	<!-- <tr *ngIf="dataLoad">
+    					<td colspan="2">
+    						<mat-card style="display: flex; justify-content: center; align-items: center">
+							  <mat-progress-spinner 
+							    color="primary" 
+							    mode="indeterminate">
+							  </mat-progress-spinner>
+							</mat-card>
+    					</td>
+    				</tr> -->
+	            </table>
+		  	</div>
+
+		  	
+		  	
+		</mat-accordion>
+    	
+    </div>
+  </mat-card-content>
+</mat-card>
+ 

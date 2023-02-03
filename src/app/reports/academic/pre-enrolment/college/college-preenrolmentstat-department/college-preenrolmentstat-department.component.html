@@ -1,0 +1,69 @@
+  <mat-card class="example-card">
+  <mat-card-header >
+    <mat-card-title><b>College Summary Report (By Department) - {{global.syDisplay(global.syear)}}</b></mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content class='colo'>
+  	<mat-divider></mat-divider>
+    <table style="width: 100%;">
+    	<tr>
+        <td style="width: 300px">
+            <mat-form-field style="width: 300px" appearance="outline">
+              <mat-label>- Select Option -</mat-label>
+              <mat-select  [(ngModel)]="option"  (ngModelChange)='loaddata()'>
+                <mat-option value="1">
+                  From USL-SHS
+                </mat-option>
+                <mat-option value="0">
+                  Outside USL
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+        </td>
+        <td *ngIf="array!=undefined">
+        <button mat-raised-button (click)="exportAsXLSX()" style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; padding: 0;background-color:#006600;color: white;float: right;" *ngIf="array.length!=0">
+          &nbsp;&nbsp;<i class="material-icons">cloud_download
+          </i> <span style="margin-top: 7px"> Export to excel&nbsp;&nbsp;&nbsp;</span></button> 
+        </td>
+  		</tr>
+    </table>
+    <div style="margin-top: -15px;text-align: center;">
+    </div>
+
+      <!-- <mat-form-field style="width: 70px;" appearance="outline">
+      <mat-label>filter</mat-label>
+      <mat-select>
+        <mat-option  value='1'>
+          1
+        </mat-option>
+        
+      </mat-select>
+      </mat-form-field> -->
+    <div style="width: 100%;max-height: calc(100vh - 365px); overflow-y: scroll;margin-top: -20px" *ngIf="array!=undefined">
+    <table class="apptable" *ngIf="array.length!=0">
+	    <tr>
+	      <th style="width:120px">Department Code</th>
+	      <th style="min-width:120px">Previous Not Verified</th>
+          <th style="min-width:120px">Previous Verified</th>
+          <th style="min-width:120px">Previous All</th>
+	      <th style="min-width:120px">Current Not Verified</th>
+          <th style="min-width:120px">Current Verified</th>
+          <th style="min-width:120px">Current All</th>
+	    </tr>
+    	<tr *ngFor="let a of array">
+            <td>{{a.departmentCode}}</td>
+            <td>{{a.previousPreEnrolled_NotVerifiedOnly}}</td>
+            <td>{{a.previousPreEnrolled_VerifiedOnly}}</td>
+            <td>{{a.previousPreEnrolled_All}}</td>
+            <td>{{a.currentPreEnrolled_NotVerifiedOnly}}</td>
+            <td>{{a.currentPreEnrolled_VerifiedOnly}}</td>
+            <td>{{a.currentPreEnrolled_All}}</td>
+        </tr>
+    </table>    
+    </div>              
+  <mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="array===undefined"></mat-spinner>
+  <div *ngIf="array!=undefined">
+    <p *ngIf="array.length===0" style="text-align: center;"><i>- No Data found! -</i></p>
+  </div>
+  </mat-card-content>
+</mat-card>

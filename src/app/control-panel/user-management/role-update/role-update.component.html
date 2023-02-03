@@ -1,0 +1,84 @@
+<mat-card class="example-card">
+   <mat-card-header >
+    <mat-card-title><b>Update/Assign Role</b></mat-card-title>
+    <mat-card-subtitle>For Assigning Access to Roles in the database</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content   class='contentthis' >
+		  <table class="example-full-width" cellspacing="0">
+		  <tr>
+		    <td width="100%">
+		  		<mat-form-field class="widthtext">
+			      <input matInput placeholder="Role" type="text" [(ngModel)]="role" name="role" value="" [disabled]="role=='Administrator'">
+			    </mat-form-field></td>
+		  	<!--<mat-form-field class="example-full-width">
+		      <input matInput placeholder="LR Number" value="" [(ngModel)]="options.value.lrno" name="lrno" required>
+		    </mat-form-field>-->
+		  </tr>
+		  </table>
+		  <table>
+		  	<tr>
+		  		<td style="width: 50%;">
+		  			<b>Access Rights</b>
+		  			<div style="max-height: calc(100vh - 420px);overflow-y: scroll;">
+						  <table style="width: 100%;"  *ngFor="let dis of access">
+						  	<tr>
+						  		<td>
+									  <mat-expansion-panel>
+									    <mat-expansion-panel-header>
+									      <mat-panel-title><b>{{dis.name}}</b>
+									      </mat-panel-title>
+									    </mat-expansion-panel-header>
+								  			<table>
+											  	<tr *ngFor="let dis2 of dis.actions">
+											  		<td style="padding-left: 20px"><mat-checkbox  onclick="return false;" [checked]='check(dis,dis2.id)' (click)="tempArray(dis,dis2,$event);" [disabled]="enabled"> {{dis2.name}}</mat-checkbox></td>
+											  	</tr>
+								  			</table>
+									  </mat-expansion-panel>
+						  		</td>
+						  	</tr>
+						  </table>
+					</div>
+				</td>
+				<td valign="top">
+		  			<b>View Domain</b>
+		  			<div style="height: 5px"></div>
+		  			<div style="max-height: calc(100vh - 420px);overflow-y: scroll;">
+			  			<mat-expansion-panel>
+						    <mat-expansion-panel-header>
+						      <mat-panel-title><b>Departments</b>
+						      </mat-panel-title>
+						    </mat-expansion-panel-header>
+					  			<table *ngIf="viewd!=undefined">
+								  	<tr *ngFor="let d of dept">
+								  		<td style="padding-left: 20px"><mat-checkbox  [checked]='checkview(d.departmentId)' onclick="return false;" [disabled]="enabled" (click)="clickview(d.departmentId)"> {{ d.departmentName }}</mat-checkbox></td>
+								  	</tr>
+					  			</table>
+						</mat-expansion-panel>
+						<br>
+			  			<mat-expansion-panel>
+						    <mat-expansion-panel-header>
+						      <mat-panel-title><b>Offices</b>
+						      </mat-panel-title>
+						    </mat-expansion-panel-header>
+					  			<table *ngIf="viewd!=undefined">
+								  	<tr *ngFor="let d of office">
+								  		<td style="padding-left: 20px"><mat-checkbox [checked]='checkview(d.departmentID)'  onclick="return false;" (click)="clickview(d.departmentID)" [disabled]="enabled"> {{ d.departmentName }}</mat-checkbox></td>
+								  	</tr>
+					  			</table>
+						</mat-expansion-panel>
+
+		  			<div style="height: 5px"></div>
+					</div>
+				</td>
+		  	</tr>
+
+
+		  	
+		  </table>
+	</mat-card-content>
+</mat-card>
+<div mat-dialog-actions style="float: right">
+  <button mat-raised-button (click)="onNoClick()" color="warning">Close</button>
+  <button mat-raised-button cdkFocusInitial color="primary" (click)="updateRole()" *ngIf="global.checkaccess(':Role:Edit')">Save</button>
+</div>
+ 

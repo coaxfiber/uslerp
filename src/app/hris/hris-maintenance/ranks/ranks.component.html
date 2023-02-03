@@ -1,0 +1,98 @@
+<mat-card class="example-card" id="ranks" style="padding: 0">
+  <mat-card-header >
+    <mat-card-title><b>Ranks</b></mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content class='colo'>
+  	<mat-divider></mat-divider>
+  		
+		<br>
+		<p style="margin-top: -5px">RANK DETAILS:</p>
+		<table cellspacing="0" style="width: 100% ; margin-top:3px">
+			<tr>
+				
+				<td width="40%">
+					<mat-form-field class="example-full-width">
+				      <input matInput placeholder="Position Name" value="" [(ngModel)]="rname" readonly="readonly" *ngIf="editctr===0" style="color: gray" #dnamefocus>
+				      <input matInput placeholder="Position Name" value="" [(ngModel)]="rname" *ngIf="editctr===1" style="color: black" #dnamefocus>
+				    </mat-form-field>
+				</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>
+					Status: &nbsp;
+			  		<mat-slide-toggle [checked]="statusid===1" (change)="checked()" [disabled]="!toggleStatus">
+			            <span *ngIf="statusid==1">Active</span>
+			            <span *ngIf="statusid==0">Not Active</span>
+			          </mat-slide-toggle>
+				</td>
+				<td></td>
+				<td></td>
+			</tr>
+			
+		</table>
+		<br>
+		<table>
+			<tr>
+				<td>Actions:</td>
+			</tr>
+			<tr>
+				<td >
+	    			<button mat-raised-button class="btnstyle" disabled="{{saveCTRL}}" (click)="addRank()">
+	    				<i class="material-icons">note_add</i><span style="margin-top: 7px">Add&nbsp;&nbsp;&nbsp;</span>
+		    		</button>
+
+		    		<button mat-raised-button color="primary" class="btnstyle" (click)="changeEditCtr()" disabled="{{saveCTRL}}">
+	    				<i class="material-icons">edit</i><span style="margin-top: 7px">Edit&nbsp;&nbsp;&nbsp;</span>
+		    		</button>
+
+		    		<button mat-raised-button color="warn" class="btnstyle" (click)="deleteRank()" disabled="{{saveCTRL}}">
+		    			<i class="material-icons">delete</i><span style="margin-top: 7px">Delete&nbsp;&nbsp;&nbsp;</span>
+		    		</button>
+
+	    			<button mat-raised-button color="primary" class="btnstyle" (click)="SaveRank()" disabled="{{editCTRL}}">
+	    				<i class="material-icons">save</i><span style="margin-top: 7px">Save&nbsp;&nbsp;&nbsp;</span>
+	    			</button>
+
+	    			<button mat-raised-button color="warn" class="btnstyle" disabled="{{editCTRL}}">
+		    			<i class="material-icons">cancel</i><span style="margin-top: 7px" (click)="CancelEdit()">Cancel&nbsp;&nbsp;&nbsp;</span>
+		    		</button>
+				</td>
+			</tr>
+		</table>
+  	
+
+
+    <table class="apptablegrade" style="width: 50% !important">
+		<tr>
+	    	<th style="display: none;">
+	    		RID
+	    	</th>
+	    	<th width="23.8%" style="text-align: center;">
+	    		RANK
+	    	</th>
+	    	
+	    	<th width="15%" style="text-align: center;">
+	    		STATUS
+	    	</th>
+	    </tr>
+			
+	</table>
+	<div  style="max-height: calc(80vh - 250px);overflow-y: scroll; width: 50% !important">
+		<table  *ngFor="let d of rankArr" class="apptablegrade" style="">
+				<tr (click)="getrankinfo(d)">
+			    	<td style="display: none">{{d.rankID}}</td>
+			    	<td width="25%" *ngIf="d.active===1">{{d.rank}}</td>
+			    	<td width="15%" *ngIf="d.active===1"  style="text-align: center;">Active</td>
+
+			    	<td width="25%" *ngIf="d.active===0" style="background-color: #ffd2a3;">{{d.rank}}</td>
+			    	<td width="15%" *ngIf="d.active===0" style="background-color: #ffd2a3;text-align: center;">Not Active</td>
+			    	
+			    </tr>
+		</table>
+	</div>
+
+
+  </mat-card-content>
+</mat-card>

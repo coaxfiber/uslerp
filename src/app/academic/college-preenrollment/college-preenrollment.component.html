@@ -1,0 +1,158 @@
+  <mat-card class="example-card">
+  <mat-card-header >
+    <mat-card-title><b>Manage Pre-Enrollment</b></mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content class='colo' style="overflow-x: auto;" >
+  	<mat-divider></mat-divider>
+  	<table style="width: 100%" >
+      <tr>
+        <td>
+      <table style="width: 100%">
+      <tr>
+        <td style="padding-left: 10px;width: 180px">
+           <mat-form-field class="example-full-widthminus">
+              <input autofocus matInput placeholder="Search applicant" value="" [(ngModel)]="search" (keyup)="loadwithstatus()" autocomplete="off">
+            </mat-form-field>
+            <button mat-mini-fab color="primary">
+              <mat-icon>search</mat-icon>
+            </button>     
+        </td>
+        <td style="padding-left: 10px;width: 150px">
+          <mat-form-field appearance="outline" style="width: 150px">
+            <mat-label>ID Picture status</mat-label>
+            <mat-select [(ngModel)]="idpicstat" (ngModelChange)='loadwithstatus()'>
+              <mat-option value="">All</mat-option>
+              <mat-option value="0">On Process</mat-option>
+              <mat-option value="1">With Remarks</mat-option>
+              <mat-option value="2">Verified</mat-option>
+            </mat-select>
+          </mat-form-field>          
+        </td>
+        <td style="padding-left: 10px;width: 150px">
+          <mat-form-field appearance="outline" style="width: 150px">
+            <mat-label>Birth Certificate status</mat-label>
+            <mat-select [(ngModel)]="birthcertstat" (ngModelChange)='loadwithstatus()'>
+              <mat-option value="">All</mat-option>
+              <mat-option value="0">On Process</mat-option>
+              <mat-option value="1">With Remarks</mat-option>
+              <mat-option value="2">Verified</mat-option>
+            </mat-select>
+          </mat-form-field>          
+        </td>
+        <td style="padding-left: 10px;width: 150px">
+          <mat-form-field appearance="outline" style="width: 150px">
+            <mat-label>Payment status</mat-label>
+            <mat-select [(ngModel)]="paymentstat" (ngModelChange)='loadwithstatus()'>
+              <mat-option value="">All</mat-option>
+              <mat-option value="0">On Process</mat-option>
+              <mat-option value="1">With Remarks</mat-option>
+              <mat-option value="2">Verified</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </td>
+        <td style="padding-left: 10px;width: 150px">
+          <mat-form-field appearance="outline" style="width: 150px" *ngIf="global.domain=='COLLEGE'">
+            <mat-label>USL-SHS</mat-label>
+            <mat-select [(ngModel)]="uslshsstat" (ngModelChange)='loadwithstatus()'>
+              <mat-option value="">All</mat-option>
+              <mat-option value="0">NO</mat-option>
+              <mat-option value="1">YES</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </td>
+        <td>
+        <button mat-raised-button (click)="exportAsXLSX()" style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; padding: 0;background-color:#006600;color: white;float: right;" >
+          &nbsp;&nbsp;<i class="material-icons">cloud_download
+          </i> <span style="margin-top: 7px"> Export to excel&nbsp;&nbsp;&nbsp;</span></button> 
+        </td>
+        <td></td>
+      </tr>
+      </table>
+        </td>
+      </tr>
+      <tr *ngIf="global.domain=='HIGHSCHOOL'||global.domain=='COLLEGE'">
+        <td >
+            <mat-form-field appearance="outline" style="width: 300px;margin-top: -15px" >
+                <mat-label>Program Level</mat-label>
+              <mat-select [(ngModel)]="levelvar" [disabled]='tableArr==undefined' (ngModelChange)='loadwithstatus()'>
+                <mat-option value="">
+                  - All -
+                </mat-option>
+                <mat-option value="{{f}}"  *ngFor="let f of levelarr">
+                  {{f}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" style="width: 300px;margin-top: -15px" >
+                <mat-label>Course/Strand</mat-label>
+              <mat-select [(ngModel)]="coursevar" [disabled]='tableArr==undefined' (ngModelChange)='loadwithstatus()'>
+                <mat-option value="">
+                  - All -
+                </mat-option>
+                <mat-option value="{{f}}"  *ngFor="let f of coursearr">
+                  {{f}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+        </td>
+      </tr>
+
+  	</table>
+<div style="max-height: calc(100vh - 420px);overflow-y: scroll;margin-top: -10px">
+{{temp.length}} Record(s)
+    <table class="apptable" id="excel-table" style="overflow-x: scroll !important;" >
+	    <tr>
+       		<th style="width:100px">
+       		ID Number
+       		</th>
+	      	
+          <th>Name</th>
+          <th style="width:70px">Gender</th>
+          <th style="width:70px">Course</th>
+          <th style="width:70px">Level</th>
+          <th style="width:70px"  *ngIf="global.domain=='COLLEGE'">USL-SHS</th>
+          <th style="width:125px">
+          Status
+          </th>
+	      	<th style="width:200px;text-align: center;min-width: 100px">
+	      	- Action -
+	      	</th>
+	    </tr>
+	    <tr *ngFor="let a of temp">
+            <td >{{a.idNumber}}</td>
+	      	<td>{{a.firstName}} {{a.middleName}} {{a.lastName}} {{a.suffixName}}</td>
+          <td>
+            {{checkgender(a.gender)}}
+          </td>
+          <td>
+            {{a.course}}
+          </td>
+          <td>
+            {{a.level}}
+          </td>
+          <td *ngIf="global.domain=='COLLEGE'">{{checkfromUSLSeniorHigh(a.fromUSLSeniorHigh)}}</td>
+	      	<td>
+            <b><span  *ngIf="global.domain=='COLLEGE'">OSAS:</span><span  *ngIf="global.domain=='HIGHSCHOOL'">Guidance</span></b> {{approvestat(a)}}<br>
+            <b>Acctg:</b> {{approvestat2(a)}}<br></td>
+            <td style="text-align: center;">
+              <button mat-raised-button style="width: 80px;color:white;background-color:#006400;margin-bottom: 5px" class="buttondesign" (click)="openDialog2(a)"
+              *ngIf="global.checkaccess(':Enrollment:PreEnrollmentSubmittedReqAcctgPut')||global.checkaccess(':Enrollment:PreEnrollmentSubmittedReqOSASPut')">
+              <i class="material-icons" >receipt</i> 
+              <span style="margin-top: 7px"> Verify&nbsp;&nbsp;</span>
+                  </button>
+
+                  <button mat-raised-button style="width: 80px;background-color:#990000;color:white;margin-top: 5px" class="buttondesign" (click)="deleterecord(a.idNumber)" *ngIf="global.checkaccess(':Enrollment:PreEnrollmentSubmittedReqDelete')">
+                    <i class="material-icons">delete</i> 
+                      <span style="margin-top: 7px"> Delete&nbsp;&nbsp;</span>
+                  </button>
+              </td>
+          </tr>
+      </table>
+      <mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="tableArr===undefined"></mat-spinner>
+	   <div *ngIf="tableArr!=undefined">
+	    <p *ngIf="temp.length===0" style="text-align: center;"><i>- No result found! -</i></p>
+	  </div>
+  </div>
+  </mat-card-content>
+</mat-card>

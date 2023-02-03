@@ -1,0 +1,36 @@
+<mat-card class="example-card" id="addset" style='padding: 0 !important;'>
+  <mat-card-header >
+    <mat-card-title><b>Grades from the Last SY of Attendance</b></mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content class='colo'>
+
+<b>{{data.sem}}</b>
+    <div style="height: 10px;"></div>
+    <table class="apptable">
+      <tr>
+        <th style="width: 100px">Subject ID</th>
+        <th>Descriptive Title</th>
+        <th style="width: 100px">Grade</th>
+        <th style="width: 100px">Units</th>
+      </tr>
+      <tr *ngFor="let element of data.tableArr">
+        <td>
+          {{element.subjectID}}
+        </td>
+        <td>
+          {{element.subjectTitle}}
+        </td>
+        <td>
+          {{element.grade}}
+        </td>
+        <td>
+          {{element.units}}
+        </td>
+      </tr>
+    </table>
+    <div style="height: 10px"></div>
+	  <button mat-raised-button (click)="onNoClickclose()" style="float: right;margin-bottom: 10px">Close</button>
+  </mat-card-content>
+
+</mat-card>

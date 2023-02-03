@@ -1,0 +1,1236 @@
+<mat-card class="example-card">
+  <mat-card-header >
+    <mat-card-title><b>Employee Information</b></mat-card-title>
+    <mat-card-subtitle>Use to search, edit update employee's information</mat-card-subtitle>
+
+
+  </mat-card-header>
+
+  <mat-card-content class='colo'>
+  	<mat-divider></mat-divider>
+  	<table>
+  		<tr>
+  			<td width="160">
+  				<form class="example-form" id="ngForm" #documentEditForm="ngForm" style="margin-top: 5px;"> 
+				  <mat-form-field class="txtid">
+				      <input matInput #idno maxlength="7" placeholder="ID Number" [(ngModel)]="id"  value="" name="idno" required="required"  (keydown)="keyDownFunction($event)" >
+				      <mat-hint align="start">{{idno.value.length}} / 7</mat-hint>
+				    </mat-form-field>
+				</form>
+  			</td>
+  			<td>
+  				<button mat-mini-fab color="primary" (click)="employeelookup()">
+					<mat-icon>search</mat-icon>
+				</button>
+			</td>
+  		</tr>
+  	</table>
+  	<div style="height: 120px"   *ngIf="showContent" >
+  		<table class="tblInfo" #content>
+	  		<tr >
+		  		<td id="info1stCol">
+		  			<div class="BasicInformationDisplay">
+				  		
+				  		<table>
+				  			<tr>
+				  				<td>
+				  					<h1 id="EmpFullName" *ngIf="updatenamevar==false">{{name}}</h1>
+				  					<div  *ngIf="updatenamevar==true">
+				  						<table cellspacing="0" width="100%" style="width: 100%!important">
+						  				<tr>
+						  					<td>
+										    	<mat-form-field class="example-full-width2">
+											      <input matInput placeholder="Last Name" [(ngModel)]="lname" name="lname" required autocomplete="off">
+											    </mat-form-field>
+											</td>
+										    <td>
+										    	<mat-form-field class="example-full-width2">
+											      <input matInput placeholder="First Name" [(ngModel)]="fname" name="fname" required autocomplete="off">
+											    </mat-form-field>
+											</td>
+										    <td>
+										    	<mat-form-field class="example-full-width2">
+											      <input matInput placeholder="Middle Name" [(ngModel)]="mname" name="mname" autocomplete="off">
+											    </mat-form-field>
+											</td>
+										    
+										    <td>
+										    	<mat-form-field class="example-full-width3">
+											      <input matInput placeholder="Suffix" [(ngModel)]="suffix" name="suffix" autocomplete="off" >
+											    </mat-form-field>
+											</td>
+									  	</tr>
+									</table>
+									<br>
+				  					</div>
+				  					
+				  				</td>
+				  				<td>
+						  			<i class="material-icons" (click)="updatename()" style="color: #294a70"   *ngIf="updatenamevar==false&&global.checkaccess(':Employee:EmployeePersonPut')">edit</i>
+									<button mat-raised-button color="primary"style="width: 75px;color:white;margin-bottom: 5px" class="buttondesign" (click)="updatenameapi()" *ngIf="updatenamevar==true">
+										<i class="material-icons" >edit</i> 
+				                        <span style="margin-top: 7px"> Update&nbsp;&nbsp;</span>
+				                    </button>
+
+				              		<button mat-raised-button style="width: 75px;background-color:#990000;color:white;" class="buttondesign" (click)="updatename()" *ngIf="updatenamevar==true">
+				              			<i class="material-icons">close</i> 
+				                        <span style="margin-top: 7px"> Cancel&nbsp;&nbsp;</span>
+				                    </button>
+								</td>
+				  			</tr>
+				  			<tr>
+				  				<p id="EmpPosition">{{position}}</p>
+						  		<hr id="hr">
+						  		<h3 id="EmpIDnumber">{{idnumber}}</h3>
+				  				<p id="DTRIDnum">{{dtridnum}}</p>
+				  			</tr>
+				  		</table>
+				  		
+				  	</div>
+				  	
+		  		</td>
+		  		
+	  		</tr>
+	  	</table>
+  	</div>
+  	
+  	<div *ngIf="showContent" >
+  		<mat-divider></mat-divider>
+  		<mat-tab-group (selectedTabChange)='getindex($event)'>
+		  <mat-tab label="Employee Information">
+		  	<mat-card *ngIf="tabbing===0">
+		  		<mat-accordion style="overflow: hidden">
+			  		<!--Personal Information-->
+				  	<mat-expansion-panel [expanded]="true">
+					    <mat-expansion-panel-header>
+					      <mat-panel-title>
+					        Personal information
+					      </mat-panel-title>
+					    </mat-expansion-panel-header>
+					    <table width="100%">
+					    	<td align="left">
+					    		<button  mat-button color="primary" style="min-width: 10px;width: auto;" (click)="editInfoOpenDialog()" *ngIf="global.checkaccess(':Employee:PersonalInfoPut')"><mat-icon>edit</mat-icon> Edit Information &nbsp;</button>
+					    	</td>
+					    	<td align="right"><button mat-raised-button color="primary" style="min-width: 10px;width: auto;" (click)="exportCV()"><mat-icon>print</mat-icon> Generate CV &nbsp;</button></td>
+					    </table>
+					 	
+					    <br>
+						<table class="EmpPersonalInfo" #content>
+							<tr>
+								<td rowspan="7">
+									<img width="120" height="120" [src]="image" onError="this.src='assets/noimage.jpg'"><br>
+									<img width="120" height="40" [src]="signature" onError="this.src='assets/nosignature.jpg'">
+								</td>
+
+								<td id="offset" width="150"><strong>Nationality: </strong></td>
+								<td><span id="EmpNationality">{{nationality}}</span></td>
+								
+							</tr>
+							<tr>
+								<td id="offset"><strong>Religion: </strong></td>
+								<td id="EPI2ndCol" colspan="2"><span id="EmpReligion">{{religion}}</span></td>
+								
+							</tr>
+							<tr>
+								<td id="offset"><strong>Home Address: </strong></td>
+								<td id="EPI2ndCol" colspan="2"><span id="EmpHomeAddress">{{homeAddress}}</span></td>
+								
+							</tr>
+							<tr>
+								<td id="offset"><strong>Contact No: </strong></td>
+								<td id="EPI2ndCol" colspan="2"><span id="EmpContactNo">{{contactNo1}}</span></td>
+								
+							</tr>
+							<tr>
+								<td id="offset"><strong>Local Address: </strong></td>
+								<td id="EPI2ndCol" colspan="2"><span id="EmpLocalAddress">{{localAddress}}</span></td>
+							</tr>
+							<tr>
+								<td id="offset"><strong>Date of Birth: </strong></td>
+								<td><span id="EmpBdate"></span>{{dOfBirth | date}}</td>
+								<td width="150"><strong>Civil Status: </strong></td>
+								<td><span id="EmpCivilStatus"></span>{{civilStatus}}</td>
+							</tr>
+							<tr>
+								<td id="offset" width="150"><strong>Contact No: </strong></td>
+								<td id="EPI22ndCol"><span id="EmpAddrContactNo">{{contactNo2}}</span></td>
+								<td><strong>Email Address: </strong></td>
+								<td id="EPI4thCol"><span id="EmpEmailAddress">{{emailAddress}}</span></td>
+							</tr>
+
+
+							<tr>
+								<td width="120"></td>
+								<td id="offset"><strong>Name of Church: </strong></td>
+								<td><span id="EmpNameofChurch"></span>{{nameOfChurch}}</td>
+								<td><strong>Date of Marriage: </strong></td>
+								<td><span id="EmpDateofMarriage"></span>{{dateOfMarriage}}</td>
+							</tr>
+							<tr>
+								<td width="120"></td>
+								<td id="offset"><strong>Name of Spouse: </strong></td>
+								<td><span id="EmpSpouse"></span>{{nameOfSpouse}}</td>
+								<td><strong>Occupation: </strong></td>
+								<td><span id="EmpOccupation"></span>{{occupation}}</td>
+							</tr>
+						</table>
+						<br>
+						
+						<table>
+							<tr>
+								<td width="120"></td>
+								<td colspan="4"><strong>Government Issued Numbers/Informations:</strong></td>
+							</tr>
+							<tr>
+								<td width="120"></td>
+								<td id="offset" width="150"><strong>TIN: </strong></td>
+								<td id="EPI22ndCol"><span id="EmpTIN">{{TIN}}</span></td>
+								<td width="150"><strong>Cedula Number: </strong></td>
+								<td><span id="EmpSSSNo"></span>{{CedNo}}</td>
+							</tr>
+							<tr>
+								<td width="120"></td>
+								<td id="offset"><strong>Philhealth Number: </strong></td>
+								<td><span id="EmpPNo"></span>{{philhealth}}</td>
+								<td><strong>Place Issued: </strong></td>
+								<td><span id="EmpPINo"></span>{{PlaceIssued}}</td>
+							</tr>
+							<tr>
+								<td width="120"></td>
+								<td id="offset" width="150"><strong>SSS Number: </strong></td>
+								<td id="EPI22ndCol"><span id="EmpTIN">{{SSS}}</span></td>
+								<td width="150"><strong>Date Issued: </strong></td>
+								<td><span id="EmpSSSNo"></span>{{DateIssued}}</td>
+							</tr>
+							<tr>
+								<td width="120"></td>
+								<td id="offset"><strong>Pag-ibig Numberr: </strong></td>
+								<td><span id="EmpPNo"></span>{{pagibig}}</td>
+								<td><strong>PTR Number: </strong></td>
+								<td><span id="EmpPINo"></span>{{PTRNo}}</td>
+							</tr>
+						</table>
+							
+						<br>
+						<hr>
+						<strong>Children:</strong>
+						<table class="apptable" id="childrenCSS">
+					    	<tr>
+					    		<th style="display:none;">ID</th>
+						    	<th style="text-align: center;">
+						    		LAST NAME
+						    	</th>
+						    	<th style="text-align: center;">
+						    		FIRST NAME
+						    	</th>
+						    	<th style="text-align: center;">
+						    		MIDDLE NAME
+						    	</th>
+						    	<th style="text-align: center;">
+						    		DATE OF BIRTH
+						    	</th>
+						    	<th style="text-align: center;">
+						    		USLT ID #
+						    	</th>
+						    	<th style="width: 180px;text-align: center;" *ngIf="global.checkaccess(':Employee:ChildPut')">
+						    		- ACTION - 
+						    	</th>
+						    </tr>
+						    <tr *ngFor="let c of ChildrenArr">
+						    	<td style="display:none;">{{c.childID}}</td>
+						    	<td>{{c.lastName}}</td>
+						    	<td>{{c.firstName}}</td>
+						    	<td>{{c.middleName}}</td>
+						    	<td width="12%">{{c.dateOfBirth}}</td>
+						    	<td width="7%">{{c.usltid}}</td>
+						    	<td style="text-align: center;"  *ngIf="global.checkaccess(':Employee:ChildPut')">
+						    		<button mat-raised-button color="primary" class="btnstyle" (click)="updateChildrenOpenDialog(c)">
+						    			<i class="material-icons">update</i><span style="margin-top: 7px">Update&nbsp;&nbsp;&nbsp;</span>
+						    		</button>
+						    		<button mat-raised-button color="warn" (click)="deleteChild(c)" class="btnstyle">
+						    			<i class="material-icons">delete</i><span style="margin-top: 7px">Delete&nbsp;&nbsp;&nbsp;</span>
+						    		</button>
+						    	</td>
+						    </tr>
+					    </table>
+					    <br>
+
+
+			  			<button mat-raised-button color="primary" (click)="addingChildOpenDialog()" style="float: left" *ngIf="global.checkaccess(':Employee:ChildPost')">
+
+			  				<i class="material-icons">add</i> Add new (Child info)
+			  			</button><br>&nbsp;
+						
+				  	</mat-expansion-panel>
+				  	<mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+					    <mat-expansion-panel-header>
+					      	<mat-panel-title>
+					        	Educational attainment/background
+					      	</mat-panel-title>
+					    </mat-expansion-panel-header>
+					    <table class="apptable" id="childrenCSS">
+					    	<tr>
+					    		<th style="display: none;">
+						    		educID
+						    	</th>
+						    	<th style="display: none;">
+						    		proglvlID
+						    	</th>
+						    	<th style="text-align: center;">
+						    		PROGRAM NAME
+						    	</th>
+						    	<th style="text-align: center;">
+						    		YEAR GRADUATED
+						    	</th>
+						    	<th style="text-align: center;">
+						    		SCHOOL NAME
+						    	</th>
+						    	<th style="text-align: center;">
+						    		UNITS EARNED
+						    	</th>
+						    	<th style="text-align: center;">
+						    		S.O. NUMBER
+						    	</th>
+						    	<th style="width: 180px;text-align: center;"  *ngIf="global.checkaccess(':Employee:EducationalBackgroundPut')">
+						    		- ACTION - 
+						    	</th>
+						    </tr>
+						    <tr *ngFor="let et of EducTableArr">
+						    	<td style="display: none;">{{et.educBGID}}</td>
+						    	<td style="display: none;">{{et.programLevelID}}</td>
+						    	<td>{{et.programName}}</td>
+						    	<td width="12%">{{et.yearGraduated}}</td>
+						    	<td>{{et.schoolName}}</td>
+						    	<td>{{et.units_Earned}}</td>
+						    	<td width="12%">{{et.sonumber}}</td>
+						    	<td style="text-align: center;"  *ngIf="global.checkaccess(':Employee:EducationalBackgroundPut')">
+						    		<button mat-raised-button color="primary" class="btnstyle" (click)="updateEducBcgOpenDialog(et)">
+						    			<i class="material-icons">update</i><span style="margin-top: 7px">Update&nbsp;&nbsp;&nbsp;</span>
+						    		</button>
+						    		<button mat-raised-button color="warn" (click)="deleteEducBcg(et.educBGID)" class="btnstyle">
+						    			<i class="material-icons">delete</i><span style="margin-top: 7px">Delete&nbsp;&nbsp;&nbsp;</span>
+						    		</button>
+						    	</td>
+						    </tr>
+					    </table>
+						<br>
+
+
+			  			<button mat-raised-button color="primary" (click)="addingEducBcgOpenDialog()" style="float: left"  *ngIf="global.checkaccess(':Employee:EducationalBackgroundPost')">
+
+			  				<i class="material-icons">add</i> Add new (Educational attainment/background)
+			  			</button><br>&nbsp;
+				  	</mat-expansion-panel>
+
+				  	<!--Educational Attainment-->
+				  	<mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+					    <mat-expansion-panel-header>
+					      <mat-panel-title>
+					        Eligibilities
+					      </mat-panel-title>
+					    </mat-expansion-panel-header>
+					    <table class="apptable" id="childrenCSS">
+					    	<tr>
+					    		<th style="display:none;">
+						    		eligid
+						    	</th>
+						    	<th style="text-align: center;">
+						    		DATE
+						    	</th>
+						    	<th style="text-align: center;">
+						    		EXAMINATION
+						    	</th>
+						    	<th style="text-align: center;">
+						    		RATING
+						    	</th>
+						    	<th style="text-align: center;">
+						    		LICENSE NUMBER
+						    	</th>
+						    	<th style="text-align: center;">
+						    		EXPIRATION DATE
+						    	</th>
+						    	<th style="width: 180px;text-align: center;"  *ngIf="global.checkaccess(':Employee:EligibilityPut')">
+						    		- ACTION - 
+						    	</th>
+						    </tr>
+						    <tr *ngFor="let eLt of EligTableArr">
+						    	<td style="display:none;">{{eLt.eligibilityid}}</td>
+						    	<td width="12%">{{eLt.datepassed}}</td>
+						    	<td>{{eLt.examination}}</td>
+						    	<td>{{eLt.rating}}</td>
+						    	<td>{{eLt.licenseNumber}}</td>
+						    	<td>{{eLt.expirationDate}}</td>
+						    	<td style="text-align: center;"  *ngIf="global.checkaccess(':Employee:EligibilityPut')">
+						    		<button mat-raised-button color="primary" class="btnstyle" (click)="updateEligOpenDialog(eLt)">
+						    			<i class="material-icons">update</i><span style="margin-top: 7px">Update&nbsp;&nbsp;&nbsp;</span>
+						    		</button>
+						    		<button mat-raised-button color="warn" (click)="deleteeligibility(eLt.eligibilityid)" class="btnstyle">
+						    			<i class="material-icons">delete</i><span style="margin-top: 7px">Delete&nbsp;&nbsp;&nbsp;</span>
+						    		</button>
+						    	</td>
+						    </tr>
+					    </table>
+					    <br>
+
+			  			<button mat-raised-button color="primary" (click)="addEligibilityOpenDialog()" style="float: left"  *ngIf="global.checkaccess(':Employee:EligibilityPost')">
+
+			  				<i class="material-icons">add</i> Add new (Eligibility)
+			  			</button><br>&nbsp;
+				    </mat-expansion-panel>
+
+				    
+				  	
+				  	<!--Work Experiences-->
+				  	<mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+					    <mat-expansion-panel-header>
+					      <mat-panel-title>
+
+					        Work experiences
+					      </mat-panel-title>
+					    </mat-expansion-panel-header>
+					    <table class="apptable" id="childrenCSS">
+					    	<tr>
+					    		<th style="display: none;">
+						    		ID
+						    	</th>
+						    	<th style="text-align: center;">
+						    		POSITION
+						    	</th>
+						    	<th style="text-align: center;">
+						    		COMPANY NAME
+						    	</th>
+						    	<th style="text-align: center;">
+						    		START DATE
+						    	</th>
+						    	<th style="text-align: center;">
+						    		END DATE
+						    	</th>
+						    	<th style="width: 180px;text-align: center;"  *ngIf="global.checkaccess(':Employee:WorkExperiencePut')">
+						    		- ACTION - 
+						    	</th>
+						    </tr>
+						    <tr *ngFor="let wt of WorkTableArr">
+						    	<td style="display: none;">{{wt.workid}}</td>
+						    	<td>{{wt.position}}</td>
+						    	<td>{{wt.companyname}}</td>
+						    	<td width="12%">{{wt.startdate}}</td>
+						    	<td width="12%">{{wt.enddate}}</td>
+						    	<td style="text-align: center;"  *ngIf="global.checkaccess(':Employee:WorkExperiencePut')">
+						    		<button mat-raised-button color="primary" class="btnstyle" (click)="updateWEOpenDialog(wt)">
+						    			<i class="material-icons">update</i><span style="margin-top: 7px">Update&nbsp;&nbsp;&nbsp;</span>
+						    		</button>
+						    		<button mat-raised-button color="warn" (click)="deleteWE(wt.workid)" class="btnstyle">
+						    			<i class="material-icons">delete</i><span style="margin-top: 7px">Delete&nbsp;&nbsp;&nbsp;</span>
+						    		</button>
+						    	</td>
+						    </tr>
+					    </table>
+					    
+				    	<br>
+
+			  			<button mat-raised-button color="primary" (click)="addWEOpenDialog()" style="float: left"  *ngIf="global.checkaccess(':Employee:WorkExperiencePost')">
+			  				<i class="material-icons">add</i> Add new (Work Experience)
+			  			</button><br>&nbsp;				    	
+				  	</mat-expansion-panel>
+				  	
+
+		  	
+			  	</mat-accordion>
+  			</mat-card>
+		  </mat-tab>
+
+		  <mat-tab label="Other Information">
+		  	<mat-card *ngIf="tabbing===1">
+		  		<div style="margin-top: 25px">
+		  			<mat-accordion style="overflow: hidden">
+		  			<!--Seminars and Trainings-->
+					  	<mat-expansion-panel [expanded]="true">
+						    <mat-expansion-panel-header>
+						      <mat-panel-title>
+						         Seminars, training and conferences
+						      </mat-panel-title>
+						    </mat-expansion-panel-header>
+					        <table class="apptable" id="childrenCSS">
+						    	<tr>
+						    		<th style="display:none;">
+							    		seminarid
+							    	</th>
+							    	<th style="text-align: center;">
+							    		SEMINAR DESCRIPTIOM
+							    	</th>
+							    	<th style="text-align: center;">
+							    		SPONSOR
+							    	</th>
+							    	<th style="text-align: center;">
+							    		VENUE
+							    	</th>
+							    	<th style="text-align: center;">
+							    		START DATE
+							    	</th>
+							    	<th style="text-align: center;">
+							    		END DATE
+							    	</th>
+							    	<th style="text-align: center;">
+							    		CATEGORY
+							    	</th>
+							    	<th style="display:none;">
+							    		TRAINING ID
+							    	</th>
+							    	<th style="width: 180px;text-align: center;" *ngIf="global.checkaccess(':Employee:SeminarAndTrainingPut')">
+							    		- ACTION - 
+							    	</th>
+							    </tr>
+							    <tr *ngFor="let SaT of SeminarTableArr | paginate: config">
+							    	<td style="display:none;">{{SaT.seminarid}}</td>
+							    	<td>{{SaT.seminardescription}}</td>
+							    	<td>{{SaT.companyname}}</td>
+							    	<td>{{SaT.venue}}</td>
+							    	<td width="6%">{{SaT.startdate}}</td>
+							    	<td width="6%">{{SaT.enddate}}</td>
+							    	<td width="7%">{{SaT.trainingType}}</td>
+							    	<td style="display:none;">{{SaT.trainingTypeID}}</td>
+
+							    	<td style="text-align: center;" width="230px" *ngIf="global.checkaccess(':Employee:SeminarAndTrainingPut')">
+							    		<ng-container *ngIf="SaT.statusID===0&&global.requestid()!==idnumber ; else btnA">
+
+							    			<button mat-raised-button color="accent" class="btnstyle" (click)="approveSat(SaT)" >
+								    			<i class="material-icons">done</i><span style="margin-top: 7px">Approve&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+								    		</button>
+							    		</ng-container>
+							    		<ng-template #btnA>
+							    			<ng-container>
+							    				<button mat-raised-button color="accent" class="btnstyle" (click)="approveSat(SaT)" disabled>
+									    			<i class="material-icons">done</i><span style="margin-top: 7px">Approve&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+									    		</button>
+							    			</ng-container>
+							    		</ng-template>
+
+							    		<ng-container *ngIf="global.requestid()!==idnumber; else second">
+							    			<button mat-raised-button color="primary" class="btnstyle" (click)="updateSaTOpenDialog(SaT)">
+							    				<i class="material-icons">update</i><span style="margin-top: 7px">Update&nbsp;&nbsp;&nbsp;</span>
+								    		</button>
+								    		<button mat-raised-button color="warn" (click)="deleteSat(SaT.seminarid)" class="btnstyle">
+								    			<i class="material-icons">delete</i><span style="margin-top: 7px">Delete&nbsp;&nbsp;&nbsp;</span>
+								    		</button>
+							    		</ng-container>
+							    		<ng-template #second>
+							    			<ng-container *ngIf="SaT.statusID===0; else third">
+							    				<button mat-raised-button color="primary" class="btnstyle" (click)="updateSaTOpenDialog(SaT)">
+							    				<i class="material-icons">update</i><span style="margin-top: 7px">Update&nbsp;&nbsp;&nbsp;</span>
+									    		</button>
+									    		<button mat-raised-button color="warn" (click)="deleteSat(SaT.seminarid)" class="btnstyle">
+									    			<i class="material-icons">delete</i><span style="margin-top: 7px">Delete&nbsp;&nbsp;&nbsp;</span>
+									    		</button>
+							    			</ng-container>
+							    		</ng-template>
+							    		<ng-template #third>
+							    			<ng-container>
+							    				<button mat-raised-button color="primary" class="btnstyle" disabled>
+							    				<i class="material-icons">update</i><span style="margin-top: 7px">Update&nbsp;&nbsp;&nbsp;</span>
+									    		</button>
+									    		<button mat-raised-button color="warn" class="btnstyle" disabled>
+									    			<i class="material-icons">delete</i><span style="margin-top: 7px">Delete&nbsp;&nbsp;&nbsp;</span>
+									    		</button>
+							    			</ng-container>
+							    		</ng-template>					    		
+							    	</td>
+							    </tr>
+						    </table>
+						    <pagination-controls (pageChange)="pageChanged($event)" style="float: right;"></pagination-controls>
+						    <br>
+						    <br>
+
+				  			<button mat-raised-button color="primary" (click)="addSaTOpenDialog()" style="float: left" *ngIf="global.checkaccess(':Employee:SeminarAndTrainingPost')">
+
+				  				<i class="material-icons">add</i> Add new (Seminar/Training/Conference)
+				  			</button><br>&nbsp;				        
+					  	</mat-expansion-panel>
+
+						<!--Organizations-->
+
+					  	<mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+						    <mat-expansion-panel-header>
+						      <mat-panel-title>
+						        Professional membership to organizations
+						      </mat-panel-title>
+						    </mat-expansion-panel-header>
+						    <table class="apptable" id="childrenCSS">
+						    	<tr>
+						    		<th style="display: none;">
+							    		id
+							    	</th>
+							    	<th style="text-align: center;">
+							    		POSITION
+							    	</th>
+							    	<th style="text-align: center;">
+							    		ORGANIZATION
+							    	</th>
+							    	<th style="text-align: center;width: 100px">
+							    		EXPIRATION DATE
+							    	</th>
+							    	<th style="width: 180px;text-align: center;" *ngIf="global.checkaccess(':Employee:OrganizationPut')">
+							    		- ACTION - 
+							    	</th>
+							    </tr>
+							    <tr *ngFor="let ot of OrgTableArr">
+							    	<td style="display: none;">{{ot.organizationid}}</td>
+							    	<td>{{ot.position}}</td>
+							    	<td>{{ot.organization}}</td>
+							    	<td>{{ot.expirationDate}}</td>
+							    	
+
+							    	<td style="text-align: center;" width="230px" *ngIf="global.checkaccess(':Employee:OrganizationPut')">
+							    		<ng-container *ngIf="ot.statusID===0&&global.requestid()!==idnumber ; else btnAorg">
+
+							    			<button mat-raised-button color="accent" class="btnstyle" (click)="approveOrg(ot)" >
+								    			<i class="material-icons">done</i><span style="margin-top: 7px">Approve&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+								    		</button>
+							    		</ng-container>
+							    		<ng-template #btnAorg>
+							    			<ng-container>
+							    				<button mat-raised-button color="accent" class="btnstyle" (click)="approveOrg(ot)" disabled>
+									    			<i class="material-icons">done</i><span style="margin-top: 7px">Approve&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+									    		</button>
+							    			</ng-container>
+							    		</ng-template>
+
+							    		<ng-container *ngIf="global.requestid()!==idnumber; else secondorg">
+								    		<button mat-raised-button color="primary" class="btnstyle" (click)="updateOrgOpenDialog(ot)">
+								    			<i class="material-icons">update</i><span style="margin-top: 7px">Update&nbsp;&nbsp;&nbsp;</span>
+								    		</button>
+								    		<button mat-raised-button color="warn" (click)="deleteOrg(ot.organizationid)" class="btnstyle">
+								    			<i class="material-icons">delete</i><span style="margin-top: 7px">Delete&nbsp;&nbsp;&nbsp;</span>
+								    		</button>
+							    		</ng-container>
+							    		<ng-template #secondorg>
+							    			<ng-container *ngIf="ot.statusID===0; else thirdorg">
+							    				<button mat-raised-button color="primary" class="btnstyle" (click)="updateOrgOpenDialog(ot)">
+									    			<i class="material-icons">update</i><span style="margin-top: 7px">Update&nbsp;&nbsp;&nbsp;</span>
+									    		</button>
+									    		<button mat-raised-button color="warn" (click)="deleteOrg(ot.organizationid)" class="btnstyle">
+									    			<i class="material-icons">delete</i><span style="margin-top: 7px">Delete&nbsp;&nbsp;&nbsp;</span>
+									    		</button>
+							    			</ng-container>
+							    		</ng-template>
+							    		<ng-template #thirdorg>
+							    			<ng-container>
+									    		<button mat-raised-button color="primary" class="btnstyle" (click)="updateOrgOpenDialog(ot)" disabled>
+									    			<i class="material-icons">update</i><span style="margin-top: 7px">Update&nbsp;&nbsp;&nbsp;</span>
+									    		</button>
+									    		<button mat-raised-button color="warn" (click)="deleteOrg(ot.organizationid)" class="btnstyle" disabled>
+									    			<i class="material-icons">delete</i><span style="margin-top: 7px">Delete&nbsp;&nbsp;&nbsp;</span>
+									    		</button>
+							    			</ng-container>
+							    		</ng-template>					    		
+							    	</td>
+
+							    </tr>
+						    </table>
+					    	<br>
+
+
+				  			<button mat-raised-button color="primary" (click)="addOrgOpenDialog()" style="float: left" *ngIf="global.checkaccess(':Employee:OrganizationPost')">
+
+				  				<i class="material-icons">add</i> Add new (Organization)
+				  			</button><br>&nbsp;
+					  	</mat-expansion-panel>
+					  	
+					  	<!--Researches-->
+					  	<mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+						    <mat-expansion-panel-header>
+						      <mat-panel-title>
+						        Research and Publications
+						      </mat-panel-title>
+						    </mat-expansion-panel-header>
+						    <table class="apptable" id="childrenCSS">
+						    	<tr>
+							    	<th style="display: none;">
+							    		rid
+							    	</th><th style="text-align: center;">
+							    		RESEARCH TITLE
+							    	</th>
+							    	<th style="text-align: center;width: 80px">
+							    		DATE COMPLETED
+							    	</th>
+							    	<th style="text-align: center;width: 80px">
+							    		COPYRIGHT YEAR
+							    	</th>
+							    	<th style="text-align: center;">
+							    		REMARKS
+							    	</th>
+							    	<th style="text-align: center;">
+							    		RESEARCH TYPE
+							    	</th>
+							    	<th style="display: none;">
+							    		research id
+							    	</th>
+							    	<th style="width: 180px;text-align: center;" *ngIf="global.checkaccess(':Employee:ResearchPut')">
+							    		- ACTION - 
+							    	</th>
+							    </tr>
+							    <tr *ngFor="let rt of ResearchTableArr">
+							    	<td style="display: none;">{{rt.researchID}}</td>
+							    	<td>{{rt.title}}</td>
+							    	<td>{{rt.dateCompleted}}</td>
+							    	<td>{{rt.copyrightYear}}</td>
+							    	<td>{{rt.remarks}}</td>
+							    	<td>{{rt.researchType}}</td>
+							    	<td style="display: none;">{{rt.researchTypeID}}</td>
+
+							    	<td style="text-align: center;" width="230px" *ngIf="global.checkaccess(':Employee:ResearchPut')">
+							    		<ng-container *ngIf="rt.statusID===0&&global.requestid()!==idnumber ; else btnAres">
+
+							    			<button mat-raised-button color="accent" class="btnstyle" (click)="approveRes(rt)" >
+								    			<i class="material-icons">done</i><span style="margin-top: 7px">Approve&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+								    		</button>
+							    		</ng-container>
+							    		<ng-template #btnAres>
+							    			<ng-container>
+							    				<button mat-raised-button color="accent" class="btnstyle" disabled>
+									    			<i class="material-icons">done</i><span style="margin-top: 7px">Approve&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+									    		</button>
+							    			</ng-container>
+							    		</ng-template>
+
+							    		<ng-container *ngIf="global.requestid()!==idnumber; else secondres">
+								    		<button mat-raised-button color="primary" class="btnstyle" (click)="updateResearchOpenDialog(rt)">
+								    			<i class="material-icons">update</i><span style="margin-top: 7px">Update&nbsp;&nbsp;&nbsp;</span>
+								    		</button>
+								    		<button mat-raised-button color="warn" (click)="deleteResearch(rt.researchID)" class="btnstyle">
+								    			<i class="material-icons">delete</i><span style="margin-top: 7px">Delete&nbsp;&nbsp;&nbsp;</span>
+								    		</button>
+							    		</ng-container>
+							    		<ng-template #secondres>
+							    			<ng-container *ngIf="rt.statusID===0; else thirdres">
+							    				<button mat-raised-button color="primary" class="btnstyle" (click)="updateResearchOpenDialog(rt)">
+									    			<i class="material-icons">update</i><span style="margin-top: 7px">Update&nbsp;&nbsp;&nbsp;</span>
+									    		</button>
+									    		<button mat-raised-button color="warn" (click)="deleteResearch(rt.researchID)" class="btnstyle">
+									    			<i class="material-icons">delete</i><span style="margin-top: 7px">Delete&nbsp;&nbsp;&nbsp;</span>
+									    		</button>
+							    			</ng-container>
+							    		</ng-template>
+							    		<ng-template #thirdres>
+							    			<ng-container>
+									    		<button mat-raised-button color="primary" class="btnstyle" disabled>
+									    			<i class="material-icons">update</i><span style="margin-top: 7px">Update&nbsp;&nbsp;&nbsp;</span>
+									    		</button>
+									    		<button mat-raised-button color="warn" class="btnstyle" disabled>
+									    			<i class="material-icons">delete</i><span style="margin-top: 7px">Delete&nbsp;&nbsp;&nbsp;</span>
+									    		</button>
+							    			</ng-container>
+							    		</ng-template>					    		
+							    	</td>
+							    </tr>
+						    </table>
+						    <br>
+
+
+				  			<button mat-raised-button color="primary" (click)="addResearchOpenDialog()" style="float: left" *ngIf="global.checkaccess(':Employee:ResearchPost')">
+
+				  				<i class="material-icons">add</i> Add new (Research)
+				  			</button><br>&nbsp;
+					  	</mat-expansion-panel>
+
+					  	<!--Community Extensions-->
+					  	<mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+						    <mat-expansion-panel-header>
+						      <mat-panel-title>
+						        Community Engagement
+						      </mat-panel-title>
+						    </mat-expansion-panel-header>
+						    <table class="apptable" id="childrenCSS">
+						    	<tr>
+							    	<th style="display: none;">
+							    		ID
+							    	</th>
+							    	<th style="display: none;">
+							    		sID
+							    	</th>
+							    	<th style="text-align: center;">
+							    		DATE CONDUCTED
+							    	</th>
+							    	<th style="text-align: center;">
+							    		ACTIVITY
+							    	</th>
+							    	<th style="text-align: center;">
+							    		LOCATION
+							    	</th>
+							    	<th style="width: 180px;text-align: center;" *ngIf="global.checkaccess(':Employee:CommunityExtensionsPut')">
+							    		- ACTION - 
+							    	</th>
+							    </tr>
+							    <tr *ngFor="let ct of ComTableArr">
+							    	<td style="display: none">{{ct.ceid}}</td>
+							    	<td style="display: none">{{ct.statusID}}</td>
+							    	<td width="12%">{{ct.dateConducted}}</td>
+							    	<td>{{ct.activity}}</td>
+							    	<td>{{ct.location}}</td>
+
+							    	<td style="text-align: center;" width="230px" *ngIf="global.checkaccess(':Employee:CommunityExtensionsPut')">
+							    		<ng-container *ngIf="ct.statusID===0&&global.requestid()!==idnumber ; else btnAres">
+							    			<button mat-raised-button color="accent" class="btnstyle" (click)="approveCE(ct)" >
+								    			<i class="material-icons">done</i><span style="margin-top: 7px">Approve&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+								    		</button>
+							    		</ng-container>
+							    		<ng-template #btnAres>
+							    			<ng-container>
+							    				<button mat-raised-button color="accent" class="btnstyle" disabled>
+									    			<i class="material-icons">done</i><span style="margin-top: 7px">Approve&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+									    		</button>
+							    			</ng-container>
+							    		</ng-template>
+
+							    		<ng-container *ngIf="global.requestid()!==idnumber; else secondres">
+								    		<button mat-raised-button color="primary" class="btnstyle" (click)="updateComExtOpenDialog(ct)">
+								    			<i class="material-icons">update</i><span style="margin-top: 7px">Update&nbsp;&nbsp;&nbsp;</span>
+								    		</button>
+								    		<button mat-raised-button color="warn" (click)="deleteComExt(ct.ceid)" class="btnstyle">
+								    			<i class="material-icons">delete</i><span style="margin-top: 7px">Delete&nbsp;&nbsp;&nbsp;</span>
+								    		</button>
+							    		</ng-container>
+							    		<ng-template #secondres>
+							    			<ng-container *ngIf="ct.statusID===0; else thirdres">
+							    				<button mat-raised-button color="primary" class="btnstyle" (click)="updateComExtOpenDialog(ct)">
+									    			<i class="material-icons">update</i><span style="margin-top: 7px">Update&nbsp;&nbsp;&nbsp;</span>
+									    		</button>
+									    		<button mat-raised-button color="warn" (click)="deleteComExt(ct.ceid)" class="btnstyle">
+									    			<i class="material-icons">delete</i><span style="margin-top: 7px">Delete&nbsp;&nbsp;&nbsp;</span>
+									    		</button>
+							    			</ng-container>
+							    		</ng-template>
+							    		<ng-template #thirdres>
+							    			<ng-container>
+									    		<button mat-raised-button color="primary" class="btnstyle" disabled>
+									    			<i class="material-icons">update</i><span style="margin-top: 7px">Update&nbsp;&nbsp;&nbsp;</span>
+									    		</button>
+									    		<button mat-raised-button color="warn" class="btnstyle" disabled>
+									    			<i class="material-icons">delete</i><span style="margin-top: 7px">Delete&nbsp;&nbsp;&nbsp;</span>
+									    		</button>
+							    			</ng-container>
+							    		</ng-template>					    		
+							    	</td>
+							    </tr>
+						    </table>
+						    <br>
+
+
+				  			<button mat-raised-button color="primary" (click)="addComExtOpenDialog()" style="float: left"  *ngIf="global.checkaccess(':Employee:CommunityExtensionsPost')">
+
+				  				<i class="material-icons">add</i> Add new (Community Engagement)
+				  			</button><br>&nbsp;
+					  	</mat-expansion-panel>
+
+					  	<!--Speaking Engagement-->
+					  	<mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+					        <mat-expansion-panel-header>
+					          <mat-panel-title>
+					            Speaking Engagement
+					          </mat-panel-title>
+					          <mat-panel-description>
+					          </mat-panel-description>
+					        </mat-expansion-panel-header>
+					        
+						        <table class="apptable" id="childrenCSS">
+							    	<tr>
+							    		<th style="display: none;">
+								    		ID
+								    	</th>
+								    	<th style="display: none;">
+								    		EID
+								    	</th>
+								    	<th style="text-align: center;">
+								    		TITLE
+								    	</th>
+								    	<th style="text-align: center;">
+								    		ORGANIZER
+								    	</th>
+								    	<th style="text-align: center;">
+								    		VENUE
+								    	</th>
+								    	<th style="text-align: center;">
+								    		ROLE/S
+								    	</th>
+								    	<th style="text-align: center;">
+							    			START DATE
+								    	</th>
+								    	<th style="text-align: center;">
+								    		END DATE
+								    	</th>
+								    	<th style="width: 180px;text-align: center;"  *ngIf="global.checkaccess(':Employee:SpeakingEngagementPut')">
+								    		- ACTION - 
+								    	</th>
+								    </tr>
+								    <tr *ngFor="let e of speakingEngArr">
+								    	<td style="display:none;">{{e.id}}</td>
+								    	<td style="display:none;">{{e.employeeId}}</td>
+								    	<td width="19%" >{{e.conferenceTitle}}</td>
+								    	<td width="19%" >{{e.eventOrganizer}}</td>
+								    	<td>{{e.venue}}</td>
+								    	<td>{{e.speakingEngagementRoles}}</td>
+								    	<td width="6%">{{e.startDate | date: 'MM/dd/yyyy'}}</td>
+								    	<td width="6%">{{e.endDate | date: 'MM/dd/yyyy'}}</td>
+
+								    	<td style="text-align: center;" width="230px"  *ngIf="global.checkaccess(':Employee:SpeakingEngagementPut')">
+								    		<ng-container *ngIf="e.statusId===0&&global.requestid()!==idnumber ; else btnAres">
+								    			<button mat-raised-button color="accent" class="btnstyle" (click)="approveSE(e)" >
+									    			<i class="material-icons">done</i><span style="margin-top: 7px">Approve&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+									    		</button>
+								    		</ng-container>
+								    		<ng-template #btnAres>
+								    			<ng-container>
+								    				<button mat-raised-button color="accent" class="btnstyle" disabled>
+										    			<i class="material-icons">done</i><span style="margin-top: 7px">Approve&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+										    		</button>
+								    			</ng-container>
+								    		</ng-template>
+
+								    		<ng-container *ngIf="global.requestid()!==idnumber; else secondres">
+									    		<button mat-raised-button color="primary" class="btnstyle" (click)="updateSEOpenDialog(e)">
+									    			<i class="material-icons">update</i><span style="margin-top: 7px">Update&nbsp;&nbsp;&nbsp;</span>
+									    		</button>
+									    		<button mat-raised-button color="warn" (click)="deleteSE(e.id)" class="btnstyle">
+									    			<i class="material-icons">delete</i><span style="margin-top: 7px">Delete&nbsp;&nbsp;&nbsp;</span>
+									    		</button>
+								    		</ng-container>
+								    		<ng-template #secondres>
+								    			<ng-container *ngIf="e.statusId===0; else thirdres">
+								    				<button mat-raised-button color="primary" class="btnstyle" (click)="updateSEOpenDialog(e)">
+										    			<i class="material-icons">update</i><span style="margin-top: 7px">Update&nbsp;&nbsp;&nbsp;</span>
+										    		</button>
+										    		<button mat-raised-button color="warn" (click)="deleteSE(e.id)" class="btnstyle">
+										    			<i class="material-icons">delete</i><span style="margin-top: 7px">Delete&nbsp;&nbsp;&nbsp;</span>
+										    		</button>
+								    			</ng-container>
+								    		</ng-template>
+								    		<ng-template #thirdres>
+								    			<ng-container>
+										    		<button mat-raised-button color="primary" class="btnstyle" disabled>
+										    			<i class="material-icons">update</i><span style="margin-top: 7px">Update&nbsp;&nbsp;&nbsp;</span>
+										    		</button>
+										    		<button mat-raised-button color="warn" class="btnstyle" disabled>
+										    			<i class="material-icons">delete</i><span style="margin-top: 7px">Delete&nbsp;&nbsp;&nbsp;</span>
+										    		</button>
+								    			</ng-container>
+								    		</ng-template>					    		
+								    	</td>
+								    </tr>
+							    </table>
+							    <br>
+
+					  			<button mat-raised-button color="primary" (click)="addSEOpenDialog()" style="float: left" *ngIf="global.checkaccess(':Employee:SpeakingEngagementPost')">
+					  				<i class="material-icons">add</i> Add new (Speaking Engagement)
+					  			</button><br>&nbsp;
+					    </mat-expansion-panel>
+
+					    <!--Awards-->
+					    <mat-expansion-panel  (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+					        <mat-expansion-panel-header>
+					          <mat-panel-title>
+					          	Awards/Achievements
+					          </mat-panel-title>
+					          <mat-panel-description>
+					          </mat-panel-description>
+					        </mat-expansion-panel-header>
+					        
+						    <table class="apptable" id="childrenCSS">
+						    	<tr>
+						    		<th style="display: none;">
+							    		ID
+							    	</th>
+							    	<th style="display: none;">
+							    		empID
+							    	</th>
+							    	<th style="text-align: center;">
+							    		EVENT TITLE
+							    	</th>
+							    	<th style="text-align: center;">
+							    		AWARD RECEIVED
+							    	</th>
+							    	<th style="text-align: center;">
+							    		AWARDING BODY
+							    	</th>
+							    	<th style="text-align: center;">
+							    		VENUE
+							    	</th>
+							    	<th style="text-align: center;">
+						    			DATE AWARDED
+							    	</th>
+							    	<th style="width: 180px;text-align: center;"  *ngIf="global.checkaccess(':Employee:AwardPut')">
+							    		- ACTION - 
+							    	</th>
+							    </tr>
+							    <tr *ngFor="let e of awardsArr">
+							    	<td style="display:none;">{{e.id}}</td>
+							    	<td style="display:none;">{{e.employeeId}}</td>
+							    	<td width="20%">{{e.eventTitle}}</td>
+							    	<td width="20%">{{e.awardReceived}}</td>
+							    	<td>{{e.awardingBody}}</td>
+							    	<td>{{e.venue}}</td>
+							    	<td width="6%">{{e.dateAwarded | date: 'MM/dd/yyyy'}}</td>
+
+							    	<td style="text-align: center;" width="230px"   *ngIf="global.checkaccess(':Employee:AwardPut')">
+							    		<ng-container *ngIf="e.statusId===0&&global.requestid()!==idnumber ; else btnAres">
+							    			<button mat-raised-button color="accent" class="btnstyle" (click)="approveAw(e)" >
+								    			<i class="material-icons">done</i><span style="margin-top: 7px">Approve&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+								    		</button>
+							    		</ng-container>
+							    		<ng-template #btnAres>
+							    			<ng-container>
+							    				<button mat-raised-button color="accent" class="btnstyle" disabled>
+									    			<i class="material-icons">done</i><span style="margin-top: 7px">Approve&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+									    		</button>
+							    			</ng-container>
+							    		</ng-template>
+
+							    		<ng-container *ngIf="global.requestid()!==idnumber; else secondres">
+								    		<button mat-raised-button color="primary" class="btnstyle" (click)="updateAwOpenDialog(e)">
+								    			<i class="material-icons">update</i><span style="margin-top: 7px">Update&nbsp;&nbsp;&nbsp;</span>
+								    		</button>
+								    		<button mat-raised-button color="warn" (click)="deleteAw(e.id)" class="btnstyle">
+								    			<i class="material-icons">delete</i><span style="margin-top: 7px">Delete&nbsp;&nbsp;&nbsp;</span>
+								    		</button>
+							    		</ng-container>
+							    		<ng-template #secondres>
+							    			<ng-container *ngIf="e.statusId===0; else thirdres">
+							    				<button mat-raised-button color="primary" class="btnstyle" (click)="updateAwOpenDialog(e)">
+									    			<i class="material-icons">update</i><span style="margin-top: 7px">Update&nbsp;&nbsp;&nbsp;</span>
+									    		</button>
+									    		<button mat-raised-button color="warn" (click)="deleteAw(e.id)" class="btnstyle">
+									    			<i class="material-icons">delete</i><span style="margin-top: 7px">Delete&nbsp;&nbsp;&nbsp;</span>
+									    		</button>
+							    			</ng-container>
+							    		</ng-template>
+							    		<ng-template #thirdres>
+							    			<ng-container>
+									    		<button mat-raised-button color="primary" class="btnstyle" disabled>
+									    			<i class="material-icons">update</i><span style="margin-top: 7px">Update&nbsp;&nbsp;&nbsp;</span>
+									    		</button>
+									    		<button mat-raised-button color="warn" class="btnstyle" disabled>
+									    			<i class="material-icons">delete</i><span style="margin-top: 7px">Delete&nbsp;&nbsp;&nbsp;</span>
+									    		</button>
+							    			</ng-container>
+							    		</ng-template>					    		
+							    	</td>
+							    </tr>
+						    </table>
+						    <br>
+
+				  			<button mat-raised-button color="primary" (click)="addAwOpenDialog()" style="float: left"   *ngIf="global.checkaccess(':Employee:AwardPost')">
+				  				<i class="material-icons">add</i> Add new (Awards/Achievements)
+				  			</button><br>&nbsp;
+					    </mat-expansion-panel>
+					</mat-accordion>
+				</div>
+		  	</mat-card>
+		  </mat-tab>
+		  
+		  <mat-tab label="Employment Records"  *ngIf="global.checkaccess(':Employee:AppointmentPost')">
+		  	<mat-card  *ngIf="tabbing===2">
+		  		<div class="EmpRecPanels" style="margin-top: 25px">
+		  			<mat-accordion style="overflow: hidden">
+			  			<mat-expansion-panel [expanded]="true">
+						    <mat-expansion-panel-header>
+						      <mat-panel-title>
+						        Appointments
+						      </mat-panel-title>
+						    </mat-expansion-panel-header>
+						    
+						    <table class="apptable" id="childrenCSS">
+						    	<tr>
+						    		<th style="display:none;">
+							    		ID
+							    	</th>
+							    	<th style="display:none;">
+							    		DEPTID
+							    	</th>
+							    	<th style="text-align: center;">
+							    		DEPARTMENT
+							    	</th>
+							    	<th style="display:none;">
+							    		ITEMID
+							    	</th>
+							    	<th style="display:none;">
+							    		effectivity
+							    	</th>
+							    	<th style="text-align: center;">
+							    		POSITION
+							    	</th>
+							    	<th style="text-align: center;">
+							    		DATE
+							    	</th>
+							    	<th style="text-align: center;">
+							    		FROM
+							    	</th>
+							    	<th style="text-align: center;">
+							    		TO
+							    	</th>
+							    	<th style="text-align: center;">
+							    		STATUS
+							    	</th>
+							    	<th style="width: 180px;text-align: center;"  *ngIf="global.checkaccess(':Employee:AppointmentPost')">
+							    		- ACTION - 
+							    	</th>
+							    </tr>
+							    <tr *ngFor="let a of appointmentArr">
+							    	<td style="display:none;">{{a.appointmentID}}</td>
+							    	<td style="display:none;">{{a.departmentID}}</td>
+							    	<td width="25%">{{a.departmentName}}</td>
+							    	<td style="display:none;">{{a.itemID}}</td>
+							    	<td style="display:none;">{{a.hasEffectivity}}</td>
+							    	<td>{{a.position}}</td>
+							    	<td>{{a.dateAppointed}}</td>
+							    	<td>{{a.startdate}}</td>
+							    	<td>{{a.enddate}}</td>
+							    	<td *ngIf="a.active===1">Active</td>
+							    	<td *ngIf="a.active===0">Not Active</td>
+							    	<td style="text-align: center;">
+							    		<button mat-raised-button color="primary" class="btnstyle" (click)="updateAppointmentOpenDialog(a)">
+							    			<i class="material-icons">update</i><span style="margin-top: 7px">Update&nbsp;&nbsp;&nbsp;</span>
+							    		</button>
+							    		<button mat-raised-button color="warn" (click)="deleteAppointment(a.appointmentID)" class="btnstyle">
+							    			<i class="material-icons">delete</i><span style="margin-top: 7px">Delete&nbsp;&nbsp;&nbsp;</span>
+							    		</button>
+							    	</td>
+							    </tr>
+						    </table>
+						     <br>
+
+				  			<button mat-raised-button color="primary" (click)="addAppointmentOpenDialog()" style="float: left">
+				  				<i class="material-icons">add</i> Add new (Appointment)
+				  			</button><br>&nbsp;
+					  	</mat-expansion-panel>
+
+					  	<!--Contracts-->
+					  	<mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+						    <mat-expansion-panel-header>
+						      <mat-panel-title>
+						        Contracts
+						      </mat-panel-title>
+						    </mat-expansion-panel-header>
+						    <table class="apptable" id="childrenCSS">
+						    	<tr>
+						    		<th style="display:none;">
+							    		ID
+							    	</th>
+							    	
+							    	<th style="text-align: center;">
+							    		START DATE
+							    	</th>
+							    	<th style="text-align:center;">
+							    		END DATE
+							    	</th>
+							    	<th style="text-align: center;">
+							    		TERM OF CONTRACT
+							    	</th>
+							    	<th style="text-align: center;">
+							    		DESCRIPTION
+							    	</th>
+							    	<th style="text-align: center;">
+							    		STATUS
+							    	</th>
+							    	<th style="width: 180px;text-align: center;"  *ngIf="global.checkaccess(':Employee:ConractPost')">
+							    		- ACTION - 
+							    	</th>
+							    </tr>
+							    <tr *ngFor="let c of contractArr">
+							    	<td style="display:none;">{{c.contractid}}</td>
+							    	<td>{{c.startdate}}</td>
+							    	<td>{{c.enddate}}</td>
+							    	<td>{{c.classification}}</td>
+							    	<td>{{c.description}}</td>
+							    	<td *ngIf="c.active==='True'">Active</td>
+							    	<td *ngIf="c.active==='False'">Not Active</td>
+							    	<td style="text-align: center;">
+							    		<button mat-raised-button color="primary" class="btnstyle" (click)="updateContractOpenDialog(c)">
+							    			<i class="material-icons">update</i><span style="margin-top: 7px">Update&nbsp;&nbsp;&nbsp;</span>
+							    		</button>
+							    		<button mat-raised-button color="warn" (click)="deleteContract(c.contractid)" class="btnstyle">
+							    			<i class="material-icons">delete</i><span style="margin-top: 7px">Delete&nbsp;&nbsp;&nbsp;</span>
+							    		</button>
+							    	</td>
+							    </tr>
+						    </table>
+						     <br>
+
+				  			<button mat-raised-button color="primary" (click)="addContractOpenDialog()" style="float: left">
+				  				<i class="material-icons">add</i> Add new (Contract)
+				  			</button><br>&nbsp;
+					  	</mat-expansion-panel>
+
+					  	<mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+						    <mat-expansion-panel-header>
+						      <mat-panel-title>
+						        Rank Record
+						      </mat-panel-title>
+						    </mat-expansion-panel-header>
+						    <table class="apptable" id="childrenCSS">
+						    	<tr>
+						    		<th style="display:none;">
+							    		ID
+							    	</th>
+							    	
+							    	<th style="text-align: center;">
+							    		SCHOOL YEAR
+							    	</th>
+							    	<th style="text-align:center;">
+							    		RANK
+							    	</th>
+							    	<th style="text-align: center;">
+							    		DEPARTMENT/OFFICE
+							    	</th>
+							    	<th style="text-align: center;">
+							    		POSITION
+							    	</th>
+							    	<th style="text-align: center;">
+							    		STATUS
+							    	</th>
+							    	<th style="text-align: center;">
+							    		TERMS OF CONTRACT
+							    	</th>
+							    	<th style="text-align: center;">
+							    		EVALUATION
+							    	</th>
+							    	<th style="text-align: center;">
+							    		RECOMMENDATION
+							    	</th>
+							    	<th style="width: 180px;text-align: center;"  *ngIf="global.checkaccess(':Employee:RankPost')">
+							    		- ACTION - 
+							    	</th>
+							    </tr>
+							    <tr *ngFor="let c of rankRecordsArr">
+							    	<td style="display:none;">{{c.evaluationid}}</td>
+							    	<td>{{c.sy}}</td>
+							    	<td>{{c.rank}}</td>
+							    	<td>{{c.department}}</td>
+							    	<td>{{c.position}}</td>
+							    	<td *ngIf="c.status==='1'">Part Time</td>
+							    	<td *ngIf="c.status==='2'">Full Time</td>
+							    	<td>{{c.empStatus}}</td>
+							    	<td>{{c.evaluation}}</td>
+							    	<td>{{c.recommendation}}</td>
+							    	<td style="text-align: center;">
+							    		<button mat-raised-button color="primary" class="btnstyle" (click)="updateRankRecordOpenDialog(c)">
+							    			<i class="material-icons">update</i><span style="margin-top: 7px">Update&nbsp;&nbsp;&nbsp;</span>
+							    		</button>
+							    		<button mat-raised-button color="warn" (click)="deleteRankRecord(c.evaluationid)" class="btnstyle">
+							    			<i class="material-icons">delete</i><span style="margin-top: 7px">Delete&nbsp;&nbsp;&nbsp;</span>
+							    		</button>
+							    	</td>
+							    </tr>
+						    </table>
+						     <br>
+
+				  			<button mat-raised-button color="primary" (click)="addRankRecordOpenDialog()" style="float: left">
+				  				<i class="material-icons">add</i> Add new (Rank Record)
+				  			</button><br>&nbsp;
+					  	</mat-expansion-panel>
+					</mat-accordion>
+		  		</div>
+		  	</mat-card>
+		  </mat-tab>
+		</mat-tab-group>
+  	</div>
+  </mat-card-content>
+	
+</mat-card>

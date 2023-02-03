@@ -1,0 +1,139 @@
+<div  id="sched" style="">
+<mat-card class="example-card">
+   <mat-card-header >
+    <mat-card-title><b>Leave Action</b></mat-card-title>
+   </mat-card-header>
+   <div style="height: 10px"></div>
+   <mat-card-content class='colo'>
+		<h4>Leave Details:</h4>
+		<style type="text/css">
+      		#users  td{
+      			border: 0px solid #ddd;
+      		}
+      	</style>
+      	<!-- <mat-form-field class="example-full-width">
+		    <textarea [(ngModel)]="testtext" matInput placeholder="Leave a comment"></textarea>
+		  </mat-form-field> -->
+  		<table class="apptable1" style="margin-top: -15px" id="users" border="0">
+			<tr>
+				<td><strong>Type:</strong></td>
+				<td align="left">{{HoFLeaveType}}</td>
+				<td><strong>Date filed:</strong></td>
+				<td align="left">{{HoFDateFiled}}</td>
+			</tr>
+			<tr>
+				<td><strong>Reason:</strong></td>
+				<td align="left" colspan="3">{{HoFReason}}</td>
+			</tr>
+			
+		</table>
+		<table class="apptable1" id="users" border="0">
+			<tr>
+				<td width="250px"><strong>Employee remarks/comment:</strong></td>
+				<td colspan="2" align="left">{{EmpRemarks}}</td>
+			</tr>
+			<tr *ngIf="HoFRemarksTrigger">
+				<td width="250px"><strong>Head of office remarks/comment:</strong></td>
+				<td colspan="2" align="left">{{HoFRemarks}}</td>
+			</tr>
+		</table>
+		<br>
+	 	<mat-divider ></mat-divider>
+
+		<table class="apptable1" id="users" border="0">
+			<tr>
+				<td style="text-align: center;">
+		    		<strong>Date of leave</strong>
+		    	</td>
+		    	<td style="text-align: center;">
+		    		<strong>From</strong>
+		    	</td>
+		    	<td style="text-align: center;">
+		    		<strong>To</strong>
+		    	</td>
+		    	<td style="text-align: center;">
+		    		<strong>Total minutes</strong>
+		    	</td>
+			</tr>
+			<tr *ngFor="let x of selectedLeave;let i=index;" align="center">
+				<td>{{x.startDate.substring(0,10) | date: 'MM/dd/yyyy'}}</td>
+				<!-- <td *ngIf="compare(i,x)==false">{{x.startDate.substring(0,10)}}</td> -->
+				<!-- <td *ngIf="compare(i,x)" ></td> -->
+				<td>{{validateTimeAMPM(x.startDate.substring(11,16))}}</td>
+				<td>{{validateTimeAMPM(x.endDate.substring(11,16))}}</td>
+				<td>{{x.totalMinutes}}</td>
+			</tr>
+		</table>
+		<br>
+	 	<mat-divider></mat-divider>
+	 	<br>
+	 	<p *ngIf="actionType=='VPAdmin'"><strong>Action taken by the head of office:</strong> {{HoFActionTaken}}</p>
+
+	 	<table width="100%">
+	 		<tr>
+	 			<td width="50%" style="vertical-align: top;text-align: left;">
+	 				<!-- <h4 *ngIf="actionType=='HoF'">ACTION TAKEN:</h4> -->
+				 	<ng-container *ngIf="actionType=='HoF'; else vpadminAction">
+				 		<strong>Choose action:</strong>
+				 		<mat-radio-group 
+						  aria-labelledby="example-radio-group-label"
+						  class="example-radio-group"
+						  [(ngModel)]="ActionTaken">
+						  <mat-radio-button class="example-radio-button" *ngFor="let x of ActionTakenList" [value]="x.actionId">
+						    {{x.actionTaken}}
+						  </mat-radio-button>
+						</mat-radio-group>
+				 	</ng-container>
+				 	
+					<ng-template #vpadminAction>
+						<ng-container>
+				 			<strong>Choose action:</strong>
+							<mat-radio-group 
+							  aria-labelledby="example-radio-group-label"
+							  class="example-radio-group"
+							  [(ngModel)]="ActionTaken">
+							  <mat-radio-button class="example-radio-button" [value]="1">Approve</mat-radio-button>
+							  <mat-radio-button class="example-radio-button" [value]="2">Disapprove</mat-radio-button>
+							</mat-radio-group>
+						</ng-container>
+					</ng-template>
+					
+	 			</td>
+	 			<td width="50%" style="vertical-align: top;text-align: left;">
+	 				<ng-container *ngIf="actionType=='HoF'">
+	 					<strong>Leave Cancellation:</strong>
+	 					<br>
+	 					<br>
+	 					<mat-checkbox class="example-margin" [(ngModel)]="cancelLeave" [color]="primary">Cancel Leave</mat-checkbox>
+	 					<mat-form-field class="example-full-width">
+						    <textarea [(ngModel)]="CancelLeaveRemarks" 
+						    			matInput placeholder="Reason" 
+						    			cdkTextareaAutosize
+								        cdkAutosizeMinRows="1"
+								        cdkAutosizeMaxRows="5"
+								        [disabled]="!cancelLeave">
+							</textarea>
+						</mat-form-field>
+	 				</ng-container>
+	 			</td>
+	 		</tr>
+	 	</table>
+	 	<mat-divider></mat-divider>
+	 	<br>
+	 	<mat-form-field class="example-full-width">
+		    <textarea [(ngModel)]="Remarks" 
+		    			matInput placeholder="Remarks/Comment"
+		    			cdkTextareaAutosize
+						cdkAutosizeMinRows="1"
+						cdkAutosizeMaxRows="7"></textarea>
+		</mat-form-field>
+
+   </mat-card-content>
+</mat-card>
+</div>
+<div mat-dialog-actions style="float: right">
+  <button mat-raised-button (click)="onNoClickclose()" color="warning">Close</button>
+  <button *ngIf="actionType=='HoF'&&cancelLeave == false" mat-raised-button color="primary" (click)="save()" >Submit & Print</button>
+  <button *ngIf="actionType=='HoF'&& cancelLeave" mat-raised-button color="primary" (click)="cancel()" >Save</button>
+  <button *ngIf="actionType=='VPAdmin'" mat-raised-button color="primary" (click)="VPAdminSave()" >Save</button>
+</div>

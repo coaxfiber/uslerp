@@ -1,0 +1,104 @@
+<mat-card class="example-card" id="addcur" style='padding: 0 !important;max-height: calc(100vh - 300px);overflow-y: scroll;'>
+  <mat-card-header >
+    <mat-card-title><b>Other Requisite for:
+    <br>{{data.data.subjectId}} - {{data.data.subjectTitle}}</b></mat-card-title>
+  </mat-card-header>
+  <style type="text/css">
+  	mat-form-field{
+  		margin-bottom: -20px;
+  	}
+  </style>
+  <mat-card-content class='colo'>
+					<div style="height: 10px"></div>
+						<table class="apptable">
+					    <tr>
+					      <th style="width: 120px;text-align: center;">Year Level Standing</th>
+					      <th style="width:75px;text-align: center;">- Action -</th>
+					    </tr>
+					    <tr *ngIf="stat==0">
+					    	
+					    	<td>
+		                       <mat-form-field style="width: 100%;" appearance="outline">
+		                          <mat-label>Year Level Standing</mat-label>
+		                          <mat-select [(ngModel)]="yearLevel" >
+		                            <mat-option  value='1' (click)="selectsub(1)">
+		                              1
+		                            </mat-option>
+		                            <mat-option  value='2' (click)="selectsub(2)">
+		                              2
+		                            </mat-option>
+		                            <mat-option  value='3' (click)="selectsub(3)">
+		                              3
+		                            </mat-option>
+		                            <mat-option  value='4' (click)="selectsub(4)">
+		                              4
+		                            </mat-option>
+		                            <mat-option  value='5' (click)="selectsub(5)">
+		                              5
+		                            </mat-option>
+		                          </mat-select>
+		                        </mat-form-field>
+					    	</td>
+					    	<td style="text-align: center;">
+							  <button mat-raised-button color="primary" form="ngForm" (click)="prereqPost()" 
+							   *ngIf="global.checkaccess(':Curriculum:SubjectOtherRequisitePost')">Add</button>
+
+	                          
+					    	</td>
+					    </tr>
+					    <tr *ngIf="stat==2">
+					    	<td>
+		                       <mat-form-field style="width: 100%;" appearance="outline">
+		                          <mat-label>Year Level Standing</mat-label>
+		                          <mat-select [(ngModel)]="yearLevel" >
+		                            <mat-option  value='1' (click)="selectsub(1)">
+		                              1
+		                            </mat-option>
+		                            <mat-option  value='2' (click)="selectsub(2)">
+		                              2
+		                            </mat-option>
+		                            <mat-option  value='3' (click)="selectsub(3)">
+		                              3
+		                            </mat-option>
+		                            <mat-option  value='4' (click)="selectsub(4)">
+		                              4
+		                            </mat-option>
+		                            <mat-option  value='5' (click)="selectsub(5)">
+		                              5
+		                            </mat-option>
+		                          </mat-select>
+		                        </mat-form-field>
+					    	</td>
+					    	<td style="text-align: center;">
+							  <button mat-raised-button color="primary" form="ngForm" (click)="otherreqput()" 
+							   *ngIf="global.checkaccess(':Curriculum:SubjectOtherRequisitePut')">Update</button>
+
+	                          
+					    	</td>
+					    </tr>
+	    			<tr  *ngIf="stat==1">
+                      <td style="text-align: center;">{{ arrayyearLevel.yearLevelStanding }}</td>
+                      <td style="text-align: center;">
+                      		<button mat-raised-button color="primary" style="font-size:11px;min-width:18px;line-height: 15px;height: 28px; padding: 0;margin-left: 5px"
+	                           (click)="change(2,arrayyearLevel.yearLevelStanding)" 
+							   *ngIf="global.checkaccess(':Curriculum:SubjectOtherRequisitePut')">
+	                              &nbsp;<i class="material-icons">launch</i>&nbsp;
+	                          </button>
+	                          <button mat-raised-button style="font-size:11px;min-width:18px;line-height: 15px;height: 28px; padding: 0;margin-left: 5px;background-color:#990000;color: white" 
+	                           (click)="removeyl(arrayyearLevel.recordId)" 
+							   *ngIf="global.checkaccess(':Curriculum:SubjectOtherRequisiteDelete')">
+	                              &nbsp;<i class="material-icons">delete</i>&nbsp;
+	                          </button>                        
+                      </td>
+
+		                    </tr>
+		    </table>
+		                  <mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="arrayyearLevel===undefined"></mat-spinner>
+		               <div *ngIf="arrayyearLevel!=undefined">
+		                <p *ngIf="arrayyearLevel.length===0" style="text-align: center;"><i>- No result found! -</i></p>
+		              </div>
+  </mat-card-content>
+	  <button mat-raised-button (click)="close()" style="float: right;margin-right: 10px">Cancel</button>
+	  <br><br>
+	<div style="height: 10px"></div>
+</mat-card>

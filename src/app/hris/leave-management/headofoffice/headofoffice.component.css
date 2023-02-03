@@ -1,0 +1,54 @@
+#sched{
+
+	mat-form-field{
+		width: 100%
+	}
+	.mat-card-header {
+    background-color: #294a70 !important;
+    padding: 15px 5px 5px 5px !important;
+    color: white;
+}
+}
+.example-full-width {
+  width: 100%;
+}
+.example-full-width2 {
+  width: 175px;
+}
+.example-full-width3 {
+  width: 60px;
+}
+.example-half-width {
+  width: 80%;
+}
+
+.example-radio-group {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
+}
+
+.example-radio-button {
+  margin: 5px;
+}
+
+.apptable1 {
+  border-collapse: collapse;
+  width: 100%;
+}
+    .apptable1 td, .apptable1 th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+
+  .apptable1 tr:nth-child(even){background-color: #f2f2f2;}
+
+  /*.apptable1 tr:hover {background-color: #ddd;}*/
+
+  .apptable1 th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #294a70;
+    color: white;
+  }

@@ -1,0 +1,238 @@
+  <mat-card class="example-card">
+  <mat-card-header >
+    <mat-card-title><b>Applicant Manager</b>      
+      </mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content class='colo' >
+  	<mat-divider></mat-divider>
+  	<table style="width: 100%">
+      <tr>
+        <td>
+      <table style="width: 100%">
+      <tr>
+        <td style="width: 190px">
+          <mat-form-field appearance="outline" style="width: 100%">
+            <mat-label>Select Program Level</mat-label>
+            <mat-select [(ngModel)]="proglevelval" (ngModelChange)='filterprog(proglevelval,1)'>
+              <mat-option *ngFor="let a of proglevel" value="{{a.programLevel}}">{{a.progLevelDesc}}</mat-option>
+            </mat-select>
+          </mat-form-field> 
+        </td>
+        <td style="padding-left: 10px;width: 180px">
+           <mat-form-field class="example-full-widthminus">
+              <input autofocus matInput placeholder="Search applicant" value="" [(ngModel)]="search" (keyup)="loadwithstatus()" autocomplete="off">
+            </mat-form-field>
+            <button mat-mini-fab color="primary">
+              <mat-icon>search</mat-icon>
+            </button>     
+        </td>
+        <td style="padding-left: 10px;width: 120px">
+          <mat-form-field appearance="outline" style="width: 120px">
+            <mat-label>Status</mat-label>
+            <mat-select [(ngModel)]="status" (ngModelChange)='loadwithstatus()'>
+              <mat-option value="">All</mat-option>
+              <mat-option value="0">On Process</mat-option>
+              <mat-option value="1">Verified</mat-option>
+              <mat-option value="2">With Remarks</mat-option>
+            </mat-select>
+          </mat-form-field>          
+        </td>
+        <td style="padding-left: 10px;width: 120px">
+          <mat-form-field appearance="outline" style="width: 140px">
+            <mat-label>Payment Type</mat-label>
+            <mat-select [(ngModel)]="fee"  (ngModelChange)='loadwithstatus()'>
+              <mat-option value="">All</mat-option>
+              <mat-option value="0">Testing Fee</mat-option>
+              <mat-option value="1">Pre-enrollment Fee</mat-option>
+            </mat-select>
+          </mat-form-field>          
+        </td>
+        <td style="width: 120px">
+          <mat-form-field appearance="outline" style="width: 140px" *ngIf="proglevelval=='05'">
+            <mat-label>Verification type</mat-label>
+            <mat-select [(ngModel)]="verificationtype" (ngModelChange)='loadwithstatus()'>
+              <mat-option value="">All</mat-option>
+              <mat-option value="0">For Payment</mat-option>
+              <mat-option value="1">For Certification</mat-option>
+            </mat-select>
+          </mat-form-field>  
+
+        </td>
+          <td style="width: 120px" >
+            <mat-form-field appearance="outline" *ngIf="verificationtype=='1'&&proglevelval=='05'">
+              <mat-label>Certification Status</mat-label>
+              <mat-select [(ngModel)]="verificationcertstatus" (ngModelChange)='loadwithstatus()'>
+                <mat-option value="">All</mat-option>
+                <mat-option value="0">On Process</mat-option>
+                <mat-option value="1">Verified</mat-option>
+                <mat-option value="2">With Remarks</mat-option>
+              </mat-select>
+            </mat-form-field>              
+          </td>
+          <td>
+              <button mat-raised-button (click)="exportarray()" style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; padding: 0;margin-left: 5px;margin-top: 15px;background-color:#006600;color: white;float: right;">
+                &nbsp;&nbsp;<i class="material-icons">cloud_download
+                </i> <span style="margin-top: 7px"> Export to excel&nbsp;&nbsp;&nbsp;</span></button>   
+          </td>
+      </tr>
+      <tr>
+
+        <td style="padding-left: 10px;width: 120px">
+          <mat-form-field appearance="outline" style="width: 140px">
+            <mat-label>Proof of payment</mat-label>
+            <mat-select [(ngModel)]="proofOfPaymentUploaded"  (ngModelChange)='loadwithstatus()'>
+              <mat-option value="">All</mat-option>
+              <mat-option value="1">Uploaded</mat-option>
+              <mat-option value="0">Not yet uploaded</mat-option>
+            </mat-select>
+          </mat-form-field>          
+        </td>
+        <td style="width: 370px" colspan="2"   *ngIf="proglevelval=='05'">
+          <mat-form-field appearance="outline" style="width: 100%"  *ngIf="proglevelval=='05'">
+            <mat-label>Select Strand</mat-label>
+            <mat-select [(ngModel)]="strandval" (ngModelChange)='loadwithstatus()'>
+              <mat-option value="">All</mat-option>
+              <mat-option *ngFor="let a of strandfiltered" value="{{a.strandId}}">{{a.strandTitle}}</mat-option>
+            </mat-select>
+          </mat-form-field>  
+        </td>
+        <td colspan="2"   *ngIf="proglevelval=='05'">     
+          <mat-form-field appearance="outline" style="width: 100%" *ngIf="proglevelval=='05'">
+            <mat-label>Select School</mat-label>
+            <mat-select [(ngModel)]="schoolsval" (ngModelChange)='loadwithstatus()'>
+              <mat-option value="">All</mat-option>
+              <mat-option *ngFor="let a of schools" value="{{a}}">{{a}}</mat-option>
+            </mat-select>
+          </mat-form-field>                   
+        </td>
+
+        <td style="width: 150px">   
+        {{temp.length}} record(s)                   
+        </td>
+        <td> 
+        </td>
+        <td>
+          <button mat-raised-button (click)="smsTxtBlast()"  
+          *ngIf="global.checkaccess(':OnlineRegistration:ApplicantListNoUploadedProofOfPaymentGet')"
+              style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; margin-top: -5px;background-color:#294a70;color: white;float: right;">
+              <i class="material-icons">perm_device_information</i>
+                <span style="margin-top: 7px"> SMS Text Blast</span>
+            </button>  
+          </td>
+      </tr>
+      </table>
+        </td>
+      </tr>
+
+  	</table>
+      <div style="height: 10px"></div>
+
+    <style type="text/css">
+      .red{
+        background-color: #fed6d6 !important;w
+      }
+      .green{
+        background-color: #d1fbd1 !important;
+      }
+    </style>
+      <div style="max-height: calc(100vh - 420px);overflow-y: scroll;">
+    <table class="apptable" id="excel-table" style="overflow-x: scroll !important;"  matSort (matSortChange)="sortData($event)">
+	    <tr>
+       <!--  <th style="width:80px" mat-sort-header="programLevel">Program Level</th> -->
+        <th style="width:80px" mat-sort-header="appno">Applicant No.</th>
+        <th style="width:80px" mat-sort-header="idno">ID Number</th>
+        <th style="min-width:30px" mat-sort-header="fullname">Last name</th>
+        <th style="min-width:30px" mat-sort-header="firstname">First name</th>
+        <th style="min-width:30px" mat-sort-header="middlename">Middle name</th>
+        <th style="width:80px" mat-sort-header="cnumber">Contact Number</th>
+        <th style="width:80px" mat-sort-header="cperson">Contact Person</th>
+        <th style="width:200px" 
+        *ngIf="proglevelval=='04'||proglevelval=='05'||proglevelval=='06'||proglevelval=='07'" mat-sort-header="gradfrom">School Graduated From</th>
+        <th style="width:50px" *ngIf="proglevelval=='04'||proglevelval=='05'||proglevelval=='06'||proglevelval=='07'" mat-sort-header="year">Year</th>
+        <th style="width:150px" *ngIf="proglevelval=='04'||proglevelval=='05'">School Address</th>
+        <th style="min-width:150px" *ngIf="proglevelval=='05'">Strand Priority</th>
+        <th style="width:80px" *ngIf="proglevelval=='06'" mat-sort-header="cstrand">Current Strand</th>
+        <th style="min-width:150px" *ngIf="proglevelval=='06'" >Course</th>
+        <th style="width:150px" *ngIf="proglevelval=='07'" mat-sort-header="prog">Program</th>
+        <th style="width:100px" mat-sort-header="datereg">Date Registered</th>
+        <th style="width:100px" mat-sort-header="datever">Date Verified</th>
+        <th style="width:100px">Acctg. Remarks</th>
+        <th style="width:100px" mat-sort-header="remarks">Remarks</th>
+	      <th style="width:120px;text-align: center;min-width: 100px" *ngIf="hide">- Action -</th>
+	    </tr>
+	    			<tr *ngFor="let a of temp" class="{{style(a.newStudent,a.idNumber)}}">
+                      <!-- <td >{{checkproglevel(a.programLevel)}}</td> -->
+                      <td >{{a.applicantNo}}</td>
+                      <td >{{a.idNumber}}</td>
+                      <td >{{a.lastName.toUpperCase() }}</td>
+                      <td >{{a.firstName.toUpperCase() }}</td>
+                      <td >{{a.middleName.toUpperCase() }}</td>
+                      <!-- <td >{{a.suffixName.toUpperCase() }}</td>
+                      <td >{{a.gender}}</td>
+                      <td >{{a.dateOfBirth | date: 'mediumDate' }}</td> -->
+                      <td >{{a.contactNumber}}</td>
+                      <td >{{a.contactPerson}}</td>
+                      <td *ngIf="proglevelval=='04'||proglevelval=='05'||proglevelval=='06'||proglevelval=='07'">{{a.schoolGraduatedFrom}}</td>
+                      <td *ngIf="proglevelval=='04'||proglevelval=='05'||proglevelval=='06'||proglevelval=='07'">{{a.yearGraduated}}</td>
+                      <td  *ngIf="proglevelval=='04'||proglevelval=='05'">{{a.schoolAddressNoStreet}}</td>
+                      <td *ngIf="proglevelval=='05'">priority1: {{outputstrand(a.shS_PriorityStrandID1)}}<span><br *ngIf="a.paymentType===0">priority1: {{outputstrand(a.shS_PriorityStrandID2)}}</span>
+
+                      </td>
+                      <td *ngIf="proglevelval=='06'">{{a.strand}}</td>
+                      <td *ngIf="proglevelval=='06'">
+                        <b>Preferred:</b>{{a.preferreCourse}}<br>
+                        <b>Alternative 1:</b>{{a.alternativeCourse1}}<br>
+                        <b>Alternative 2:</b>{{a.alternativeCourse2}}<br>
+                      </td>
+                      <td *ngIf="proglevelval=='07'">{{a.preferreCourse}}</td>
+                      <td>{{a.dateRegistered  | date: 'mediumDate' }}</td>
+                      <td *ngIf="a.dateVerified=='0001-01-01T00:00:00'"> </td>
+                      <td  *ngIf="!(a.dateVerified=='0001-01-01T00:00:00')">{{a.dateVerified  | date: 'mediumDate' }}</td>
+                      <td>{{a.remarksVerification}}</td>
+                      <td>{{a.remark}}</td>
+                      
+                      <td style="text-align: center;"  *ngIf="hide">
+                          <button mat-raised-button style="width: 80px;color:white;background-color:#006400;margin-bottom: 5px" class="buttondesign" (click)="openDialog2(a)"  *ngIf="
+                             global.checkaccess(':OnlineRegistration:ApplicantAcctgPut') && 
+                             ( 
+                               !(a.schoolGraduatedFrom!='University of Saint Louis Tuguegarao'&&
+                               a.programLevel=='05'&&
+                               (a.supportingDocumentStatus==0||a.supportingDocumentStatus==2))
+                               ||
+                               a.paymentType===0
+                             )
+                             ">
+                          <i class="material-icons" >receipt</i> 
+                          <span style="margin-top: 7px"> Verify&nbsp;&nbsp;</span>
+                              </button>
+
+                              <button mat-raised-button style="width: 80px;color:white;background-color:#006400;margin-bottom: 5px" class="buttondesign" (click)="openDialog2(a,1)"  *ngIf="(global.checkaccess(':OnlineRegistration:ApplicantGuidancePut')&&a.programLevel=='05')
+                              &&(a.schoolGraduatedFrom!='University of Saint Louis Tuguegarao')&&a.paymentType===1">
+                          <i class="material-icons" >card_membership</i> 
+                          <span style="margin-top: 7px"> Verify&nbsp;&nbsp;</span>
+                              </button>
+
+                          <button mat-raised-button style="width: 80px;color:white;background-color:#006400;" class="buttondesign" (click)="openDialog(a)"  *ngIf="global.checkaccess(':OnlineRegistration:ApplicantPut')">
+                          <i class="material-icons" >edit</i> 
+                          <span style="margin-top: 7px"> Update&nbsp;&nbsp;</span>
+                              </button>
+
+                              <button mat-raised-button style="width: 80px;background-color:#990000;color:white;margin-top: 5px" class="buttondesign" (click)="deleterecord(a.applicantNo,a.idNumber)" *ngIf="global.checkaccess(':OnlineRegistration:ApplicantDelete')">
+                                <i class="material-icons">delete</i> 
+                                  <span style="margin-top: 7px"> Delete&nbsp;&nbsp;</span>
+                              </button>
+                         
+                          
+                      <!-- Status: {{text st }} -->
+                      </td>
+
+                    </tr>
+                </table>
+                  <mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="tableArr===undefined"></mat-spinner>
+               <div *ngIf="tableArr!=undefined">
+                <p *ngIf="temp.length===0" style="text-align: center;"><i>- No result found! -</i></p>
+              </div>
+  </div>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,204 @@
+<mat-card class="example-card">
+  <mat-card-header >
+    <mat-card-title><b>Enrollment Manager</b></mat-card-title>
+    <mat-card-subtitle>This page allows you to Enroll old/new STUDENTS.</mat-card-subtitle>
+  </mat-card-header>
+  
+  <mat-card-content class='colo'>
+  	<mat-divider></mat-divider>
+  	<br>
+  	<table>
+  		<tr>
+  			<td width="160">
+  				<img [src]="image" width="150" onError="this.src='assets/noimage.jpg'"/>
+  			</td>
+  			<td>
+		  <table class="example-full-width" cellspacing="0">
+		  <tr>
+		    <td width="50%"><mat-form-field class="example-full-widthminus">
+		      <input autofocus matInput #idno2 placeholder="ID Number" value="" [(ngModel)]="id" name="idno" required="required"  (keydown)="keyDownFunction($event)">
+		    </mat-form-field>
+		    <button mat-mini-fab color="primary"  (click)="studentlookup()">
+			    <mat-icon>search</mat-icon>
+			  </button></td>
+        <td style="padding-left: 10px">
+            <b style="float: right;font-size: 12px;background-color: #294a70;color: white;padding: 3px 6px 3px 6px;border-radius:5px" *ngIf="es != 'TO SEE THE PREFECT OF MEN' && es != 'TO SEE THE PREFECT OF WOMEN' && es != ''">{{ es }}</b>
+            <b style="float: right;font-size: 12px;background-color: #ff0000;color: white;padding: 3px 6px 3px 6px;border-radius:5px" *ngIf="es === 'TO SEE THE PREFECT OF MEN'">{{ es }}</b>
+            <b style="float: right;font-size: 12px;background-color: #ff0000;color: white;padding: 3px 6px 3px 6px;border-radius:5px" *ngIf="es === 'TO SEE THE PREFECT OF WOMEN'">{{ es }}</b>
+        </td>
+		  </tr>
+		  </table>
+
+    <h2 *ngIf="lname!=''" style="margin: 0px">{{lname}}, {{fname}} {{mname}} {{suffix}}</h2>
+    <div style="height: 10px"></div>
+    <table class="example-full-width" >
+        <tr>
+          <td style="width: 125px">
+		  	<mat-form-field style="width: 125px">
+		      <input matInput placeholder="Year/Grade" value="" [(ngModel)]="yearlevel" readonly="readonly">
+		    </mat-form-field>
+          </td>
+          <td style="width:40%">
+		  	<mat-form-field class="example-full-width">
+		      <input matInput placeholder="Course" value="" [(ngModel)]="course" readonly="readonly">
+		    </mat-form-field>
+          </td>
+          <td style="width:30%">
+		  	<mat-form-field class="example-full-width">
+		      <input matInput placeholder="Type" [(ngModel)]="type" readonly="readonly">
+		    </mat-form-field>
+          </td>
+          <td></td>
+        </tr>
+    </table>
+
+  			</td>
+  		</tr>
+  	</table>
+
+    <div style="height: 5px;"></div>
+            <!--<button mat-raised-button color="default" (click)="alert()">Addmission Summary</button>-->
+            &nbsp;<button mat-raised-button color="primary" (click)="withdraw()"  disabled="{{admit}}"  *ngIf="global.checkaccess(':Enrollment:WithdrawEnrollment')"> <i class="material-icons iconsize">redo</i> Withdraw</button>
+            &nbsp;<button mat-raised-button color="primary" (click)="retract()"  disabled="{{admit}}" *ngIf="global.checkaccess(':Enrollment:RetractWithdrawal')"> <i class="material-icons iconsize">undo</i> Retract Withdrawal</button>
+            &nbsp;<button mat-raised-button (click)="openDialogshowgrade()" *ngIf="global.checkaccess(':Student:AcademicHistoryGet')"> <i class="material-icons iconsize">library_books</i> Show Grade</button>
+            &nbsp;<button mat-raised-button [matMenuTriggerFor]="options"  *ngIf="global.checkaccess(':Enrollment:SetHeadersGet')"><mat-icon>list</mat-icon> Option <i class="material-icons">arrow_drop_down</i></button>
+            <mat-menu #options="matMenu">
+              &nbsp;&nbsp;&nbsp;<mat-checkbox [checked]='sets' onclick="return false;" (click)="useSets()"> Use Sets</mat-checkbox><br>
+              &nbsp;&nbsp;&nbsp;<mat-checkbox  [(ngModel)]="concheck" > Conflict Checking&nbsp;&nbsp;</mat-checkbox>
+            </mat-menu>
+
+            <button mat-raised-button color="primary" (click)="ViewPrint()" style="float: right;" [disabled]="arraysubjects.length==0"> <i class="material-icons iconsize">view_module
+            </i> View</button>
+
+   <div style="height:15px"></div>
+  <mat-divider></mat-divider>
+          <mat-card>
+            
+            <mat-card-content class='colo' style="overflow: hidden;">
+              <table class="example-full-width" cellspacing="0" *ngIf="global.checkaccess(':Enrollment:EnrollCode')">
+                <tr>
+                  <td width="80%">
+                    <div>
+                        <mat-form-field class="example-full-widthminus">
+                        <input autofocus matInput maxlength="7" placeholder="- Code No. -" value="" [(ngModel)]="codeno" (keydown)="keyDownFunctionCODE($event)" [disabled]="codeenable" style="color: black" id="codeinput">
+                      </mat-form-field>&nbsp;
+                      <button mat-mini-fab color="primary" (click)="openDialog()" [disabled]="codeenable" >
+                        <mat-icon>search</mat-icon>
+                      </button>
+                      <button mat-raised-button color="primary"  (click)="keyDownFunctionCODE('onoutfocus')" style="font-size:11px;width: 100px;min-width:18px;line-height: 15px;height: 28px; padding: 0;margin-left: 5px" [disabled]="codeenable" ><i class="material-icons">slideshow
+                        </i> 
+                        <span style="margin-top: 7px"> Add Subject&nbsp;&nbsp;</span></button>
+                    </div>
+                    <div *ngIf="sets==true">
+                      <mat-form-field style="width: 300px">
+                        <mat-label>- Select Set -</mat-label>
+                        <mat-select [(ngModel)]="selectedsets" [disabled]="codeenable" >
+                          <mat-option *ngFor="let x of setsheaders;let i = index" [value]="x.headerId">
+                            {{ x.setDescription }}  <span *ngIf="getstatus(i)!=''">- {{getstatus(i)}} </span>
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <button mat-raised-button color="primary"  (click)="selectSets()" style="font-size:11px;width: 85px;min-width:18px;line-height: 15px;height: 28px; padding: 0;margin-left: 5px" [disabled]="codeenable&&selectedsetstemp" ><i class="material-icons">slideshow
+                        </i> 
+                        <span style="margin-top: 7px"> Use Set&nbsp;&nbsp;</span></button>
+                      
+                    </div>
+                    <div style="height: 10px"></div>
+                    </td>
+                  <td style="padding-left: 10px">
+                  </td>
+                </tr>
+                </table>
+              <b><b style="color:rgba(0,0,0,.54) !important;">Enrolled Subjects</b></b>
+              
+                  <mat-table #table [dataSource]="dataSource" matSort>
+
+                     <ng-container matColumnDef="codeno">
+                        <mat-header-cell *matHeaderCellDef style="width: 75px;flex: 0 0 75px"> Code No</mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="width: 75px;flex: 0 0 75px">
+                        <div class="rolerow">
+                         <b>{{element.codeNo.toUpperCase()}}</b> <br>
+                      </div>
+                      </mat-cell>
+                      </ng-container>
+                     <ng-container matColumnDef="subjectid">
+                        <mat-header-cell *matHeaderCellDef style="width: 100px;flex: 0 0 100px"> Subject ID</mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="width: 100px;flex: 0 0 100px">
+                        <div class="rolerow">
+                         <b>{{element.subjectID}}</b> <br>
+                      </div>
+                      </mat-cell>
+                      </ng-container>
+                     <ng-container matColumnDef="descriptivetitle">
+                        <mat-header-cell *matHeaderCellDef style="min-width: 200px"> Descriptive Title </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="min-width: 200px">
+                        <div class="rolerow">
+                         <b>{{element.subjectTitle}}</b> <br>
+                      </div>
+                      </mat-cell>
+                      </ng-container>
+                     <ng-container matColumnDef="day">
+                        <mat-header-cell *matHeaderCellDef style="width: 50px;flex: 0 0 50px"> Day </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="width: 50px;flex: 0 0 50px">
+                        <div class="rolerow">
+                         <b>{{element.day}}</b> <br>
+                      </div>
+                      </mat-cell>
+                      </ng-container>
+                     <ng-container matColumnDef="time" >
+                        <mat-header-cell *matHeaderCellDef style="width: 160px;flex: 0 0 160px"> Time </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="width: 160px;flex: 0 0 160px">
+                        <div class="rolerow">
+                         <b>{{element.time}}</b> <br>
+                      </div>
+                      </mat-cell>
+                      </ng-container>
+                     <ng-container matColumnDef="room">
+                        <mat-header-cell *matHeaderCellDef style="width: 50px;flex: 0 0 50px"> Room </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="width: 50px;flex: 0 0 50px">
+                        <div class="rolerow">
+                         <b>{{element.roomNumber}}</b> <br>
+                      </div>
+                      </mat-cell>
+                      </ng-container>
+                     <ng-container matColumnDef="units">
+                        <mat-header-cell *matHeaderCellDef style="width: 40px;flex: 0 0 40px"> Units </mat-header-cell>
+                        <mat-cell *matCellDef="let element"  style="width: 40px;flex: 0 0 40px">
+                        <div class="rolerow" style="text-align: center;">
+                         <b>{{element.units}}</b> <br>
+                      </div>
+                      </mat-cell>
+                      </ng-container>
+                     <ng-container matColumnDef="action"  *ngIf="global.checkaccess(':Enrollment:DropCode')">
+                        <mat-header-cell *matHeaderCellDef style="width: 70px;flex: 0 0 70px;text-align: center"> - Action - </mat-header-cell>
+                        <mat-cell *matCellDef="let element"  style="width: 70px;flex: 0 0 70px;text-align: center">
+                        <div class="rolerow" style="text-align: center;">
+                         <button mat-raised-button  (click)="deleteCode(element.codeNo,element.subjectID)" style="float:right;font-size:12px;min-width:18px;line-height: 3px;width:60px;height: 28px; padding: 0;background-color: #990000;color: white !important" *ngIf="element.codeNo.toUpperCase()!=''"><i class="material-icons"> 
+                          delete
+                          </i><span style="margin-top: 7px"> Drop&nbsp;&nbsp;&nbsp;</span></button>
+                      </div>
+                      </mat-cell>
+                      </ng-container>
+
+                     <ng-container matColumnDef="action"  *ngIf="global.checkaccess(':Enrollment:DropCode')==false">
+                        <mat-header-cell *matHeaderCellDef style="width: 0px;flex: 0 0 0px;"></mat-header-cell>
+                        <mat-cell *matCellDef="let element"  style="width: 0px;flex: 0 0 0px;"></mat-cell>
+                      </ng-container>
+
+
+                            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+                  </mat-table>
+                  <p style="text-align: center;" *ngIf="arraysubjects.length==0">
+                    - No enrolled subjects yet. - 
+                  </p>
+                  <p style="text-align: right;padding-right: 50px" *ngIf="arraysubjects.length>0">
+                    <b>Total Units: {{ totalunits }}</b>
+                  </p>
+                  <mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="arraysubjects.length==0&&g==1"></mat-spinner>
+
+            </mat-card-content>
+        </mat-card>
+  </mat-card-content>
+</mat-card>

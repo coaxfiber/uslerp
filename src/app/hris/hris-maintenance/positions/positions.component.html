@@ -1,0 +1,124 @@
+<mat-card class="example-card" id="positions" style="padding: 0">
+  <mat-card-header >
+    <mat-card-title><b>Positions</b></mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content class='colo'>
+  	<mat-divider></mat-divider>
+  		
+		<br>
+		<p style="margin-top: -5px">POSITION DETAILS:</p>
+		<table cellspacing="0" style="width: 100% ; margin-top:3px">
+			<tr>
+				
+				<td width="40%">
+					<mat-form-field class="example-full-width">
+				      <input matInput placeholder="Position Name" value="" [(ngModel)]="pname" readonly="readonly" *ngIf="editctr===0" style="color: gray" #dnamefocus>
+				      <input matInput placeholder="Position Name" value="" [(ngModel)]="pname" *ngIf="editctr===1" style="color: black" #dnamefocus>
+				    </mat-form-field>
+				</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td width="48%">
+					<mat-form-field class="example-full-width">
+				    	<textarea matInput placeholder="Job Description" [(ngModel)]="JDescription" readonly="readonly" *ngIf="editctr===0" style="color: gray"></textarea>
+				    	<textarea matInput placeholder="Job Description" [(ngModel)]="JDescription" *ngIf="editctr===1"></textarea>
+				  	</mat-form-field>
+				</td>
+				<td width="20px"></td>
+
+				<td width="48%">
+					<mat-form-field class="example-full-width">
+				    	<textarea matInput placeholder="Job Requirements" [(ngModel)]="JRequirements" readonly="readonly" *ngIf="editctr===0" style="color: gray"></textarea>
+				    	<textarea matInput placeholder="Job Requirements" [(ngModel)]="JRequirements" *ngIf="editctr===1" ></textarea>
+				  	</mat-form-field>
+				</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>
+					Status: &nbsp;
+			  		<mat-slide-toggle [checked]="statusid===1" (change)="checked()" [disabled]="!toggleStatus">
+			            <span *ngIf="statusid==1">Active</span>
+			            <span *ngIf="statusid==0">Not Active</span>
+			          </mat-slide-toggle>
+				</td>
+				<td></td>
+				<td></td>
+			</tr>
+			
+		</table>
+		<br>
+		<table>
+			<tr>
+				<td>Actions:</td>
+			</tr>
+			<tr>
+				<td >
+	    			<button mat-raised-button class="btnstyle" disabled="{{saveCTRL}}" (click)="addPost()">
+	    				<i class="material-icons">note_add</i><span style="margin-top: 7px">Add&nbsp;&nbsp;&nbsp;</span>
+		    		</button>
+
+		    		<button mat-raised-button color="primary" class="btnstyle" (click)="changeEditCtr()" disabled="{{saveCTRL}}">
+	    				<i class="material-icons">edit</i><span style="margin-top: 7px">Edit&nbsp;&nbsp;&nbsp;</span>
+		    		</button>
+
+		    		<button mat-raised-button color="warn" class="btnstyle" (click)="deletePost()" disabled="{{saveCTRL}}">
+		    			<i class="material-icons">delete</i><span style="margin-top: 7px">Delete&nbsp;&nbsp;&nbsp;</span>
+		    		</button>
+
+	    			<button mat-raised-button color="primary" class="btnstyle" (click)="SavePost()" disabled="{{editCTRL}}">
+	    				<i class="material-icons">save</i><span style="margin-top: 7px">Save&nbsp;&nbsp;&nbsp;</span>
+	    			</button>
+
+	    			<button mat-raised-button color="warn" class="btnstyle" disabled="{{editCTRL}}">
+		    			<i class="material-icons">cancel</i><span style="margin-top: 7px" (click)="CancelEdit()">Cancel&nbsp;&nbsp;&nbsp;</span>
+		    		</button>
+				</td>
+			</tr>
+		</table>
+  	
+
+
+    <table class="apptablegrade">
+		<tr>
+	    	<th style="display: none;">
+	    		PID
+	    	</th>
+	    	<th width="24.8%" style="text-align: center;">
+	    		POSITION
+	    	</th>
+	    	<th width="29.7%" style="text-align: center;">
+	    		JOB DESCRIPTION
+	    	</th>
+	    	<th width="29.7%" style="text-align: center;">
+	    		JOB REQUIREMENTS
+	    	</th>
+	    	<th width="25%" style="text-align: center;">
+	    		STATUS
+	    	</th>
+	    </tr>
+			
+	</table>
+	<div  style="max-height: calc(80vh - 250px);overflow-y: scroll;">
+	<table  *ngFor="let d of positionArr" class="apptablegrade">
+			<tr (click)="getpostinfo(d)">
+		    	<td style="display: none">{{d.positionID}}</td>
+		    	<td width="25%" *ngIf="d.active===1">{{d.position}}</td>
+		    	<td width="30%" *ngIf="d.active===1">{{d.jobDescription}}</td>
+		    	<td width="30%" *ngIf="d.active===1">{{d.jobRequirements}}</td>
+		    	<td width="25%" *ngIf="d.active===1"  style="text-align: center;">Active</td>
+
+		    	<td width="25%" *ngIf="d.active===0" style="background-color: #ffd2a3;">{{d.position}}</td>
+		    	<td width="30%" *ngIf="d.active===0" style="background-color: #ffd2a3;">{{d.jobDescription}}</td>
+		    	<td width="30%" *ngIf="d.active===0" style="background-color: #ffd2a3;">{{d.jobRequirements}}</td>
+		    	<td width="25%" *ngIf="d.active===0" style="background-color: #ffd2a3;text-align: center;">Not Active</td>
+		    	
+		    </tr>
+	</table>
+	</div>
+
+
+  </mat-card-content>
+</mat-card>

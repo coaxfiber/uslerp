@@ -1,0 +1,62 @@
+<mat-card class="example-card" id="addcur" style='padding: 0 !important;max-height: calc(100vh - 300px);overflow-y: scroll;'>
+  <mat-card-header >
+    <mat-card-title><b>Pre-Requisite for:<br>({{data.data.recordId}}) {{data.data.subjectId}} - {{data.data.subjectTitle}}</b></mat-card-title>
+  </mat-card-header>
+  <style type="text/css">
+  	mat-form-field{
+  		margin-bottom: -20px;
+  	}
+  </style>
+  <mat-card-content class='colo'>
+				<table style="width: 100%">
+					<tr>
+						<td style="width: calc(100% - 200px)" colspan="1">
+						<form class="example-form" style="overflow-y: hidden;overflow-x: hidden;">
+						  <mat-form-field  appearance="outline" style="width: 100%">
+   							<mat-label>Subject ID - Subject Title</mat-label>
+						    <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto" autofocus="false" (change)="resetsub()">
+						    <mat-autocomplete #auto="matAutocomplete">
+						      <mat-option *ngFor="let option of filteredOptions | async;let x of index" [value]="option" (click)="selectsub(x)">
+						        {{option}}
+						      </mat-option>
+						    </mat-autocomplete>
+						  </mat-form-field>
+						</form>
+						</td>
+						<td style="width: 75px">			
+							  <button mat-raised-button color="primary" form="ngForm" (click)="prereqPost()" style="float: left;"
+							   *ngIf="global.checkaccess(':Curriculum:SubjectPrerequisitePost')">Add Subject</button>
+						</td>
+					</tr>
+					</table>
+						<table class="apptable">
+					    <tr>
+					      <th style="width:70px">Record ID</th>
+					      <th style="width:80px">Subject ID</th>
+					      <th style="min-width:100px">Subject Title</th>
+					      <th style="width:100px;text-align: center;min-width: 100px">- Action -</th>
+					    </tr>
+	    			<tr *ngFor="let a of arrayPrereq">
+                      <td>{{a.pre_RecordId}}</td>
+                      <td>{{a.pre_SubjectId}}</td>
+                      <td>{{ a.pre_SubjectTitle }}</td>
+                      <td style="text-align: center;">
+                          
+                          <button mat-raised-button style="font-size:11px;min-width:18px;line-height: 15px;height: 28px; padding: 0;margin-left: 5px;background-color:#990000;color: white" 
+                           (click)="removesub(a.pre_RecordId)" 
+							   *ngIf="global.checkaccess(':Curriculum:SubjectPrerequisiteDelete')">
+                              &nbsp;<i class="material-icons">delete</i>&nbsp;
+                          </button>                        
+                      </td>
+
+		                    </tr>
+		    </table>
+		                  <mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="arrayPrereq===undefined"></mat-spinner>
+		               <div *ngIf="arrayPrereq!=undefined">
+		                <p *ngIf="arrayPrereq.length===0" style="text-align: center;"><i>- No result found! -</i></p>
+		              </div>
+  </mat-card-content>
+	  <button mat-raised-button (click)="close()" style="float: right;margin-right: 10px">Cancel</button>
+	  <br><br>
+	<div style="height: 10px"></div>
+</mat-card>

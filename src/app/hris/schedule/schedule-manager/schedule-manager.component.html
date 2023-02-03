@@ -1,0 +1,100 @@
+<mat-card class="example-card">
+  <mat-card-header >
+    <mat-card-title><b>Schedule Manager</b></mat-card-title>
+    <mat-card-subtitle>Use to manage employee's schedule and teaching load</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content class='colo'>
+  	<mat-divider></mat-divider>
+
+  	<table>
+  		<tr>
+  			<td width="160">
+  				<form class="example-form" id="ngForm" #documentEditForm="ngForm" style="margin-top: 5px;"> 
+				  <mat-form-field class="txtid">
+				      <input matInput #idno maxlength="7" placeholder="ID Number" [(ngModel)]="id"  value="" name="idno" required="required"  (keydown)="keyDownFunction($event)" >
+				      <mat-hint align="start">{{idno.value.length}} / 7</mat-hint>
+				    </mat-form-field>
+				</form>
+  			</td>
+  			<td>
+  				<button mat-mini-fab color="primary" (click)="employeelookup()">
+					<mat-icon>search</mat-icon>
+				</button>
+			</td>
+  		</tr>
+  	</table>
+  	<div style="height: 120px"   *ngIf="showContent" >
+  		<table class="tblInfo" #content>
+	  		<tr>
+		  		<td id="info1stCol">
+		  			<div class="BasicInformationDisplay">
+				  		<h1 id="EmpFullName">{{name}}</h1>
+				  		<p id="EmpPosition">{{position}}</p>
+				  		<hr id="hr">
+				  		<h3 id="EmpIDnumber">{{idnumber}}</h3>
+		  				<p id="DTRIDnum">{{dtridnum}}</p>
+				  	</div>
+		  		</td>
+		  		
+	  		</tr>
+	  	</table>
+	  	<br>
+  	</div>
+  	<div *ngIf="showContent">
+  		<mat-divider></mat-divider>
+  		<br>
+
+  		<mat-menu #appMenu="matMenu" xPosition="after" yPosition="below">
+  			<button mat-menu-item class="btnAction" (click)="updateEntry()">
+  				<i class="material-icons" >edit</i><p style="margin: -15px 0 0 25px!important ">&nbsp;Edit Entry&nbsp;</p>
+  			</button>
+  			<button mat-menu-item class="btnAction" (click)="deleteEntry()">
+  				<i class="material-icons">delete</i><p style="margin: -15px 0 0 25px!important ">&nbsp;Delete Entry&nbsp;</p>
+  			</button>
+			<hr>
+  			<button mat-menu-item class="btnAction" (click)="addEntry()">
+  				<i class="material-icons">add</i><p style="margin: -15px 0 0 25px!important ">&nbsp;Add Entry&nbsp;</p>
+  			</button>
+  		</mat-menu>
+
+	  	<table  class="apptable" id="childrenCSS" style="width:60%!important">
+	    	<tr>
+	    		<th style="display: none;">
+		    		ID
+		    	</th>
+		    	<th style="text-align: center;">
+		    		DAY OF WEEK
+		    	</th>
+		    	<th style="text-align: center;">
+		    		TIME IN
+		    	</th>
+		    	<th style="text-align: center;">
+		    		TIME OUT
+		    	</th>
+		    	<th style="text-align: center;">
+		    		HOURS
+		    	</th>
+		    	<th style="text-align: center;">
+		    		ACTION
+		    	</th>
+		    </tr>
+		    <tr *ngFor="let sc of scheduleArr">
+		    	<td style="display: none;">{{sc.scheduleId}}</td>
+		    	<td>{{sc.dayOfWeek}}</td>
+		    	<td width="12%">{{sc.timeIn}}</td>
+		    	<td width="12%">{{sc.timeOut}}</td>
+		    	<td width="12%">{{sc.hours}}</td>
+		    	<td width="20px">
+		    		<button mat-raised-button [matMenuTriggerFor]="appMenu" color="" class="btnstyle" (click)="setUpdateData(sc)">
+		    			<i class="material-icons">arrow_drop_down</i><span style="margin-top: 7px"></span>
+		    		</button>
+		    	</td>
+		    </tr>
+	    </table>
+  	</div>
+
+
+
+  </mat-card-content>
+</mat-card>

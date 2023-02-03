@@ -1,0 +1,107 @@
+<div  id="ares" style="">
+<mat-card class="example-card">
+   <mat-card-header >
+    <mat-card-title><b>{{type}} Speaking Engagement</b></mat-card-title>
+  </mat-card-header>
+  <div style="height: 10px"></div>
+  <mat-card-content class='colo'>
+		  <table  cellspacing="0" style="width: 100%">
+		  <tr>
+		    <td width="100%" colspan="2">
+			  	<mat-form-field class="example-full-width">
+			      <input matInput placeholder="Conference Title"  [(ngModel)]="ConferenceTitle">
+			    </mat-form-field>
+		    </td>
+		  </tr>
+		  <tr>
+		    <td width="100%" colspan="2">
+			  	<mat-form-field class="example-full-width">
+			      <input matInput placeholder="Event Organizer"  [(ngModel)]="EventOrganizer">
+			    </mat-form-field>
+		    </td>
+		  </tr>
+		  <tr>
+		    <td width="50%" style="padding-right: 5px">
+			  	<mat-form-field class="example-full-width">
+			      <input matInput [matDatepicker]="picker" placeholder="Start Date" (click)="picker.open()"  [(ngModel)]="StartDate" name="StartDate" required>
+					  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+					  <mat-datepicker #picker></mat-datepicker>
+			    </mat-form-field>
+		    </td>
+		    <td width="50%" style="padding-left: 5px">
+		    	<mat-form-field class="example-full-width">
+			      <input matInput [matDatepicker]="picker1" placeholder="End Date" (click)="picker1.open()"  [(ngModel)]="EndDate" name="EndDate" required>
+					  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+					  <mat-datepicker #picker1></mat-datepicker>
+			    </mat-form-field>
+		    </td>
+		  </tr>
+		  <tr>
+		    <td width="100%" colspan="2">
+			  	<mat-form-field class="example-full-width">
+			      <input matInput placeholder="Venue"  [(ngModel)]="Venue">
+			    </mat-form-field>
+		    </td>
+		  </tr>
+		  <!-- <tr>
+		  	<td colspan="2">
+		  		<p>Role/s:</p>
+		  		<table width="100%">
+		  			<tr>
+		  				<td width="70%" style="padding-right: 7px;">
+		  					<mat-form-field style="width: 100%" >
+				              <mat-label>Roles</mat-label>
+				              <mat-select  [(ngModel)]="RID" >
+				                <mat-option value="{{e.id}}" *ngFor="let e of rolesArr">
+				                  {{e.name}}
+				                </mat-option>
+				              </mat-select>
+				            </mat-form-field>
+		  				</td>
+		  				<td>
+		  					<button mat-raised-button color="primary" (click)="addRole()" style="float: left">
+								<i class="material-icons">add</i><span style="margin-top: 7px;font-size: 11px !important;">Add New (Role)&nbsp;&nbsp;&nbsp;</span>
+							</button><br>&nbsp;	
+						</td>
+		  			</tr>
+		  		</table>
+		  		
+		  	</td>
+		  </tr> -->
+		  </table>
+	  		<!-- <table border="0" width="100%" style="width: 100%!important">
+                <tr *ngFor="let r of addedRolesArr">
+	  				<td width="70%"  style="padding-right: 7px;">
+	  					{{getRoleName(r.roleId)}}
+	  				</td>
+	  				<td>
+	  					<button mat-raised-button style="background-color: #d21b2f !important;color: white" (click)="removerole(r.id)" class="btnstyle" *ngIf="type==='Update'">
+			    			<i class="material-icons">remove</i><span style="margin-top: 7px;font-size: 11px !important;">Remove&nbsp;&nbsp;&nbsp;</span>
+			    		</button>
+	  				</td>
+	  			</tr>
+	  			<tr *ngIf="type==='Update'">
+				  	<td>
+				  		Status: &nbsp;
+				  		<mat-slide-toggle [checked]="statusid===1" (change)="checked()">
+				            <span *ngIf="statusid==1||statusid==null">Approved</span>
+					            <span *ngIf="statusid==0">For approval</span>
+				          </mat-slide-toggle>
+				  	</td>
+				  </tr>
+                
+            </table> -->
+		  
+	</mat-card-content>
+</mat-card>
+</div>
+<div mat-dialog-actions >
+	<table width="100%">
+		<tr>
+			<td align="right">
+				<button mat-raised-button (click)="onNoClickclose()" color="warning">Close</button>
+  				<button mat-raised-button color="primary" (click)="save()" >Save</button>
+			</td>
+		</tr>
+	</table>
+</div>

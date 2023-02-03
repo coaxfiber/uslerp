@@ -1,0 +1,201 @@
+<mat-card class="example-card" id="curriculum"  style="padding: 0">
+   <mat-card-header >
+    <mat-card-title><b>Courses</b></mat-card-title>
+  </mat-card-header>
+  <mat-card-content class='colo'>
+    <mat-divider></mat-divider>
+	
+<div style="height: 14px"></div>
+
+
+<table style="width: 100%">
+	<tr>
+		<td style='width: 150px'>
+	    <mat-form-field style='width: 100%'>
+		  <mat-label>Find by:</mat-label>
+		  <mat-select [(ngModel)]="findby">
+		    <mat-option value="programId">Program ID</mat-option>
+		    <mat-option value="courseCode">Course Code</mat-option>
+		    <mat-option value="programTitle">Program Title</mat-option>
+		    <mat-option value="major">Major</mat-option>
+		    <mat-option value="version">Version</mat-option>
+		    <mat-option value="departmentId">Department ID</mat-option>
+		    <mat-option value="departmentCode">Department Code</mat-option>
+		    <mat-option value="departmentName">Department Name</mat-option>
+		    <mat-option value="departmentGroup">Department Group</mat-option>
+		    <mat-option value="statusCode">Status Code</mat-option>
+		  </mat-select>
+		</mat-form-field>
+		</td>
+		<td style="width: 200px">
+		  	<mat-form-field style="width: 100%">
+		      <input matInput placeholder="" value="" [(ngModel)]="string" autocomplete="off"  (keydown)="keyDownFunction($event)">
+		    </mat-form-field>
+		</td>
+		<td>
+			<mat-checkbox [(ngModel)]="exactMatch" style="margin-top: 4px;">Exact Match</mat-checkbox>&nbsp;&nbsp;
+      <button mat-raised-button color="primary"  (click)="keyDownFunction('onoutfocus')" style="font-size:12px;min-width:18px;line-height: 15px;height: 28px;margin-top: 4px; padding: 0;margin-left: 5px">&nbsp;<i class="material-icons">search
+          </i> 
+          <span style="margin-top: 7px"> Filter&nbsp;&nbsp;&nbsp;</span></button>
+      <button mat-raised-button (click)="clear()" style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; padding: 0;margin-left: 5px;margin-top: 5px;background-color:#006600;color: white;float: right;">
+          &nbsp;&nbsp;<i class="material-icons">code
+          </i> <span style="margin-top: 7px"> Clear search&nbsp;&nbsp;&nbsp;</span></button>
+		</td>
+		<td>
+		</td>
+    <td>
+      
+    </td>
+	</tr>
+</table>
+<div style="height: 14px"></div>
+<style type="text/css">
+	.mat-form-field-infix {
+		width: auto !important;
+	}
+  .mat-form-field{
+    margin-bottom: -10px;
+  }
+</style>
+
+<div style="height: 10px"></div>
+<div style="width: 100%;max-height: calc(100vh - 360px); overflow-y: scroll;">
+                  
+                  <table class="apptable">
+                    <tr>
+                      <th style="width:70px">Program ID</th>
+                      <th style="width:80px">Course Code</th>
+                      <th style="min-width:100px">Program Title</th>
+                      <th style="width:80px">Major</th>
+                      <th style="width:50px">Version</th>
+                      <th style="width:70px">Department Code</th>
+                      <th style="width:60px">Department Group</th>
+                      <th style="width:60px">Status Code</th>
+                      <th style="width:125px;text-align: center;min-width: 125px">- Action -</th>
+                    </tr>
+                    <tr>
+                      <td>
+					  	<mat-form-field style="width:80px;" appearance="outline">
+              <mat-label>filter</mat-label>
+					      <input matInput placeholder="" autocomplete="off" [(ngModel)]="fprogramId" (keydown)="filterall($event)">
+					    </mat-form-field>
+                      </td>
+                      
+                      <td>
+					  	<mat-form-field style="width: 90px;" appearance="outline">
+              <mat-label>filter</mat-label>
+					      <input matInput placeholder=""  autocomplete="off" [(ngModel)]="fcourseCode" (keydown)="filterall($event)">
+					    </mat-form-field>
+                      </td>
+
+                      <td>
+					  	<mat-form-field style="width: 100%;" appearance="outline">
+              <mat-label>filter</mat-label>
+					      <input matInput placeholder=""  autocomplete="off" [(ngModel)]="fprogramTitle" (keydown)="filterall($event)" >
+					    </mat-form-field>
+                      </td>
+
+                      <td>
+					  	<mat-form-field style="width:80px" appearance="outline">
+              <mat-label>filter</mat-label>
+					      <input matInput placeholder=""  autocomplete="off" [(ngModel)]="fmajor" (keydown)="filterall($event)" >
+					    </mat-form-field>
+                      </td>
+
+                      <td>
+					  	<mat-form-field style="width: 80px;" appearance="outline">
+              <mat-label>filter</mat-label>
+					      <input matInput placeholder="" autocomplete="off" [(ngModel)]="fversion" (keydown)="filterall($event)" >
+					    </mat-form-field>
+                      </td>
+
+
+                       <td>
+                          <mat-form-field style="width: 80px;" appearance="outline">
+                          <mat-label>filter
+                                <mat-spinner style="margin-right: auto;"  [diameter]="20" *ngIf="arraydept===undefined"></mat-spinner></mat-label>
+                          <mat-select [(ngModel)]="fdepartmentCode" >
+                            <mat-option  [value]="x.departmentCode" *ngFor="let x of arraydept" (click)="filterall('onoutfocus')">
+                              {{x.departmentCode}} - {{x.departmentName}}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </td>
+
+
+                      <td>
+          					  	<mat-form-field style="width: 80px;" appearance="outline">
+                          <mat-label>filter</mat-label>
+          					      <input matInput placeholder=""  autocomplete="off" [(ngModel)]="fdepartmentGroup" (keydown)="filterall($event)" >
+          					    </mat-form-field>
+                      </td>
+                      <td>
+                        <mat-form-field style="width: 80px;"appearance="outline" >
+                        <mat-label>filter
+                              <mat-spinner style="margin-right: auto;"  [diameter]="20" *ngIf="arrayprogstatus===undefined"></mat-spinner></mat-label>
+                        <mat-select [(ngModel)]="fstatusCode" >
+                          <mat-option  [value]="x.statusCode" *ngFor="let x of arrayprogstatus" (click)="filterall('onoutfocus')">
+                            {{x.statusCode}} - {{x.description}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      </td>
+
+
+                      <td>
+
+      <button mat-raised-button color="primary" (click)="openDialogaddcurriculum(1,null)" style="font-size:11px;width:125px;line-height: 15px;height: 40px; padding: 0;margin-left: 5px;background-color:#006600;color: white" *ngIf="global.checkaccess(':Curriculum:CurriculumPost')">&nbsp;<i class="material-icons">add
+          </i> 
+          <span style="margin-top: 7px"> Add Curriculum&nbsp;&nbsp;&nbsp;</span></button>
+                      </td>
+                    </tr>
+                    <tbody  *ngIf="tableArr!=undefined||x!=undefined">
+                    <tr *ngFor="let a of tabledata">
+                      <td>{{a.programId}}</td>
+                      <td>{{a.courseCode}}</td>
+                      <td>{{ a.programTitle }}</td>
+                      <td>{{a.major}}</td>
+                      <td>{{a.version}}</td>
+                      <td>{{a.departmentCode}}</td>
+                      <td>{{a.departmentGroup}}</td>
+                      <td>{{a.statusCode}}</td>
+                      <td style="text-align: center;">
+
+                          <button mat-raised-button color="primary" style="font-size:11px;min-width:18px;line-height: 15px;height: 28px; padding: 0;margin-left: 5px" [matMenuTriggerFor]="menu">
+                              &nbsp;<i class="material-icons">launch</i> 
+                              <span style="margin-top: 7px"> Options&nbsp;&nbsp;&nbsp;</span>
+                           </button>
+
+                                    <mat-menu #menu="matMenu">
+                                <button mat-menu-item (click)="openDialogaddcurriculum(0,a)"  *ngIf="global.checkaccess(':Curriculum:CurriculumPut')">
+                                    <span style="margin-top: 7px"> Update</span>
+                                </button>
+                                
+                                <button mat-menu-item (click)="removecurriculum(a.programId)"  *ngIf="global.checkaccess(':Curriculum:CurriculumDelete')">
+                                    <span style="margin-top: 7px"> Remove</span>
+                                </button>
+
+                                
+                                <button mat-menu-item (click)="openDialogretentionpolicy(a)"  *ngIf="global.checkaccess(':Curriculum:CurriculumRetentionPolicyGet')">
+                                    <span style="margin-top: 7px"> Retention Policy</span>
+                                </button>
+                                
+                                <button mat-menu-item (click)="openDialogsubjecttype(a)"  *ngIf="global.checkaccess(':Curriculum:CurriculumRetentionPolicySubjectTypeGet')">
+                                    <span style="margin-top: 7px"> Retention Policy Subject Type</span>
+                                </button>
+                              </mat-menu>   
+                          
+                      </td>
+
+                    </tr>
+                    </tbody>
+                  </table>
+                  <mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="tableArr===undefined"></mat-spinner>
+    			         <div *ngIf="tableArr!=undefined">
+    			          <p *ngIf="tableArr.length===0" style="text-align: center;"><i>- No result found! -</i></p>
+    			        </div>
+                </div>
+		  		  
+  </mat-card-content>
+</mat-card>
+ 

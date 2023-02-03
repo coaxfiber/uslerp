@@ -1,0 +1,73 @@
+<mat-card class="example-card" id="addset" style='padding: 0 !important;max-height: calc(100vh - 150px);overflow-y: auto;'>
+  <mat-card-header >
+    <mat-card-title><b><span *ngIf="data.type==0">Applicant Report Card</span><span *ngIf="data.type>0">Student's Copy</span></b></mat-card-title>
+  </mat-card-header>
+  <mat-card-content class='colo'>
+        <style type="text/css">
+          @media only screen and (max-width: 800px) {
+          .fullwidth {
+            width: 100% !important;
+            margin-right: 0px;
+          }
+          #boxx{
+            margin: 25px 10px 25px 10px;
+          }
+        }
+        </style>
+          <div style="height: calc(100vh - 300px);overflow-y: auto">
+
+            <div *ngIf='data.type==0'>
+        	 <mat-accordion>
+          <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Report card
+              </mat-panel-title>
+              <mat-panel-description>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <img [src]='attachment'  style="width:100%"  *ngIf='ngifattach!=""&&ngifattach!=null' (click)="opennew()"/>
+
+            <span style="margin: 50px 20px 50px 20px;width: calc(100% - 40px);text-align: center;" *ngIf='ngifattach==""||ngifattach==null'>
+            <h2>No report card uploaded</h2></span>
+            <p style="margin: 50px 20px 50px 20px;width: calc(100% - 40px);text-align: center;" *ngIf='attachment==null'>
+              <span *ngIf='data.data!=undefined'>LOADING...</span>
+              <span *ngIf='data.data==undefined'><h2>No report card uploaded</h2></span>
+            </p>
+          </mat-expansion-panel>
+
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+               <b>Courses for {{data.gResult.departmentName}}</b>
+              </mat-panel-title>
+              <mat-panel-description>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <table class="apptable">
+              <tr>
+                <th>Courses</th>
+                <th>Result</th>
+              </tr>
+              <tr *ngFor="let a of courses">
+                <td><b *ngIf="a.programId==data.gResult.programId">{{a.courseCode}} - {{a.course}}</b><span *ngIf="!(a.programId==data.gResult.programId)">{{a.courseCode}} - {{a.course}}</span></td>
+                <td style="width: 200px">{{checkresult(a.courseCode)}}</td>
+              </tr>
+            </table>
+          </mat-expansion-panel>
+           </mat-accordion>
+         </div>
+
+           <div *ngIf='data.type==1'> 
+            <iframe [src]="url" style="width: 100%;height: calc(100vh - 310px);border:none;"></iframe>
+           </div>
+           <div *ngIf='data.type==2'> 
+            <iframe [src]="url" style="width: 100%;height: calc(100vh - 310px);border:none;"></iframe>
+           </div>
+        </div>
+        <div style="height: 15px"></div>
+        <div style="text-align: center;">
+        <button mat-raised-button (click)="close()" >Close</button>
+        </div>
+</mat-card-content>
+</mat-card>

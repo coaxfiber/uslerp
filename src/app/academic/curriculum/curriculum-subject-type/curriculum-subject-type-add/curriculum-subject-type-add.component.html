@@ -1,0 +1,58 @@
+<mat-card class="example-card" id="addcur" style='padding: 0 !important;'>
+  <mat-card-header >
+    <mat-card-title><b>Retention Policy Subject Type</b></mat-card-title>
+  </mat-card-header>
+  <style type="text/css">
+  	mat-form-field{
+  		margin-bottom: -20px;
+  	}
+  </style>
+  <mat-card-content>
+				<table style="width: 100%">
+					<tr>
+		          	<td colspan="3">
+                          <mat-form-field style="width: 100%;" appearance="outline">
+                          <mat-label>Subject Type
+                                <mat-spinner style="margin-right: auto;"  [diameter]="20" *ngIf="arraysubtype===undefined"></mat-spinner></mat-label>
+                          <mat-select [(ngModel)]="subjectTypeId"  >
+                            <mat-option  value="{{x.id}}" *ngFor="let x of arraysubtype">
+                              {{x.subjectTypeDesc}}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                        <div style="height: 5px"></div>
+		          </td>     
+		          </tr>
+					<tr>
+						<td style="width: 180px" colspan="1">
+              <mat-form-field style="width: 180px"  appearance="outline">
+                  <mat-label>Grade Not Lower Than</mat-label>
+                  <input matInput placeholder="" autocomplete="off" [(ngModel)]="gradeNotLowerThan"  type="number"  max="100">
+                </mat-form-field> 
+						</td>
+						<td style="width: 180px" colspan="1">
+              <mat-form-field style="width: 180px"  appearance="outline">
+                  <mat-label>Retake</mat-label>
+                  <input matInput placeholder="" autocomplete="off" [(ngModel)]="retake"  type="number" max="100">
+                </mat-form-field> 
+						</td>
+						<td>
+							
+							<mat-form-field style="width: 180px"  appearance="outline">
+   							  <mat-label>Retake Grade Not Lower Than</mat-label>
+						      <input matInput placeholder="" autocomplete="off" [(ngModel)]="retake_GradeNotLowerThan"  type="number"  max="100">
+						    </mat-form-field>	
+						</td>
+					</tr>
+				</table>
+				<div style="height: 10px"></div>
+  </mat-card-content>
+</mat-card>
+
+				<div style="height: 10px"></div>
+    <button mat-raised-button (click)="close()" style="float: left;margin-right: 10px">Cancel</button>
+
+                <button mat-raised-button color="primary" form="ngForm" (click)="retentionpolicystpost()" style="float: right;"  *ngIf="data.data==0">Add Retention Policy Subject Type</button>
+
+                <button mat-raised-button color="primary" form="ngForm" (click)="retentionpolicystput()" style="float: right;"  *ngIf="data.data==1">Update Retention Policy Subject Type</button>
+    <br><br>

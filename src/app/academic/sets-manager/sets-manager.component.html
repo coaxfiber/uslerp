@@ -1,0 +1,106 @@
+<mat-card class="example-card" id="setmanager" style="padding: 0">
+  <mat-card-header >
+    <mat-card-title><b>Set Manager</b></mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content class='colo'>
+  	<mat-divider></mat-divider>
+	<br>
+
+    <mat-form-field style="width: 350px">
+      <mat-label>- School Year -</mat-label>
+      <mat-select [(ngModel)]="sy">
+        <mat-option *ngFor="let x of sylist" [value]="x.syWithSem" (click)="activate(x.syWithSem)">
+          {{ display(x.syWithSem) }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>&nbsp;
+ <button mat-raised-button color="primary"  (click)="openDialog(1)" style="font-size:11px;width: 90px;min-width:18px;line-height: 15px;height: 28px; padding: 0;margin-top: 10px;float: right;" *ngIf="global.checkaccess(':Code:SetHeaderPost')">
+    <i class="material-icons" >add</i> 
+    <span style="margin-top: 7px"> Add Set&nbsp;&nbsp;&nbsp;</span></button>
+    <style type="text/css">
+      .leftside {
+        width: 30%;
+        text-align: right
+      }
+    </style>
+      <table style="width: 100%">
+  <tr>
+    <td style='width: 80px'>
+      <mat-form-field style='width: 80px'>
+      <mat-label>Filter by:</mat-label>
+      <mat-select [(ngModel)]="filter" >
+        <mat-option value="" (click)="onchangefilter('')">- All -</mat-option>
+        <mat-option value="1" (click)="onchangefilter('1')">Active</mat-option>
+        <mat-option value="0" (click)="onchangefilter('0')">Inactive</mat-option>
+      </mat-select>
+    </mat-form-field>
+    </td>
+    <td style="width: 200px">
+        <mat-form-field style="width: 100%">
+          <input matInput placeholder="Search" value="" [(ngModel)]="search" autocomplete="off"  (keydown)="keyDownFunction($event)">
+        </mat-form-field>
+    </td>
+    <td>
+      <button mat-raised-button color="primary"  (click)="keyDownFunction('onoutfocus')" style="font-size:12px;min-width:18px;line-height: 15px;height: 28px;margin-top: 4px; padding: 0;margin-left: 5px">&nbsp;<i class="material-icons">search
+          </i> 
+          <span style="margin-top: 7px"> Search&nbsp;&nbsp;&nbsp;</span></button>
+    </td>
+  </tr>
+</table>
+      <table class="apptable" *ngIf="sy!=''">
+        <tr>
+          <th style="width: 175px">Set</th>
+          <th>Program Title</th>
+          <th style="width: 50px">Version</th>
+          <th style="width: 50px">Status</th>
+          <th style="width: 130px;text-align: center;">
+            - Action -
+          </th>
+        </tr>
+        <tr *ngFor="let x of setarray2">
+          <td style="width: 175px">
+            <b>{{x.setDescription}}</b>
+          </td>
+          <td>{{ x.programTitle }}</td>
+          <td style="width: 50px">{{ x.version }}</td>
+          <td style="width: 50px">{{ getstat(x.status) }}</td>
+          <td>
+                          <button mat-raised-button color="primary" style="font-size:11px;min-width:18px;line-height: 15px;height: 28px; padding: 0;margin-left: 25px" [matMenuTriggerFor]="menu">
+                              &nbsp;<i class="material-icons">launch</i> 
+                              <span style="margin-top: 7px"> Options&nbsp;&nbsp;&nbsp;</span>
+                           </button>
+
+                                <mat-menu #menu="matMenu">
+
+
+                                  <button mat-menu-item (click)="openDialogAssignSetsComponent(x,1)" *ngIf="global.checkaccess(':Code:SetDetailsGet')">
+                                    <span style="margin-top: 7px"> View</span>
+                                  </button>
+
+                                  <button mat-menu-item (click)="Exporttoexcel(x)" *ngIf="global.checkaccess(':Code:SetDetailsGet')">
+                                    <span style="margin-top: 7px"> Export to Excel</span>
+                                  </button>
+
+                                  <button mat-menu-item (click)="openDialogAssignSetsComponent(x)" *ngIf="global.checkaccess(':Code:SetDetailPost')">
+                                    <span style="margin-top: 7px"> Assign Code</span>
+                                  </button>
+                                
+                                  <button mat-menu-item  (click)="openDialog2(0,x)"  *ngIf="global.checkaccess(':Code:SetHeaderPut')">
+                                      <span style="margin-top: 7px"> Update</span>
+                                  </button>
+
+                                  <button mat-menu-item (click)="removeset(x.headerId)" *ngIf="global.checkaccess(':Code:SetHeaderDelete')">
+                                      <span style="margin-top: 7px"> Remove</span>
+                                  </button>
+
+                              </mat-menu>  
+          </td>
+        </tr>
+      </table>
+       <div *ngIf="setarray2!=undefined">
+        <p style="text-align: center;"  *ngIf="setarray2.length===0">- No result found! -</p>
+        </div>
+        <mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="sy===undefined"></mat-spinner>
+  </mat-card-content>
+</mat-card>

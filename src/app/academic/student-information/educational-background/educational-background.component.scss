@@ -1,0 +1,26 @@
+#bginfo{
+
+	mat-form-field{
+		width: 100%
+	}
+
+	.mat-card-header {
+    background-color: #294a70 !important;
+    padding: 15px 5px 5px 5px !important;
+    color: white;
+	}
+}
+#pinfo{
+	overflow-y: scroll;
+	max-height: 90vh
+}
+
+.example-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+}

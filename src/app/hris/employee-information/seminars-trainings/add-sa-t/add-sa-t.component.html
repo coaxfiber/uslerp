@@ -1,0 +1,79 @@
+<div  id="aSaT" style="">
+<mat-card class="example-card">
+   <mat-card-header >
+    <mat-card-title><b>Add Seminar and Training</b></mat-card-title>
+  </mat-card-header>
+  <div style="height: 10px"></div>
+  <mat-card-content class='colo'>
+		  <table  cellspacing="0" style="width: 100%">
+		  <tr>
+		    <td width="100%" colspan="2">
+			  	<mat-form-field class="example-full-width">
+			      <input matInput placeholder="Description"  [(ngModel)]="seminardesc">
+			    </mat-form-field>
+		    </td>
+		  </tr>
+		  <tr>
+		    <td width="100%" colspan="2">
+		    	<mat-form-field class="example-full-width">
+			      <input matInput placeholder="Sponsor"  [(ngModel)]="companyname">
+			    </mat-form-field>
+		    	<!--<form class="example-form" [formGroup]='usersForm'>
+				  <mat-form-field class="example-full-width">
+				    <input matInput placeholder="Sponsor" [matAutocomplete]="auto" formControlName='userInput'>
+				  </mat-form-field>
+				  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+				    <mat-option *ngIf="isLoading" class="is-loading"><mat-spinner diameter="50" style="margin: 5px auto 5px auto"></mat-spinner></mat-option>
+				    <ng-container *ngIf="!isLoading" >
+				      <mat-option *ngFor="let sch of filteredSchs" [value]="sch" (click)="recordSelectedSchname(sch.companyName)">
+				        <span>{{ sch.companyName }}</span>
+				      </mat-option>
+				    </ng-container>
+				  </mat-autocomplete>
+				</form>-->
+		    </td>
+		  </tr>
+		  <tr>
+		    <td width="100%" colspan="2">
+			  	<mat-form-field class="example-full-width">
+			      <input matInput placeholder="Venue"  [(ngModel)]="venue">
+			    </mat-form-field>
+		    </td>
+		  </tr>
+		  <tr>
+		  	<td width="50%" style="padding-left: 5px">
+			  	<mat-form-field class="example-full-width">
+			      <input readonly matInput [matDatepicker]="picker" placeholder="Start Date" (click)="picker.open()"  [(ngModel)]="sdate" name="sdate" required>
+					  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+					  <mat-datepicker #picker></mat-datepicker>
+			    </mat-form-field>
+		    </td>
+		    <td width="50%" style="padding-left: 5px">
+			  	<mat-form-field class="example-full-width">
+			      <input readonly matInput [matDatepicker]="picker2" placeholder="End Date" (click)="picker2.open()"  [(ngModel)]="edate" name="edate" required>
+					  <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+					  <mat-datepicker #picker2></mat-datepicker>
+			    </mat-form-field>
+		    </td>
+		  </tr>
+		  <tr>
+		    <td width="100%"  colspan="2">
+		  		<mat-form-field style="width: 100%" >
+	              <mat-label>Category</mat-label>
+	              <mat-select  [(ngModel)]="STID" >
+	                <mat-option value="{{c.trainingtypeID}}" *ngFor="let c of progTypeArr">
+	                  {{c.trainingType}}
+	                </mat-option>
+	              </mat-select>
+	            </mat-form-field>
+		    </td>
+		  </tr>
+		  </table>
+		  
+	</mat-card-content>
+</mat-card>
+</div>
+<div mat-dialog-actions style="float: right">
+  <button mat-raised-button (click)="onNoClickclose()" color="warning">Close</button>
+  <button mat-raised-button color="primary" (click)="save()" >Save</button>
+</div>

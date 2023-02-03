@@ -1,0 +1,200 @@
+  <mat-card class="example-card">
+  <mat-card-header >
+    <mat-card-title><b>Preferred Learning Modality Report</b></mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content class='colo' style="overflow-y: auto;">
+  	<mat-divider></mat-divider>
+     <table style="width: 900px">
+       <tr>
+         <td style="width: 325px">
+             <mat-form-field style="width: 325px" appearance="outline">
+			      <mat-label>- School Year -</mat-label>
+			      <mat-select [(ngModel)]="sy"  (ngModelChange)='generate()'>
+			        <mat-option *ngFor="let x of global.allsyoptions" [value]="x.syWithSem">
+			          {{ global.syDisplay(x.syWithSem) }}
+			        </mat-option>
+			      </mat-select>
+			    </mat-form-field>
+         </td>
+         <td style="width: 200px">
+            <mat-form-field style="width: 180px" appearance="outline" >
+              <mat-label>Program Level</mat-label>
+              <mat-select  [(ngModel)]="proglevel"  disabled="disabled">
+                <mat-option value="ELEMENTARY">
+                  Elementary
+                </mat-option>
+                <mat-option value="HIGHSCHOOL">
+                  High School
+                </mat-option>
+                <mat-option value="COLLEGE">
+                  College
+                </mat-option>
+                <mat-option value="GRADUATE SCHOOL">
+                  Graduate School
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+         </td>
+         <td valign="top" style="width: 150px">
+          <!-- <button mat-raised-button (click)="generate()"  style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; padding: 0;background-color:#294a70;color: white;margin-top: 15px;margin-left: 5px">
+                  &nbsp;&nbsp;
+                  <span style="margin-top: 7px"> Generate&nbsp;&nbsp;&nbsp;</span>
+              </button> -->
+           <div style="height: 20px"></div>
+          <span *ngIf="tableArr!=undefined&&tableArr!=null">{{ tableArr.length }} record(s) found.</span>
+         </td>
+         <td valign="top">
+          <button mat-raised-button (click)="exportexcel()" style="font-size:12px;margin-top:15px;min-width:18px;line-height: 15px;height: 28px; padding: 0;background-color:#006600;color: white;float: right;" >
+            &nbsp;&nbsp;<i class="material-icons">cloud_download
+            </i> <span style="margin-top: 7px"> Export to excel&nbsp;&nbsp;&nbsp;</span></button> 
+         </td>
+       </tr>
+     </table>
+  <div style="width: 100%;height: calc(100vh - 365px);margin-top: -20px">
+     <table class="apptable table" id="excel-table" style="max-width: 1200px;min-width: 850px"   *ngIf="tableArr!=undefined&&tableArr!=null">
+      <tr>
+        <th style="width:80px" scope="col">ID Number</th>
+        <th style="width:100px" scope="col">Last Name</th>
+        <th style="min-width:100px" scope="col">First Name</th>
+        <th style="min-width:100px" scope="col">Middle Name</th>
+        <th style="min-width:70px" scope="col">Suffix</th>
+        <th style="min-width:70px" scope="col">Gender</th>
+        <th style="min-width:70px" scope="col">Year/Grade level</th>
+        <th style="width:125px" scope="col"  *ngIf="proglevel=='COLLEGE'||proglevel=='GRADUATE SCHOOL'">Departments</th>
+        <th style="width:125px" scope="col" *ngIf="proglevel=='HIGHSCHOOL'||proglevel=='ELEMENTARY'">Section</th>
+        <th style="width:125px" scope="col" *ngIf="proglevel=='COLLEGE'||proglevel=='GRADUATE SCHOOL'">Course</th>
+        <th style="min-width:135px" scope="col">Learning Modality</th>
+        <th style="min-width:70px" scope="col">Contact No.</th>
+        <th style="min-width:135px" scope="col">Enrollment Status</th>
+        <th style="min-width:200px;text-align: center;" *ngIf="hide&&(global.checkaccess(':Enrollment:HSStudentElectivePost')||global.checkaccess(':Enrollment:HSStudentElectiveDelete'))" scope="col">- Action -</th>
+      </tr>
+
+      <tr>
+          <td  scope="row">
+            <mat-form-field appearance="outline" style="width: 80px; margin-bottom: -15px">
+              <input autofocus matInput placeholder="ID#" value="" [(ngModel)]="idno" (keyup)="keyDownFunction()" autocomplete="off">
+            </mat-form-field>
+          </td>
+          <td  scope="row">
+            <mat-form-field appearance="outline" style="width: 130px; margin-bottom: -15px">
+              <input autofocus matInput placeholder="Last Name" value="" [(ngModel)]="lname" (keyup)="keyDownFunction()" autocomplete="off">
+            </mat-form-field>
+          </td>
+          <td  scope="row">
+            <mat-form-field appearance="outline" style="width: 130px; margin-bottom: -15px">
+              <input autofocus matInput placeholder="First Name" value="" [(ngModel)]="fname" (keyup)="keyDownFunction()" autocomplete="off">
+            </mat-form-field>
+          </td>
+          <td  scope="row">
+            <mat-form-field appearance="outline" style="width: 130px; margin-bottom: -15px">
+              <input autofocus matInput placeholder="Middle Name" value="" [(ngModel)]="mname" (keyup)="keyDownFunction()" autocomplete="off">
+            </mat-form-field>
+          </td>
+          <td  scope="row">
+          </td>
+
+          <td  scope="row">
+            <mat-form-field appearance="outline" style="width: 100%; margin-bottom: -15px">
+              <mat-label>Gender</mat-label>
+              <mat-select [(ngModel)]="gender" (ngModelChange)='keyDownFunction()'>
+                <mat-option  value="">- All -</mat-option>
+                <mat-option  value="M">Male</mat-option>
+                <mat-option  value="F">Female</mat-option>
+              </mat-select>
+            </mat-form-field>  
+          </td>
+          <td  scope="row">
+            <mat-form-field appearance="outline" style="width: 70px; margin-bottom: -15px"  *ngIf="proglevel=='HIGHSCHOOL'">
+              <mat-label>Year</mat-label>
+              <mat-select [(ngModel)]="year" (ngModelChange)='keyDownFunction()' >
+                <mat-option  value="">- All -</mat-option>
+                <mat-option value="7">7</mat-option>
+                <mat-option value="8">8</mat-option>
+                <mat-option value="9">9</mat-option>
+                <mat-option value="10">10</mat-option>
+                <mat-option value="11">11</mat-option>
+                <mat-option value="12">12</mat-option>
+              </mat-select>
+            </mat-form-field> 
+            <mat-form-field appearance="outline" style="width: 70px; margin-bottom: -15px"  *ngIf="proglevel!='HIGHSCHOOL'"> 
+              <mat-label>Year</mat-label>
+              <mat-select [(ngModel)]="year" (ngModelChange)='keyDownFunction()'>
+                <mat-option  value="">- All -</mat-option>
+                <mat-option value="1">1</mat-option>
+                <mat-option value="2">2</mat-option>
+                <mat-option value="3">3</mat-option>
+                <mat-option value="4">4</mat-option>
+                <mat-option value="5">5</mat-option>
+                <mat-option value="6">6</mat-option>
+              </mat-select>
+            </mat-form-field> 
+          </td>
+          <td  scope="row" *ngIf="proglevel=='HIGHSCHOOL'||proglevel=='ELEMENTARY'">
+            <mat-form-field appearance="outline" style="width: 100%; margin-bottom: -15px">
+              <input autofocus matInput placeholder="Section" value="" [(ngModel)]="section" (keyup)="keyDownFunction()" autocomplete="off">
+            </mat-form-field>
+          </td>
+          <td  *ngIf="proglevel=='COLLEGE'||proglevel=='GRADUATE SCHOOL'">
+            <mat-form-field appearance="outline" style="width: 150px; margin-bottom: -15px">
+              <mat-label>Filter Department</mat-label>
+              <mat-select [(ngModel)]="dept" (ngModelChange)='keyDownFunction()'>
+                <mat-option *ngFor="let a of departments" value="{{a.departmentCode}}">{{a.departmentCode}}</mat-option>
+              </mat-select>
+            </mat-form-field> 
+          </td>
+          <td  *ngIf="proglevel=='COLLEGE'||proglevel=='GRADUATE SCHOOL'">
+            <mat-form-field appearance="outline" style="width:125px; margin-bottom: -15px">
+              <input autofocus matInput placeholder="Course" value="" [(ngModel)]="course" (keyup)="keyDownFunction()" autocomplete="off">
+            </mat-form-field>
+          </td>
+          <td  scope="row">
+            <mat-form-field appearance="outline" style="width: 100%; margin-bottom: -15px">
+              <mat-label>Filter Learning Modality</mat-label>
+              <mat-select [(ngModel)]="modality" (ngModelChange)='keyDownFunction()'>
+                <mat-option  value="">- All -</mat-option>
+                <mat-option  value="none">- no selected modality -</mat-option>
+                <mat-option *ngFor="let a of electivelist" value="{{a}}">{{a}}</mat-option>
+              </mat-select>
+            </mat-form-field>  
+          </td>
+          <td  scope="row"></td>
+          <td  scope="row">
+            <mat-form-field appearance="outline" style="width: 125px; margin-bottom: -15px">
+              <mat-label>Filter Status</mat-label>
+              <mat-select [(ngModel)]="status" (ngModelChange)='keyDownFunction()'>
+                <mat-option  value="">- All -</mat-option>
+                <mat-option  value="Withdrawn with Permission">Withdrawn with Permission</mat-option>
+                <mat-option  value="Admitted">Admitted</mat-option>
+                <mat-option  value="Enrolled">Enrolled</mat-option>
+                <mat-option  value="Dropped">Dropped</mat-option>
+                <mat-option  value="Paid">Paid</mat-option>
+              </mat-select>
+            </mat-form-field>  
+          </td>
+        </tr>
+            <tr *ngFor="let a of tableArr | paginate: config" >
+                      <td  scope="row">{{a.idNumber}}</td>
+                      <td  scope="row">{{ a.lastName }}</td>
+                      <td>{{ a.firstName }}</td>
+                      <td>{{ a.middleName }}</td>
+                      <td>{{ a.suffixName }}</td>
+                      <td>{{ a.gender=='M' ? 'Male':'Female' }}</td>
+                      <td  scope="row">{{ a.yearOrGradeLevel }}</td>
+                      <td  scope="row" *ngIf="proglevel=='COLLEGE'||proglevel=='GRADUATE SCHOOL'">{{ a.departmentCode }}</td>
+                      <td  scope="row" *ngIf="proglevel=='HIGHSCHOOL'||proglevel=='ELEMENTARY'">{{ a.section }}</td>
+                      <td  scope="row" *ngIf="proglevel=='COLLEGE'||proglevel=='GRADUATE SCHOOL'"> {{ a.courseCode }}</td>
+                      <td  scope="row">{{ a.preferredLearningModality }}</td>
+                      <td  scope="row">{{ a.contactNo }}</td>
+                      <td  scope="row">{{ a.enrollmentStatusDesc }}</td>
+                    </tr>
+
+                </table>
+                <pagination-controls (pageChange)="pageChanged($event)"  *ngIf="tableArr!=undefined"></pagination-controls>  
+       <mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="tableArr===undefined"></mat-spinner>
+        <div *ngIf="tableArr!=undefined">
+          <p *ngIf="tableArr.length===0" style="text-align: center;"><i>- No result found! -</i></p>
+        </div>   
+    </div>     
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,83 @@
+  <mat-card class="example-card">
+  <mat-card-header >
+    <mat-card-title><b>Enrollment Statistics</b></mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content class='colo'>
+  	<mat-divider></mat-divider>
+     <table style="width: 800px">
+       <tr>
+         <td style="width: 325px">
+             <mat-form-field style="width: 325px" appearance="outline">
+			      <mat-label>- School Year -</mat-label>
+			      <mat-select [(ngModel)]="sy">
+			        <mat-option *ngFor="let x of global.allsyoptions" [value]="x.syWithSem">
+			          {{ global.syDisplay(x.syWithSem) }}
+			        </mat-option>
+			      </mat-select>
+			    </mat-form-field>
+         </td>
+         <td style="width: 200px">
+            <mat-form-field style="width: 180px" appearance="outline" >
+              <mat-label>Program Level</mat-label>
+              <mat-select  [(ngModel)]="proglevel">
+                <mat-option value="ALL">
+                  - All -
+                </mat-option>
+                <mat-option value="ELEMENTARY">
+                  Elementary
+                </mat-option>
+                <mat-option value="HIGHSCHOOL">
+                  High School
+                </mat-option>
+                <mat-option value="COLLEGE">
+                  College
+                </mat-option>
+                <mat-option value="GRADUATE SCHOOL">
+                  Graduate School
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+         </td>
+         <td valign="top" style="width: 100px">
+          <button mat-raised-button (click)="generate()"  style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; padding: 0;background-color:#294a70;color: white;margin-top: 15px;margin-left: 5px">
+                  &nbsp;&nbsp;
+                  <span style="margin-top: 7px"> Generate&nbsp;&nbsp;&nbsp;</span>
+              </button>
+         </td>
+         <td valign="top">
+          <button mat-raised-button (click)="exportexcel()" style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; padding: 0;margin-left: 5px;margin-top: 15px;background-color:#006600;color: white;float: right;"   *ngIf="array!=null&&array.length!=0">
+            &nbsp;&nbsp;<i class="material-icons">print
+            </i> <span style="margin-top: 7px"> Print&nbsp;&nbsp;&nbsp;</span></button>
+         </td>
+       </tr>
+     </table>
+        <div style="width: 100%;max-height: calc(100vh - 365px); overflow-y: scroll;margin-top: -20px">
+   <table class="apptable" *ngIf="array!=null" style="width: 550px" id="excel-table">
+              <tr>
+                <th style="width:150px">Department</th>
+                <th style="width:200px">Current Admitted</th>
+                <th style="width:100px">Old Paid</th>
+                <th style="width:100px">Current Paid</th>
+              </tr>
+              <tr *ngFor="let a of array">
+                    <td>{{a.departmentCode}}</td>
+                    <td>{{a.currentAdmitted}}</td>
+                    <td>{{a.oldPaid}}</td>
+                    <td>{{a.currentPaid}}</td>
+                </tr>
+
+              <tr>
+                    <td><b>TOTAL:</b></td>
+                    <td><b>{{getotal(1)}}</b></td>
+                    <td><b>{{getotal(2)}}</b></td>
+                    <td><b>{{getotal(3)}}</b></td>
+                </tr>
+            </table> 
+    </div>                   
+  <mat-spinner style="margin-left: auto;margin-right: auto;width: 550px" *ngIf="array===undefined"></mat-spinner>
+  <div *ngIf="array!=undefined">
+    <p *ngIf="array.length===0" style="text-align: center;width: 550px"><i>- No result found! -</i></p>
+  </div>
+  </mat-card-content>
+</mat-card>

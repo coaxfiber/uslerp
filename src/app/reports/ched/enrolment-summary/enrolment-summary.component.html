@@ -1,0 +1,115 @@
+  <mat-card class="example-card">
+  <mat-card-header >
+    <mat-card-title><b>CHED Enrollment Summary</b></mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content class='colo'>
+  	<mat-divider></mat-divider>
+     <table style="width: 100%">
+       <tr>
+         <td style="width: 325px">
+             <mat-form-field style="width: 325px" appearance="outline">
+			      <mat-label>- School Year -</mat-label>
+			      <mat-select [(ngModel)]="sy">
+			        <mat-option *ngFor="let x of global.allsyoptions" [value]="x.syWithSem">
+			          {{ display(x.syWithSem) }}
+			        </mat-option>
+			      </mat-select>
+			    </mat-form-field>
+         </td>
+         <td style="width: 200px">
+            <mat-form-field style="width: 200px" appearance="outline" >
+              <mat-label>Program Level</mat-label>
+              <mat-select  [(ngModel)]="proglevel">
+                <mat-option value="COLLEGE">
+                  College
+                </mat-option>
+                <mat-option value="GRADUATE SCHOOL">
+                  Graduate School
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+         </td>
+         <td valign="top" style="width: 100px">
+          <button mat-raised-button (click)="generate()"  style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; padding: 0;background-color:#294a70;color: white;margin-top: 15px;margin-left: 5px">
+                  &nbsp;&nbsp;
+                  <span style="margin-top: 7px"> Generate&nbsp;&nbsp;&nbsp;</span>
+              </button>
+         </td>
+         <td valign="top">
+          <button mat-raised-button (click)="exportexcel()" style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; padding: 0;margin-left: 5px;margin-top: 15px;background-color:#006600;color: white;float: right;"   *ngIf="array!=null&&array.length!=0">
+            &nbsp;&nbsp;<i class="material-icons">print
+            </i> <span style="margin-top: 7px"> Print&nbsp;&nbsp;&nbsp;</span></button>
+         </td>
+       </tr>
+     </table>
+    <div style="width: 100%;max-height: calc(100vh - 345px); overflow-y: scroll;margin-top: -15px">
+    	<style type="text/css">
+    		#excel-table th{ text-align:center; }
+    	</style>
+    <table class="apptable" *ngIf="array!=null"  id="excel-table" style="text-align:center;">
+	    <tr>
+	      <th style="min-width:100px" rowspan="2">Course</th>
+	      <th style="width:70px" colspan="2">First Year</th>
+	      <th style="width:70px" colspan="2">Second Year</th>
+	      <th style="width:70px" colspan="2">Third Year</th>
+	      <th style="width:70px" colspan="2">Fourth Year</th>
+	      <th style="width:70px" colspan="2">Fifth Year</th>
+	      <th style="width:70px" colspan="2">Sub-total</th>
+	      <th style="width:60px" rowspan="2">Grand Total</th>
+	    </tr>
+	    <tr>
+          <th style="width:35px">Male</th>
+          <th style="width:35px">Female</th>
+          <th style="width:35px">Male</th>
+          <th style="width:35px">Female</th>
+          <th style="width:35px">Male</th>
+          <th style="width:35px">Female</th>
+          <th style="width:35px">Male</th>
+          <th style="width:35px">Female</th>
+          <th style="width:35px">Male</th>
+          <th style="width:35px">Female</th>
+          <th style="width:35px">Male</th>
+          <th style="width:35px">Female</th>
+	    </tr>
+    	<tr *ngFor="let a of array">
+            <td style="text-align:left;">{{a.course}}</td>
+            <td>{{a.m1}}</td>
+            <td>{{a.f1}}</td>
+            <td>{{a.m2}}</td>
+            <td>{{a.f2}}</td>
+            <td>{{a.m3}}</td>
+            <td>{{a.f3}}</td>
+            <td>{{a.m4}}</td>
+            <td>{{a.f4}}</td>
+            <td>{{a.m5}}</td>
+            <td>{{a.f5}}</td>
+            <td>{{a.m1+a.m2+a.m3+a.m4+a.m5}}</td>
+            <td>{{a.f1+a.f2+a.f3+a.f4+a.f5}}</td>
+            <td>{{a.m1+a.m2+a.m3+a.m4+a.m5+a.f1+a.f2+a.f3+a.f4+a.f5}}</td>
+        </tr>
+
+    	<tr style="color: red">
+            <td style="text-align:left;"><b>GRAND TOTAL</b></td>
+            <td>{{getmf('m1')}}</td>
+            <td>{{getmf('f1')}}</td>
+            <td>{{getmf('m2')}}</td>
+            <td>{{getmf('f2')}}</td>
+            <td>{{getmf('m3')}}</td>
+            <td>{{getmf('f3')}}</td>
+            <td>{{getmf('m4')}}</td>
+            <td>{{getmf('f4')}}</td>
+            <td>{{getmf('m5')}}</td>
+            <td>{{getmf('f5')}}</td>
+            <td>{{getmf('m1')+getmf('m2')+getmf('m3')+getmf('m4')+getmf('m5')}}</td>
+            <td>{{getmf('f1')+getmf('f2')+getmf('f3')+getmf('f4')+getmf('f5')}}</td>
+            <td>{{getmf('f1')+getmf('f2')+getmf('f3')+getmf('f4')+getmf('f5')+getmf('m1')+getmf('m2')+getmf('m3')+getmf('m4')+getmf('m5')}}</td>
+        </tr>
+    </table>    
+    </div>              
+  <mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="array===undefined"></mat-spinner>
+  <div *ngIf="array!=undefined">
+    <p *ngIf="array.length===0" style="text-align: center;"><i>- No result found! -</i></p>
+  </div>
+  </mat-card-content>
+</mat-card>

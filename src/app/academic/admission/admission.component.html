@@ -1,0 +1,118 @@
+  <mat-card class="example-card">
+  <mat-card-header >
+    <mat-card-title><b>Student Admission</b></mat-card-title>
+    <mat-card-subtitle>This page allows you to admit new STUDENTS.</mat-card-subtitle>
+  </mat-card-header>
+  
+  <mat-card-content class='colo'>
+  	<mat-divider></mat-divider>
+  	<br>
+    <table style="width: 600px">
+  		<tr>
+  			<td width="160">
+  				<img [src]="image" width="150" onError="this.src='assets/noimage.jpg'"/>
+  			</td>
+  			<td>
+		  <table class="example-full-width" cellspacing="0">
+		  <tr>
+		    <td width="50%"><mat-form-field class="example-full-widthminus">
+		      <input autofocus matInput #idno2 maxlength="7" placeholder="ID Number" value="" [(ngModel)]="id" name="idno" required="required"  (keydown)="keyDownFunction($event)">
+		    </mat-form-field>
+		    <button mat-mini-fab color="primary" (click)="studentlookup()">
+			    <mat-icon>search</mat-icon>
+			  </button></td>
+		  	<td style="padding-left: 10px">
+            <b style="float: right;font-size: 12px;background-color: #294a70;color: white;padding: 3px 6px 3px 6px;border-radius:5px" *ngIf="!es.includes('Blacklisted') && es != ''">{{ es }}</b>
+            <b style="float: right;font-size: 12px;background-color: #ff0000;color: white;padding: 3px 6px 3px 6px;border-radius:5px" *ngIf="es.includes('Blacklisted')">{{ es }}</b>
+		  	</td>
+		  </tr>
+		  </table>
+
+    <h3 *ngIf="lname!=''" style="margin: 0px">{{lname}}, {{fname}} {{mname}} {{suffix}}</h3>
+    <div style="height: 5px"></div>
+    <table class="example-full-width" >
+        <tr>
+          <td style="width:50%">
+            <mat-form-field>
+              <mat-select [(ngModel)]="yearlevel" name="yearlevel" placeholder="Year/Grade" >
+                <mat-option value="{{f.year}}"  *ngFor="let f of yeardrop" (click)='getcourses2(f.year)'>
+                  {{f.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </td>
+          <td style="width:50%">
+          <mat-form-field class="example-full-width">
+              <mat-select [(ngModel)]="type" name="type" placeholder="Type">
+                  <mat-option value="1">
+                    Regular
+                  </mat-option>
+                  <mat-option value="2">
+                    Transferee
+                  </mat-option>
+                  <mat-option value="3">
+                    Cross Enrollee
+                  </mat-option>
+            </mat-select>
+          </mat-form-field>
+          </td>
+        </tr>
+        
+    </table>
+    <table style="width: 100%;margin-top: -15px">
+      <tr>
+          <td>
+            <mat-form-field  style="width:100%">
+              <mat-select placeholder="- Select course -" [(ngModel)]="programid"  >
+                <mat-option value="{{f.programID}}"  *ngFor="let f of arraycourses">
+                  {{f.course}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </td>
+        </tr>
+    </table>
+
+  			</td>
+  		</tr>
+  	</table>
+    <div style="height: 5px;"></div>
+            <!--<button mat-raised-button color="default" (click)="alert()">Addmission Summary</button>-->
+            &nbsp;<button mat-raised-button color="primary" (click)="admitstudent()"  disabled="{{admit}}" > <i class="material-icons iconsize">exit_to_app</i> Admit</button>
+            &nbsp;<button mat-raised-button (click)="showgrade()" *ngIf="global.checkaccess(':Student:AcademicHistoryGet')"> <i class="material-icons iconsize">library_books</i> Academic History</button>
+   <div style="height:15px"></div>
+  <mat-divider></mat-divider>
+          <mat-tab-group  *ngIf="global.checkaccess(':Student:AcademicHistoryGet')">
+            <mat-tab label="Grades from the Last SY of Attendance">
+              <div style="height: 10px;"></div>
+              <b>{{sem}}</b>
+              <div style="height: 10px;"></div>
+              <table class="apptable">
+                <tr>
+                  <th style="width: 100px">Subject ID</th>
+                  <th>Descriptive Title</th>
+                  <th style="width: 100px">Grade</th>
+                  <th style="width: 100px">Units</th>
+                </tr>
+                <tr *ngFor="let element of tableArr">
+                  <td>
+                    {{element.subjectID}}
+                  </td>
+                  <td>
+                    {{element.subjectTitle}}
+                  </td>
+                  <td>
+                    {{element.grade}}
+                  </td>
+                  <td>
+                    {{element.units}}
+                  </td>
+                </tr>
+              </table>
+              <p style="text-align: center;" *ngIf="tableArr.length==0">- No Grades from Last SY -</p>
+            </mat-tab>
+          </mat-tab-group>
+
+                  <mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="g==1"></mat-spinner>
+  </mat-card-content>
+</mat-card>

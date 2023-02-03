@@ -1,0 +1,66 @@
+<div  id="ures" style="">
+<mat-card class="example-card">
+   <mat-card-header >
+    <mat-card-title><b>Update of Research</b></mat-card-title>
+  </mat-card-header>
+  <div style="height: 10px"></div>
+  <mat-card-content class='colo'>
+		  <table  cellspacing="0" style="width: 100%">
+		  <tr>
+		    <td width="100%" colspan="2">
+		  	<mat-form-field class="example-full-width">
+		      <input matInput placeholder="Research Title"  [(ngModel)]="rtitle">
+		    </mat-form-field>
+		    </td>
+		  </tr>
+		  <tr>
+		    <td width="50%" style="padding-left: 5px">
+			  	<mat-form-field class="example-full-width">
+			      <input readonly matInput [matDatepicker]="picker" placeholder="Date Completed" (click)="picker.open()"  [(ngModel)]="date" name="date">
+					  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+					  <mat-datepicker #picker></mat-datepicker>
+			    </mat-form-field>
+		    </td>
+		    <td width="50%" style="padding-right: 5px">
+			  	<mat-form-field class="example-full-width">
+			      <input matInput placeholder="Copyright Year"  [(ngModel)]="cyear">
+			    </mat-form-field>
+		    </td>
+		  </tr>
+		  <tr>
+		    <td width="100%"  colspan="2">
+		      <mat-form-field class="example-full-width">
+			    <textarea matInput placeholder="Remarks" [(ngModel)]="rmarks"></textarea>
+			  </mat-form-field>
+		    </td>
+		  </tr>
+		  <tr>
+		    <td width="100%"  colspan="2">
+		  		<mat-form-field style="width: 100%" >
+	              <mat-label>Research Type</mat-label>
+	              <mat-select  [(ngModel)]="RID">
+	                <mat-option value="{{r.id}}" *ngFor="let r of resTypeArr">
+	                  {{r.description}}
+	                </mat-option>
+	              </mat-select>
+	            </mat-form-field>
+		    </td>
+		  </tr>
+		  <tr *ngIf="global.requestid()!==idn">
+		  	<td>
+		  		Status: &nbsp;
+		  		<mat-slide-toggle [checked]="statusid===1" (change)="checked()">
+		            <span *ngIf="statusid==1||statusid==null">Approved</span>
+			        <span *ngIf="statusid==0">For approval</span>
+		          </mat-slide-toggle>
+		  	</td>
+		  </tr>
+		  </table>
+		  
+	</mat-card-content>
+</mat-card>
+</div>
+<div mat-dialog-actions style="float: right">
+  <button mat-raised-button (click)="onNoClickclose()" color="warning">Close</button>
+  <button mat-raised-button color="primary" (click)="save()" >Save</button>
+</div>

@@ -1,0 +1,188 @@
+  <mat-card class="example-card">
+  <mat-card-header >
+    <mat-card-title><b>Employee profile</b></mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content class='colo'>
+  	<mat-divider></mat-divider>
+     <table style="width: 100%">
+      
+       <tr>
+         <td  style="width: 800px">
+            <!-- <mat-form-field style="width: 325px" appearance="outline">
+              <mat-label>- Department -</mat-label>
+              <mat-select [(ngModel)]="DID">
+                <mat-option *ngFor="let x of departmentArr" [value]="x.departmentID" (click)="setDept(x.departmentName)">
+                  {{x.departmentName}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field> -->
+
+            <form class="example-form">
+              <mat-form-field class="example-full-width" style="width: 800px!important">
+                <input style="width: 800px!important" type="text" placeholder="- Department -" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="autoProgName" (click)="verifyClick()">
+                <mat-autocomplete #autoProgName="matAutocomplete">
+                  <mat-option *ngFor="let option of filteredOptions | async" [value]="option" (click)="setDept(option)">
+                    {{getFilteredDeptName(option)}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </form>
+
+         </td>
+         <td valign="top" style="width: 100px">
+          <button mat-raised-button (click)="generate()"  style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; padding: 0;background-color:#294a70;color: white;margin-top: 15px;margin-left: 5px">
+                  &nbsp;&nbsp;
+                  <span style="margin-top: 7px"> Generate&nbsp;&nbsp;&nbsp;</span>
+              </button>
+         </td>
+         <td valign="top">
+          
+         </td>
+       </tr>
+     </table>
+    <div style="width: 100%;max-height: calc(100vh - 360px); overflow-y: scroll;">
+    <!-- <table class="apptable" *ngIf="employeeArr!=null">
+	    <tr>
+	      <th style="width:80px">ID Number</th>
+	      <th style="min-width:100px; width: 400px">Full Name</th>
+          <th style="width:50px">Gender</th>
+          <th style="width:50px">Age</th>
+          <th style="width:200px">Position</th>
+	      <th style="width:80px">Classification</th>
+	    </tr>
+    	<tr *ngFor="let a of employeeArr" (click)="getAdditionalInfo(a)">
+            <td>{{a.employeeId}}</td>
+            <td>{{a.name}}</td>
+            <td>{{a.gender}}</td>
+            <td>{{a.age}}</td>
+            <td>{{a.position}}</td>
+            <td>{{a.classification}}</td>
+        </tr>
+    </table>     -->		
+	<button mat-raised-button (click)="export(employeeArr)" style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; padding: 0;margin-left: 5px;margin-top: 10px;background-color:#006600;color: white;float: right;"   *ngIf="employeeArr!=null&&employeeArr.length!=0">
+            &nbsp;&nbsp;<i class="material-icons">cloud_download
+            </i> <span style="margin-top: 7px"> Export&nbsp;&nbsp;&nbsp;</span></button>
+	<p  *ngIf="employeeArr!=null" style="color: red;font-size: 12px">*Note: <br>Click on the record to see additional information.<br>You can use '>' and '<' sign to filter years of service. ex: >10 </p>
+    
+
+    <table class="apptable table" id="excel-table"    *ngIf="employeeArr!=undefined&&employeeArr!=null">
+      <tr>
+        <th style="width:80px" scope="col">ID Number</th>
+        <th style="min-width:100px; width: 400px" scope="col">Full Name</th>
+        <th style="width:50px" scope="col">Date Hired</th>
+        <th style="width:50px" scope="col">Years of Service</th>
+        <th style="width:50px" scope="col">Date of Retirement</th>
+        <th style="width:50px" scope="col">Retirement Year</th>
+        <th style="width:100px" scope="col">Employement Status</th>
+        <th style="width:50px" scope="col">Classification</th>
+      </tr>
+
+      <tr>
+          <td  scope="row">
+            <mat-form-field appearance="outline" style="width: 80px; margin-bottom: -15px">
+              <input autofocus matInput placeholder="ID#" value="" [(ngModel)]="empid" (keyup)="keyDownFunction()" autocomplete="off">
+            </mat-form-field>
+          </td>
+          <td  scope="row">
+            <mat-form-field appearance="outline" style="min-width:100px; width: 400px; margin-bottom: -15px">
+              <input autofocus matInput placeholder="Name" value="" [(ngModel)]="empName" (keyup)="keyDownFunction()" autocomplete="off">
+            </mat-form-field>
+          </td>
+          <td  scope="row">
+            <mat-form-field appearance="outline" style="width: 130px; margin-bottom: -15px">
+              <input autofocus matInput placeholder="Date Hired" value="" [(ngModel)]="empdateHired" (keyup)="keyDownFunction()" autocomplete="off">
+            </mat-form-field>
+          </td>
+          <td  scope="row">
+            <mat-form-field appearance="outline" style="width: 130px; margin-bottom: -15px">
+              <input autofocus matInput placeholder="Years of service" value="" [(ngModel)]="empyearsOfService" (keyup)="keyDownFunction()" autocomplete="off">
+            </mat-form-field>
+          </td>
+          <td  scope="row">
+            <mat-form-field appearance="outline" style="width: 130px; margin-bottom: -15px">
+              <input autofocus matInput placeholder="Date of retirement" value="" [(ngModel)]="empdateOfRetirement" (keyup)="keyDownFunction()" autocomplete="off">
+            </mat-form-field>
+          </td>
+          <td  scope="row">
+            <mat-form-field appearance="outline" style="width: 130px; margin-bottom: -15px">
+              <input autofocus matInput placeholder="Retirement year" value="" [(ngModel)]="empretirementYear" (keyup)="keyDownFunction()" autocomplete="off">
+            </mat-form-field>
+          </td>
+          
+          <!-- <td  scope="row"></td> -->
+          <td  scope="row">
+            <mat-form-field appearance="outline" style="width: 100px; margin-bottom: -15px">
+              <mat-label>Employment status</mat-label>
+              <mat-select [(ngModel)]="empemploymentStatus" (ngModelChange)='keyDownFunction()'>
+                <mat-option  value="">- All -</mat-option>
+                <mat-option  value="Probationary">Probationary</mat-option>
+                <mat-option  value="Permanent">Permanent</mat-option>
+                <mat-option  value="Contractual">Contractual</mat-option>
+                <mat-option  value="Non-Tenured">Non-Tenured</mat-option>
+                <mat-option  value="Tenured">Tenured</mat-option>
+                <mat-option  value="Substitute">Substitute</mat-option>
+                <mat-option  value="Resigned">Resigned</mat-option>
+                <mat-option  value="Retired">Retired</mat-option>
+                <mat-option  value="Temporary">Temporary</mat-option>
+                <mat-option  value="Regular">Regular</mat-option>
+              </mat-select>
+            </mat-form-field>  
+          </td>
+
+          <td  scope="row">
+            <mat-form-field appearance="outline" style="width: 130px; margin-bottom: -15px">
+              <mat-label>Classification</mat-label>
+              <mat-select [(ngModel)]="empClassification" (ngModelChange)='keyDownFunction()'>
+                <mat-option  value="">- All -</mat-option>
+                <mat-option  value="Full Time">Full time</mat-option>
+                <mat-option  value="Part Time">Part time</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </td>
+        </tr>
+        <tr *ngFor="let a of employeeArr | paginate: config" (click)="getAdditionalInfo(a)">
+            <td>{{a.employeeId}}</td>
+            <td>{{a.name}}</td>
+            <td>{{a.dateHired}}</td>
+            <td>{{a.yearsOfService}}</td>
+            <td>{{a.dateOfRetirement}}</td>
+            <td>{{a.retirementYear}}</td>
+            <td>{{a.employmentStatus}}</td>
+            <td>{{a.classification}}</td>
+        </tr>
+
+    </table>
+
+    <pagination-controls (pageChange)="pageChanged($event)"  *ngIf="employeeArr!=undefined"></pagination-controls>  
+       <mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="employeeArr===undefined"></mat-spinner>
+        <div *ngIf="employeeArr!=undefined">
+          <p *ngIf="employeeArr.length===0" style="text-align: center;"><i>- No result found! -</i></p>
+        </div>  
+
+   <!--  <table class="apptable" *ngIf="employeeArr!=null">
+	    <tr>
+	      <th style="width:80px">ID Number</th>
+	      <th style="min-width:100px; width: 400px">Full Name</th>
+        <th style="width:50px">Date Hired</th>
+        <th style="width:50px">Years of Service</th>
+	      <th style="width:50px">Date of Retirement</th>
+        <th style="width:50px">Retirement Year</th>
+        <th style="width:100px">Employement Status</th>
+        <th style="width:50px">Rank</th>
+	    </tr>
+    	<tr *ngFor="let a of employeeArr" (click)="getAdditionalInfo(a)">
+            <td>{{a.employeeId}}</td>
+            <td>{{a.name}}</td>
+            <td>{{a.dateHired}}</td>
+            <td>{{a.yearsOfService}}</td>
+            <td>{{a.dateOfRetirement}}</td>
+            <td>{{a.retirementYear}}</td>
+            <td>{{a.employmentStatus}}</td>
+            <td>{{a.rank}}</td>
+        </tr>
+    </table>     -->
+    </div>              
+  
+  </mat-card-content>
+</mat-card>

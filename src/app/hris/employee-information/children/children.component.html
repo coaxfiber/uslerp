@@ -1,0 +1,54 @@
+<div  id="achild" style="">
+<mat-card class="example-card">
+   <mat-card-header >
+    <mat-card-title><b>Add child information</b></mat-card-title>
+  </mat-card-header>
+  <div style="height: 10px"></div>
+  <mat-card-content class='colo'>
+		  <table  cellspacing="0" style="width: 100%">
+		  <tr>
+		    <td width="100%">
+		  	<mat-form-field class="example-full-width">
+		      <input matInput placeholder="First Name"  [(ngModel)]="fname">
+		    </mat-form-field>
+		    </td>
+		  </tr>
+		  <tr>
+		    <td width="100%">
+		  	<mat-form-field class="example-full-width">
+		      <input matInput placeholder="Middle Name"  [(ngModel)]="mname">
+		    </mat-form-field>
+		    </td>
+		  </tr>
+		  <tr>
+		    <td width="100%">
+		  	<mat-form-field class="example-full-width">
+		      <input matInput placeholder="Last Name"  [(ngModel)]="lname">
+		    </mat-form-field>
+		    </td>
+		  </tr>
+		  <tr>
+		    <td width="100%">
+		  	<mat-form-field class="example-full-width">
+		      <input readonly matInput [matDatepicker]="picker" placeholder="Birth Date" (click)="picker.open()"  [(ngModel)]="bdate" name="bdate" required>
+				  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+				  <mat-datepicker #picker></mat-datepicker>
+		    </mat-form-field>
+		    </td>
+		  </tr>
+		  <tr>
+		    <td width="100%">
+		  	<mat-form-field class="example-full-width">
+		      <input matInput placeholder="USLT ID #"  [(ngModel)]="usltid">
+		    </mat-form-field>
+		    </td>
+		  </tr>
+		  </table>
+		  
+	</mat-card-content>
+</mat-card>
+</div>
+<div mat-dialog-actions style="float: right">
+  <button mat-raised-button (click)="onNoClickclose()" color="warning">Close</button>
+  <button mat-raised-button color="primary" (click)="save()" >Save</button>
+</div>

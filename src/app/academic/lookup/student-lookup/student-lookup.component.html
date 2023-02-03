@@ -1,0 +1,52 @@
+<mat-card class="example-card" id="studlookup" style='padding: 0 !important;'>
+  <mat-card-header >
+    <mat-card-title><b>Student Look-up</b></mat-card-title>
+  </mat-card-header>
+  <mat-card-content class='colo'>
+  	<mat-form-field class="example-full-widthminus">
+		      <input autofocus matInput #idno2 placeholder="" value="" [(ngModel)]="keyword" name="idno" required="required"  (keydown)="keyDownFunction($event)" autocomplete="off">
+		      
+		    </mat-form-field>
+		    <button mat-mini-fab color="primary" (click)="keyDownFunction('onoutfocus')">
+			    <mat-icon>search</mat-icon>
+			  </button>
+
+                <div style="max-height: calc(100vh - 400px);overflow-y: scroll;">  
+                	<table style="width: 100%"  (click)="select(f.idNumber,f)" *ngFor="let f of arraystud">
+                		<tr>
+                			<td style="margin-left: 10px">
+                				<div style="height: 5px"></div>
+                			</td>
+                		</tr>
+                		<tr>
+                            <td style="margin-left: 10px"><b style="color: #294a70 !important;font-size: 16px">{{f.fullName}}</b></td>
+                		</tr>
+                		<tr>
+                            <td style="margin-left: 10px"><b>ID Number:</b> {{f.idNumber}}</td>
+                		</tr>
+                		<tr>
+                			<td style="margin-left: 10px"><b>Course/Year:</b> {{f.courseYear}}</td>
+                		</tr>
+                	</table>
+
+
+
+			  		<p style="text-align: center;"  *ngIf="x==1">
+			  			<br>
+			  			*Please enter part of the Student's name in the SEARCH box then hit the [ENTER] key to initiate query.
+			  			<br><br><br>
+			  		</p>         
+                 
+                 	<div *ngIf="x==0">
+	       				<mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="arraystud==undefined"></mat-spinner>
+
+	       				<div *ngIf="arraystud!=undefined">
+		                  <p style="text-align: center;"  *ngIf="arraystud.length==0">
+		                    - No results for {{tempkeyword}} - 
+		                  </p><br>
+		                </div>
+		            </div>
+
+                  </div><button mat-raised-button (click)="close()">Cancel</button>
+            </mat-card-content>
+</mat-card>

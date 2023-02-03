@@ -1,0 +1,103 @@
+<mat-card class="example-card">
+  <mat-card-header >
+    <mat-card-title><b>New Person Registration</b></mat-card-title>
+    <mat-card-subtitle>For Creating a new Person in the database</mat-card-subtitle>
+  </mat-card-header>
+  
+  <mat-card-content class='colo'>
+  	<mat-divider></mat-divider>
+  	<br>
+    <form class="example-form" id="ngForm" #documentEditForm="ngForm"> 
+		  <table class="example-full-width" cellspacing="0">
+		  	<tr>
+		  		<td>
+             	<button mat-raised-button color="primary"style="width: 115px;color:white;background-color: #294a70;margin-top: -15px;margin-left: -2px !important;margin-bottom: 13px" class="buttondesign" (click)="openDialog2()">
+             		<i class="material-icons" >how_to_reg</i> 
+                        <span style="margin-top: 7px"> Assign Applicant&nbsp;&nbsp;</span>
+                    </button>
+                </td>
+		  		<td></td>
+		  	</tr>
+		  <tr>
+		    <td width="50%"><mat-form-field class="example-full-width" >
+		      <input matInput #idno maxlength="7" placeholder="ID Number" value="{{idseries}}+(system generated)"  name="idno" style="color:red" disabled="disabled" autocomplete="off">
+		      <mat-hint align="start"></mat-hint>
+		    </mat-form-field></td>
+		  	<td style="padding-left: 10px">
+		  	<mat-form-field class="example-full-width">
+		      <input matInput placeholder="LR Number" value="" [(ngModel)]="options.value.lrno" name="lrno" autocomplete="off">
+		    </mat-form-field>
+		  	</td>
+		  </tr>
+		  </table>
+
+		  <table class="example-full-width" cellspacing="0"><tr>
+		    <td><mat-form-field class="example-full-width2">
+		      <input matInput placeholder="First Name" [(ngModel)]="options.value.fname" name="fname" required autocomplete="off" [readonly]="checkapplicant">
+		    </mat-form-field></td>
+		    <td><mat-form-field class="example-full-width2">
+		      <input matInput placeholder="Middle Name" [(ngModel)]="options.value.mname" name="mname" autocomplete="off" [readonly]="checkapplicant">
+		    </mat-form-field></td>
+		    <td><mat-form-field class="example-full-width2">
+		      <input matInput placeholder="Last Name" [(ngModel)]="options.value.lname" name="lname" required autocomplete="off" [readonly]="checkapplicant">
+		    </mat-form-field></td>
+		    <td><mat-form-field class="example-full-width3">
+		      <input matInput placeholder="Suffix" [(ngModel)]="options.value.suffix" name="suffix"  autocomplete="off" [readonly]="checkapplicant">
+		    </mat-form-field></td>
+		    <td>
+
+             	<button mat-raised-button color="primary"style="width: 115px;color:white;background-color: #006400;margin-top: -15px" class="buttondesign" (click)="openDialog()">
+             		<i class="material-icons" >check</i> 
+                        <span style="margin-top: 7px"> Check Duplicate&nbsp;&nbsp;</span>
+                    </button>
+		    </td>
+		  </tr></table>
+
+
+
+		  <table class="example-full-width" cellspacing="0"><tr>
+		    <td width="33%">
+			  <mat-form-field  class="example-full-width">
+			    <mat-select required [(ngModel)]="options.value.gender" name="gender">
+			      <mat-option value="M">Male</mat-option>
+			      <mat-option value="F">Female</mat-option>
+			    </mat-select>
+			    <mat-label>Gender</mat-label>
+			  </mat-form-field></td>
+			  <td width="33%">
+			  <mat-form-field  class="example-full-width">
+			    <mat-select required [(ngModel)]="options.value.cstatus" name="cstatus">
+			      <mat-option value="S">Single</mat-option>
+			      <mat-option value="M">Married</mat-option>
+			      <mat-option value="W">Widow</mat-option>
+			    </mat-select>
+			    <mat-label>Civil Status</mat-label>
+			  </mat-form-field></td>
+		    <td width="33%"><mat-form-field  class="example-full-width">
+				  <input readonly matInput [matDatepicker]="picker" placeholder="Birth Date" (click)="picker.open()"  [(ngModel)]="options.value.bdate" name="bdate" required>
+				  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+				  <mat-datepicker #picker></mat-datepicker>
+				</mat-form-field></td>
+		  </tr></table>
+
+		  <table class="example-full-width" cellspacing="0"><tr>
+		    <td width="50%">
+				<mat-form-field class="example-full-width" style="width: calc(100% - 5px)">
+					<mat-label>Contact Number</mat-label>
+					<span matPrefix>+63 &nbsp;</span>
+		      		<input matInput [(ngModel)]="options.value.cpno" name="cno" type="cpno" maxlength="10" autocomplete="off">
+		    	</mat-form-field>
+		    </td>
+		    <td width="50%">
+				<mat-form-field class="example-full-width">
+		      		<input matInput placeholder="Telephone Number" [(ngModel)]="options.value.telno" name="tel" type="text" autocomplete="off">
+		    	</mat-form-field>
+		    </td>
+		  </tr></table>
+		</form>
+  <mat-divider></mat-divider><br>
+	  <button mat-raised-button (click)="clear()">Clear</button>&nbsp;&nbsp;
+	  <button mat-raised-button color="primary" (click)="onSubmit()">Register</button><br>&nbsp;
+  <p>*Please click <a href="javascript:void(0)" (click)="seridseries()">here</a> if you want to change the ID SERIES <small>(defaults to the last 2 digit of the current year)</small></p>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,151 @@
+  <mat-card class="example-card">
+  <mat-card-header >
+    <mat-card-title><b>Learning Modality Manager - {{global.domain}}</b></mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content class='colo' >
+  	<mat-divider></mat-divider>
+  	<table style="width: 100%">
+  		<tr>
+  			<td>
+		  <table style="width: 100%">
+		  <tr>
+        <td style="width: 100px" *ngIf='tableArr!=undefined'>{{tableArr.length}} record(s)</td>
+        <td>
+        <button mat-raised-button (click)="exportexcel()" style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; padding: 0;background-color:#006600;color: white;float: right;" >
+          &nbsp;&nbsp;<i class="material-icons">cloud_download
+          </i> <span style="margin-top: 7px"> Export to excel&nbsp;&nbsp;&nbsp;</span></button>   
+        </td>
+		  </tr>
+		  </table>
+  			</td>
+  		</tr>
+  	</table>
+      <div style="height: 10px"></div>
+
+    
+      <div style="height: calc(100vh - 330px);overflow-y: scroll;">
+    <table class="apptable table" id="excel-table" style="overflow-x: scroll !important;max-width: 1200px;min-width: 850px" >
+	    <tr>
+        <th style="width:80px" scope="col">ID Number</th>
+        <th style="min-width:135px" scope="col">Full name</th>
+        <th style="min-width:70px" scope="col">Year level</th>
+
+        <th style="width:150px" *ngIf="global.domain=='HIGHSCHOOL'||global.domain=='ELEMENTARY'" scope="col">Section</th>
+        <th style="width:150px" *ngIf="global.domain=='COLLEGE'||global.domain=='GRADUATE SCHOOL'" scope="col">Department</th>
+        <th style="width:125px" scope="col">Course</th>
+        <th style="min-width:135px" scope="col">Learning Modality</th>
+        <th style="width:135px" scope="col">Date Registered</th>
+        <th style="min-width:135px" scope="col">Date Updated</th>
+	      <th style="min-width:200px;text-align: center;" *ngIf="hide&&(global.checkaccess(':Enrollment:PreferredLearningModalityPost')||global.checkaccess(':Enrollment:PreferredLearningModalityDelete'))" scope="col">- Action -</th>
+	    </tr>
+      <tr *ngIf="hide">
+                      <td  scope="row">
+                        <mat-form-field appearance="outline" style="width: 80px">
+                          <input autofocus matInput placeholder="ID#" value="" [(ngModel)]="id" (keyup)="keyDownFunction()" autocomplete="off">
+                        </mat-form-field>
+                      </td>
+                      <td  scope="row">
+                        <mat-form-field appearance="outline" style="width: 100%">
+                          <input autofocus matInput placeholder="Name" value="" [(ngModel)]="name" (keyup)="keyDownFunction()" autocomplete="off">
+                        </mat-form-field>
+                      </td>
+                      <td  scope="row">
+                        <mat-form-field appearance="outline" style="width: 70px"  *ngIf="global.domain=='HIGHSCHOOL'">
+                          <mat-label>Year</mat-label>
+                          <mat-select [(ngModel)]="elective" (ngModelChange)='keyDownFunction()' >
+                            <mat-option  value="">- All -</mat-option>
+                            <mat-option value="1">7</mat-option>
+                            <mat-option value="2">8</mat-option>
+                            <mat-option value="3">9</mat-option>
+                            <mat-option value="4">10</mat-option>
+                            <mat-option value="5">11</mat-option>
+                            <mat-option value="6">12</mat-option>
+                          </mat-select>
+                        </mat-form-field> 
+                        <mat-form-field appearance="outline" style="width: 70px"  *ngIf="global.domain!='HIGHSCHOOL'"> 
+                          <mat-label>Year</mat-label>
+                          <mat-select [(ngModel)]="elective" (ngModelChange)='keyDownFunction()'>
+                            <mat-option  value="">- All -</mat-option>
+                            <mat-option value="1">1</mat-option>
+                            <mat-option value="2">2</mat-option>
+                            <mat-option value="3">3</mat-option>
+                            <mat-option value="4">4</mat-option>
+                            <mat-option value="5">5</mat-option>
+                            <mat-option value="6">6</mat-option>
+                          </mat-select>
+                        </mat-form-field> 
+                      </td>
+                      <td  scope="row" *ngIf="global.domain=='HIGHSCHOOL'">
+                        <mat-form-field appearance="outline" style="width: 100%">
+                          <input autofocus matInput placeholder="Section" value="" [(ngModel)]="section" (keyup)="keyDownFunction()" autocomplete="off">
+                        </mat-form-field>
+                      </td>
+                      <td  *ngIf="global.domain=='COLLEGE'||global.domain=='GRADUATE SCHOOL'">
+                        <mat-form-field appearance="outline" style="width: 100%">
+                          <mat-label>Filter Department</mat-label>
+                          <mat-select [(ngModel)]="dept" (ngModelChange)='loaddata()'>
+                            <mat-option *ngFor="let a of departments" value="{{a.departmentId}}">{{a.departmentCode}}</mat-option>
+                          </mat-select>
+                        </mat-form-field> 
+                      </td>
+                      <td  >
+                        <mat-form-field appearance="outline" style="width:125px">
+                          <input autofocus matInput placeholder="Course" value="" [(ngModel)]="course" (keyup)="keyDownFunction()" autocomplete="off">
+                        </mat-form-field>
+                      </td>
+                      <td  scope="row">
+                        <mat-form-field appearance="outline" style="width: 100%">
+                          <mat-label>Filter Learning Modality</mat-label>
+                          <mat-select [(ngModel)]="elective" (ngModelChange)='keyDownFunction()'>
+                            <mat-option  value="">- All -</mat-option>
+                            <mat-option *ngFor="let a of electivelist" value="{{a.id}}">{{a.name}}</mat-option>
+                          </mat-select>
+                        </mat-form-field>  
+                      </td>
+                      <td  scope="row"></td>
+                      <td  scope="row"></td>
+                                           
+                      <td style="text-align: center;"  *ngIf="hide&&(global.checkaccess(':Enrollment:PreferredLearningModalityPost')||global.checkaccess(':Enrollment:PreferredLearningModalityDelete'))" scope="row">
+                          
+                    
+                      </td>
+
+                    </tr>
+	    			<tr *ngFor="let a of tableArr | paginate: config">
+                      <td  scope="row">{{a.idNumber}}</td>
+                      <td  scope="row">{{ a.fullName }}</td>
+                      <td  scope="row">{{ a.yearOrGradeLevel }}</td>
+                      <td  scope="row" *ngIf="global.domain=='HIGHSCHOOL'">{{ a.section }}</td>
+                      <td  *ngIf="global.domain=='COLLEGE'||global.domain=='GRADUATE SCHOOL'">{{ a.departmentCode }}</td>
+                      <td  >{{ a.course }}</td>
+                      <td  scope="row">{{ a.name }}</td>
+                      <td  scope="row">{{a.dateRegistered | date: 'mediumDate'}}</td>
+                      <td  scope="row">{{a.dateUpdated | date: 'mediumDate'}}</td>
+                                           
+                      <td style="text-align: center;"  *ngIf="hide&&(global.checkaccess(':Enrollment:PreferredLearningModalityPost')||global.checkaccess(':Enrollment:PreferredLearningModalityDelete'))" scope="row">
+                          
+                          <button mat-raised-button style="width: 80px;color:white;background-color:#006400;" class="buttondesign" (click)="openDialog(a.learningModalityId,a.idNumber,a.fullName)"  *ngIf="global.checkaccess(':Enrollment:PreferredLearningModalityPost')">
+                          <i class="material-icons" >edit</i> 
+                          <span style="margin-top: 7px"> Update&nbsp;&nbsp;</span>
+                              </button>
+
+                              <button mat-raised-button style="width: 80px;background-color:#990000;color:white;margin-top: 5px" class="buttondesign" (click)="swalConfirm('Confirm Delete!','Remove selected Learning Modality of '+a.fullName,a.learningModalityId,a.idNumber)" *ngIf="global.checkaccess(':Enrollment:PreferredLearningModalityDelete')">
+                                <i class="material-icons">delete</i> 
+                                  <span style="margin-top: 7px"> Delete&nbsp;&nbsp;</span>
+                              </button>
+                    
+                      </td>
+
+                    </tr>
+
+                </table>
+                <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+
+                  <mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="tableArr===undefined"></mat-spinner>
+               <div *ngIf="tableArr!=undefined">
+                <p *ngIf="tableArr.length===0" style="text-align: center;"><i>- No result found! -</i></p>
+              </div>
+  </div>
+  </mat-card-content>
+</mat-card>

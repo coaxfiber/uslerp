@@ -1,0 +1,170 @@
+<div class="example-container">
+  <table class="example-full-width" cellspacing="0">
+    <tr> 
+      <td style="padding-right: 20px">
+          <mat-form-field class="example-full-width">
+            <input matInput [(ngModel)]="nationality" placeholder="Nationality">
+          </mat-form-field>
+      </td>
+      <td style="padding-right: 20px">
+        <mat-form-field class="example-full-width">
+          <input matInput [(ngModel)]="religion" placeholder="Religion">
+        </mat-form-field>
+      </td>
+      <td style="padding-right: 20px">
+        <mat-form-field class="example-full-width">
+          <input readonly matInput [matDatepicker]="picker" placeholder="Birth Date" (click)="picker.open()"  [(ngModel)]="dateofbirth" name="bdate" required>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding-right: 20px">
+        <mat-form-field class="example-full-width">
+          <input matInput [(ngModel)]="emailAdd" placeholder="Email Address">
+        </mat-form-field>
+      </td>
+    
+      <td style="padding-right: 20px">
+        <mat-form-field class="example-full-width">
+          <input matInput [(ngModel)]="telno" placeholder="Home Contact Number">
+        </mat-form-field>
+      </td>
+      <td style="padding-right: 20px">
+        <mat-form-field class="example-full-width">
+          <input matInput [(ngModel)]="telno2" placeholder="Current Contact Number">
+        </mat-form-field>
+      </td>
+    </tr>
+
+    <tr>
+      <td width="30%">
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Street" [(ngModel)]="street1" name="lrno">
+        </mat-form-field>
+      </td>
+      <td style="padding-left: 10px"  colspan="2">
+        <mat-form-field class="example-full-widthminus">
+          <input autofocus matInput  placeholder="Home Address" [(ngModel)]="homeaddress" readonly="readonly">
+          
+        </mat-form-field>
+        <button mat-mini-fab color="primary" (click)="openDialog(1)">
+          <mat-icon>search</mat-icon>
+        </button>
+      </td>
+    </tr>
+    <tr>
+      <td width="30%">
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Street" [(ngModel)]="street2" name="lrno">
+        </mat-form-field>
+      </td>
+      <td style="padding-left: 10px" colspan="2">
+        <mat-form-field class="example-full-widthminus">
+          <input autofocus matInput  placeholder="Current/Local Address" [(ngModel)]="curraddress" readonly="readonly">
+        </mat-form-field>
+        <button mat-mini-fab color="primary" (click)="openDialog(2)">
+          <mat-icon>search</mat-icon>
+        </button>
+      </td>
+    </tr>
+
+  </table>
+    
+    <table class="example-full-width" cellspacing="0">
+      <tr>
+        <td style="padding-right: 20px">
+          <mat-form-field class="example-full-width">
+            <mat-select required [(ngModel)]="civilstatus" name="civilS" placeholder="Civil Status">
+              <mat-option value="S">Single</mat-option>
+              <mat-option value="M">Married</mat-option>
+              <mat-option value="W">Widow</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </td>
+        <td style="padding-right: 20px">
+          <mat-form-field class="example-full-width">
+            <input matInput [(ngModel)]="spouse" placeholder="Name of Spouse">
+          </mat-form-field>
+        </td>
+        <td style="padding-right: 20px">
+          <mat-form-field class="example-full-width">
+            <input readonly matInput [matDatepicker]="picker1" placeholder="Date of Marriage" (click)="picker1.open()"  [(ngModel)]="dateofmarriage" name="dateofmarriage" required>
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+        </td>
+      </tr>
+    </table>
+    <table class="example-full-width" cellspacing="0">
+      <td style="padding-right: 20px">
+          <mat-form-field class="example-full-width">
+            <input matInput [(ngModel)]="nameOfChurch" placeholder="Name of Church">
+          </mat-form-field>
+        </td>
+        <td style="padding-right: 20px">
+          <mat-form-field class="example-full-width">
+            <input matInput [(ngModel)]="occupation" placeholder="Occupation">
+          </mat-form-field>
+        </td>
+    </table>
+    <table class="example-full-width" cellspacing="0">
+      <tr>
+        <td style="padding-right: 20px">
+          <mat-form-field class="example-full-width">
+            <input matInput [(ngModel)]="tin" placeholder="TIN Number">
+          </mat-form-field>
+        </td>
+        <td style="padding-right: 20px">
+          <mat-form-field class="example-full-width">
+            <input matInput [(ngModel)]="sssNo" placeholder="SSS Number">
+          </mat-form-field>
+        </td>
+        <td style="padding-right: 20px">
+          <mat-form-field class="example-full-width">
+            <input matInput [(ngModel)]="philHealthNo" placeholder="Philhealth Number">
+          </mat-form-field>
+        </td>
+        <td style="padding-right: 20px">
+          <mat-form-field class="example-full-width">
+            <input matInput [(ngModel)]="pagIbigNo" placeholder="Pag-ibig Number">
+          </mat-form-field>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding-right: 20px">
+          <mat-form-field class="example-full-width">
+            <input matInput [(ngModel)]="CedNo" placeholder="Cedula Number">
+          </mat-form-field>
+        </td>
+        <td style="padding-right: 20px">
+          <mat-form-field class="example-full-width">
+            <input matInput [(ngModel)]="PlaceIssued" placeholder="Place Issued">
+          </mat-form-field>
+        </td>
+        <td style="padding-right: 20px">
+          <mat-form-field class="example-full-width">
+            <input readonly matInput [matDatepicker]="picker2" placeholder="Date Issued" (click)="picker2.open()"  [(ngModel)]="DateIssued" name="DateIssued">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
+        </td>
+        <td style="padding-right: 20px">
+          <mat-form-field class="example-full-width">
+            <input matInput [(ngModel)]="PTRNo" placeholder="PTR Number">
+          </mat-form-field>
+        </td>
+      </tr>
+    </table>
+    <mat-divider></mat-divider>
+    <br>
+    <div mat-dialog-actions style="float: right">
+      <button mat-raised-button (click)="onNoClick()" color="warning">Close</button>
+      <button mat-raised-button color="primary" (click)="savePersonalInfo()">
+        <i class="material-icons">edit</i>Save
+      </button>
+    </div>
+    <br>
+    &nbsp;
+</div>

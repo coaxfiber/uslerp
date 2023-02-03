@@ -1,0 +1,164 @@
+  <mat-card class="example-card">
+  <mat-card-header >
+    <mat-card-title><b>Applicant List with Placement Result (Recommended) - {{global.syDisplay(sy)}}</b></mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content class='colo'>
+  	<mat-divider></mat-divider>
+    <table style="width: 100%;">
+    	<tr>
+        <!--<td style="width: 200px">
+          <mat-form-field class="example-full-width"  appearance="outline" style="width: 200px">
+            <mat-label>Start Date</mat-label>
+            <input readonly matInput [matDatepicker]="picker" placeholder="" (click)="picker.open()"  [(ngModel)]="sdate" name="bdate">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker ></mat-datepicker>
+          </mat-form-field>
+        </td>
+        <td style="width: 200px">
+          <mat-form-field class="example-full-width"  appearance="outline" style="width: 200px">
+            <mat-label>End Date</mat-label>
+            <input readonly matInput [matDatepicker]="picker2" placeholder="" (click)="picker2.open()" [(ngModel)]="edate" name="bdate">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
+        </td>-->
+        <td>
+          {{ array!=undefined ? array.length : 0 }} Record(s) found.
+        </td>
+        <td *ngIf="array!=undefined">
+        <button mat-raised-button (click)="export()" style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; padding: 0;background-color:#006600;color: white;float: right;" *ngIf="array.length!=0">
+          &nbsp;&nbsp;<i class="material-icons">cloud_download
+          </i> <span style="margin-top: 7px"> Export to excel&nbsp;&nbsp;&nbsp;</span></button> 
+        </td>
+  		</tr>
+    </table>
+    <div style="height: 30px">
+
+    </div>
+      <!-- <mat-form-field style="width: 70px;" appearance="outline">
+      <mat-label>filter</mat-label>
+      <mat-select>
+        <mat-option  value='1'>
+          1
+        </mat-option>
+        
+      </mat-select>
+      </mat-form-field> -->
+    <div style="width: 100%;max-height: calc(100vh - 330px); overflow-y: scroll;margin-top: -20px" *ngIf="array!=undefined">
+    <table class="apptable" *ngIf="arraycomp.length!=0">
+	    <tr>
+	      <th style="width:80px">ID Number</th>
+	      <th >Name</th>
+          <th style="min-width:120px">Approved Course</th>
+          <th style="min-width:120px">Approved Course Dept Code</th>
+	      <th style="min-width:120px">Preferred Course</th>
+          <th style="min-width:120px">Preferred Course DeptCode</th>
+          <th style="min-width:100px">Uploaded Report Card</th>
+          <th style="min-width:50px">SMS Counter</th>
+          <th style="min-width:80px">Date Sent</th>
+          <th style="min-width:50px">Result</th>
+	    </tr>
+	    <tr style="height: 10px !important;overflow: hidden;">
+          <td>
+	           	<mat-form-field style="width: 120px" appearance="outline">
+              		<mat-label>ID#</mat-label>
+	              	<input matInput [(ngModel)]="idNumber" (keyup)="Filter()" autocomplete="off">
+	            </mat-form-field>
+        	</td>
+            <td>
+	           	<mat-form-field  appearance="outline">
+              		<mat-label>Name</mat-label>
+	              	<input matInput [(ngModel)]="name" (keyup)="Filter()" autocomplete="off">
+	            </mat-form-field></td>
+            <td>
+				      <mat-form-field style="width: 120px" appearance="outline">
+	              <mat-label>Course</mat-label>
+	              <mat-select  [(ngModel)]="approvedRecommendedCourseVar" (ngModelChange)="Filter()" >
+	              	<mat-option value='all'>
+	              		- All -
+	              	</mat-option>
+	                <mat-option value="{{a}}" *ngFor="let a of approvedRecommendedCourse" >
+                    {{a == "" ? '-Blank-' : a}}
+	                </mat-option>
+	              </mat-select>
+	            </mat-form-field>
+            </td>
+            <td>
+            	<mat-form-field style="width: 120px" appearance="outline">
+	              <mat-label>Dept. Code</mat-label>
+	              <mat-select  [(ngModel)]="approvedRecommendedCourseDeptCodeVar" (ngModelChange)="Filter()" >
+	              	<mat-option value='all'>
+	              		- All -
+	              	</mat-option>
+	                <mat-option value="{{a}}" *ngFor="let a of approvedRecommendedCourseDeptCode" >
+                    {{a == "" ? '-Blank-' : a}}
+                  </mat-option>
+	              </mat-select>
+	            </mat-form-field>
+	        </td>
+            <td>
+	            <mat-form-field style="width: 120px" appearance="outline">
+	              <mat-label>Course</mat-label>
+	              <mat-select  [(ngModel)]="preferredCourseVar" (ngModelChange)="Filter()" >
+	              	<mat-option value='all'>
+	              		- All -
+	              	</mat-option>
+	                <mat-option value="{{a}}" *ngFor="let a of preferredCourse" >
+                    {{a == "" ? '-Blank-' : a}}
+	                </mat-option>
+	              </mat-select>
+	            </mat-form-field></td>
+            <td>
+             <mat-form-field style="width: 120px" appearance="outline">
+              <mat-label>Dept. Code</mat-label>
+              <mat-select  [(ngModel)]="preferredCourseDeptCodeVar" (ngModelChange)="Filter()" >
+              	<mat-option value='all'>
+              		- All -
+              	</mat-option>
+                <mat-option value="{{a}}" *ngFor="let a of preferredCourseDeptCode" >
+                    {{a == "" ? '-Blank-' : a}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            </td>
+            <td>
+            <mat-form-field style="width:100px" appearance="outline">
+              <mat-label>Card Upload</mat-label>
+              <mat-select  [(ngModel)]="reportCardStatusVar" (ngModelChange)="Filter()" >
+              	<mat-option value=''>
+              		- All -
+              	</mat-option>
+                <mat-option value="True">
+                  True
+                </mat-option>
+                <mat-option value="False">
+                  False
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+        </td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    	<tr *ngFor="let a of array">
+            <td>{{a.idNumber}}</td>
+            <td>{{a.name}}</td>
+            <td>{{a.approvedRecommendedCourse}}</td>
+            <td>{{a.approvedRecommendedCourseDeptCode}}</td>
+            <td>{{a.preferredCourse}}</td>
+            <td>{{a.preferredCourseDeptCode}}</td>
+            <td>{{a.uploadedReportCard}}</td>
+            <td>{{a.reportCard_FollowUp_SMS_Ctr}}</td>
+            <td>{{a.reportCard_FollowUp_SMS_LastDate_Sent=="0001-01-01T00:00:00" ? '' : a.reportCard_FollowUp_SMS_LastDate_Sent | date: 'mediumDate'}}</td>
+            <td>{{a.result}}</td>
+        </tr>
+    </table>    
+    </div>              
+  <mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="array===undefined"></mat-spinner>
+  <div *ngIf="array!=undefined">
+    <p *ngIf="array.length===0" style="text-align: center;"><i>- No Data found! -</i></p>
+  </div>
+  </mat-card-content>
+</mat-card>

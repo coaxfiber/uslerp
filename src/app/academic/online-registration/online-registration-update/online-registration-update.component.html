@@ -1,0 +1,250 @@
+<mat-card class="example-card" id="addset" style='padding: 0 !important;max-height: calc(100vh - 150px);overflow-y: auto;'>
+  <mat-card-header >
+    <mat-card-title><b>Update Applicant Information</b></mat-card-title>
+  </mat-card-header>
+  <mat-card-content class='colo'>
+<style type="text/css">
+  @media only screen and (max-width: 800px) {
+  .fullwidth {
+    width: 100% !important;
+    margin-right: 0px;
+  }
+  #boxx{
+    margin: 25px 10px 25px 10px;
+  }
+}
+</style>
+  
+    <mat-progress-bar mode="indeterminate" style="margin: 50px 20px 20px 20px;width: calc(100% - 40px)"  *ngIf='loading'></mat-progress-bar>
+    <p style="text-align: center; padding-bottom: 50px"  *ngIf='loading'>Loading Data...</p>
+
+
+    <table style="width: 100%" *ngIf='loading==false'>
+      <tr *ngIf="data.data.remarksVerification!=''&&data.data.remarksVerification!=null">
+        <td style="padding-left: 30px;padding-bottom: 10px;">
+
+          <span style="background-color: #294a70;color: white;border-radius: 10px;padding: 5px 10px 5px 10px">Payment Remarks: {{ data.data.remarksVerification }}</span>
+        </td>
+      </tr>
+      <tr> 
+        <td style="width: 100%;padding-left: 30px;padding-right: 30px;margin-top: -10px">
+          <mat-form-field appearance="outline" style="width: 100%">
+            <mat-label>Select your Program Level</mat-label>
+            <mat-select [(ngModel)]="proglevelval" (ngModelChange)='check()'>
+              <mat-option *ngFor="let a of proglevel" value="{{a.programLevel}}">{{a.progLevelDesc}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </td>
+      </tr>
+    </table>
+    <div  *ngIf='loading==false'>
+    <p style="margin-top: -15px;padding-left: 40px">
+      <b style="padding-left: 0px;margin-bottom: 10px">Email: {{data.data.emailAdd}}</b></p>
+    <div>
+    <table style="width: 100%;">
+      <tr>
+        <td style="width: 50%;padding-right: 30px;padding-left: 30px" colspan="3">
+          <mat-form-field appearance="outline" style="width: 100%">
+              <mat-label>ID Number</mat-label>
+              <input matInput placeholder="" [(ngModel)]="idnumber" autocomplete="off">
+          </mat-form-field>
+        </td>
+        
+      </tr>
+    </table>
+
+
+    <table style="width: 100%;">
+      <tr>
+        <td style="width: 50%;padding-right: 30px;padding-left: 30px" colspan="3">
+          <mat-form-field appearance="outline" style="width: 100%">
+              <mat-label>First name</mat-label>
+              <input matInput placeholder="" [(ngModel)]="fname" autocomplete="off">
+          </mat-form-field>
+        </td>
+        
+      </tr>
+    </table>
+    <div style="padding-left: 30px;padding-right: 30px;margin-top: -10px">
+          <mat-form-field appearance="outline" style="width: calc(35% - 10px);margin-right: 10px" class="fullwidth">
+              <mat-label>Middle name</mat-label>
+              <input matInput placeholder="" [(ngModel)]="mname" autocomplete="off">
+          </mat-form-field>
+          <mat-form-field appearance="outline" style="width: calc(40% - 10px);margin-right: 10px" class="fullwidth">
+              <mat-label>Last name</mat-label>
+              <input matInput placeholder="" [(ngModel)]="lname" autocomplete="off" >
+          </mat-form-field>
+          <mat-form-field appearance="outline" style="width: 25%" class="fullwidth">
+              <mat-label>Suffix</mat-label>
+              <input matInput placeholder="" [(ngModel)]="suffix" autocomplete="off">
+          </mat-form-field>
+    </div>
+
+    <div style="padding-left: 30px;padding-right: 30px;margin-top: -10px">
+         
+          <mat-form-field appearance="outline" style="width: calc(35% - 10px);margin-right: 10px" class="fullwidth">
+            <mat-label>Gender</mat-label>
+            <mat-select  [(ngModel)]="gender">
+              <mat-option value="M">Male</mat-option>
+              <mat-option value="F">Female</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline"  style="width: calc(40% - 10px);margin-right: 10px" class="fullwidth">
+              <mat-label>Birth Date</mat-label>
+          <input readonly matInput [matDatepicker]="picker" placeholder="Birth Date" (click)="picker.open()"  [(ngModel)]="bdate" name="bdate">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="outline" style="width: 25%"  class="fullwidth">
+              <mat-label>Contact Number</mat-label>
+              <input matInput autocomplete="off" [(ngModel)]="cnumber" placeholder="0917XXXXXXX" maxlength="11">
+          </mat-form-field>
+    </div>
+
+    <div style="padding-left: 30px;padding-right: 30px;margin-top: -10px"  *ngIf="proglevelval=='01'||proglevelval=='02'||proglevelval=='03'">
+         
+          
+          <mat-form-field appearance="outline"  style="width: calc(30% - 10px);margin-right: 10px" class="fullwidth">
+              <mat-label>Contact Person</mat-label>
+              <input matInput placeholder="" autocomplete="off" [(ngModel)]="cperson">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" style="width: 50%;margin-right: 10px"  *ngIf="proglevelval!='01'&&proglevelval!='02'&&proglevelval!='03'" class="fullwidth">
+            <mat-label>School Graduated From</mat-label>
+            <input type="text" placeholder="" [(ngModel)]="gradfrom" matInput [matAutocomplete]="auto" (keydown)='keyDownFunction()'>
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let option of schoolstemp" [value]="option">
+                {{option}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" style="width: calc(20% - 10px);" class="fullwidth"   *ngIf="proglevelval!='01'&&proglevelval!='02'&&proglevelval!='03'">
+            <mat-label>Year Graduated</mat-label>
+            <mat-select  [(ngModel)]="yeargrad">
+              <mat-option *ngFor="let a of currdatearray" value="{{a}}">{{a}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+    </div>
+
+    <div style="padding-left: 30px;padding-right: 30px;margin-top: -10px"  *ngIf="proglevelval=='04'||proglevelval=='05'||proglevelval=='06'||proglevelval=='07'">
+         
+          
+          <mat-form-field appearance="outline" style="width: 70%;margin-right: 10px"  *ngIf="proglevelval!='01'&&proglevelval!='02'&&proglevelval!='03'" class="fullwidth">
+            <mat-label>School Graduated From</mat-label>
+            <input type="text" placeholder="" [(ngModel)]="gradfrom" matInput [matAutocomplete]="auto" (keydown)='keyDownFunction()'>
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let option of schoolstemp" [value]="option">
+                {{option}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" style="width: calc(30% - 10px);" class="fullwidth"   *ngIf="proglevelval!='01'&&proglevelval!='02'&&proglevelval!='03'">
+            <mat-label>Year Graduated</mat-label>
+            <mat-select  [(ngModel)]="yeargrad">
+              <mat-option *ngFor="let a of currdatearray" value="{{a}}">{{a}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+    </div>
+
+      <table style="padding-left: 30px;padding-right: 30px;margin-top: -10px;width: 100%" *ngIf="proglevelval=='04'||proglevelval=='05'||proglevelval=='06'||proglevelval=='07'">
+      <tr>
+        <td>
+        <mat-form-field style="width: calc(100% - 50px)" appearance="outline"  (click)="lookup()">
+          <mat-label>School Address</mat-label>
+          <input autofocus matInput [(ngModel)]="address" readonly="readonly">
+          
+        </mat-form-field>
+        <button mat-mini-fab color="primary"  (click)="lookup()" style="float: right;margin-top: 13px">
+          <mat-icon>search</mat-icon>
+        </button>
+        </td>
+      </tr>
+      </table>
+
+
+    <div *ngIf="proglevelval=='05'">
+      <div style="padding-left: 30px;padding-right: 30px;margin-top: -10px">
+            <mat-form-field appearance="outline" style="width: calc(100% - 10px);margin-right: 10px" class="fullwidth">
+              <mat-label>Select Strand Priority 1</mat-label>
+              <mat-select [(ngModel)]="strandval">
+                <mat-option *ngFor="let a of strandfiltered" value="{{a.strandId}}">{{a.strandTitle}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+      </div>
+      <div style="padding-left: 30px;padding-right: 30px;margin-top: -10px">
+           
+            <mat-form-field appearance="outline" style="width: calc(100% - 10px);margin-right: 10px" class="fullwidth">
+              <mat-label>Select Strand Priority 2</mat-label>
+              <mat-select [(ngModel)]="strandval1">
+                <mat-option *ngFor="let a of strandfiltered" value="{{a.strandId}}">{{a.strandTitle}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+      </div>
+    </div>
+
+    <div *ngIf="proglevelval=='06'">
+      <div style="padding-left: 30px;padding-right: 30px;margin-top: -10px">
+            <mat-form-field appearance="outline" style="width: calc(100% - 10px);margin-right: 10px" class="fullwidth">
+              <mat-label>Select Current Strand</mat-label>
+              <mat-select [(ngModel)]="collegestrandval">
+                <mat-option *ngFor="let a of strand" value="{{a.strandId}}">{{a.strandTitle}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+      </div>
+    <div style="padding-left: 30px;padding-right: 30px;margin-top: -10px">
+          <mat-form-field appearance="outline" style="width: calc(100% - 10px);margin-right: 10px" class="fullwidth">
+            <mat-label>Select Preferred Course</mat-label>
+            <mat-select [(ngModel)]="courseval">
+              <mat-option *ngFor="let a of courses" value="{{a.programId}}">{{a.course}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+    </div>
+    <div style="padding-left: 30px;padding-right: 30px;margin-top: -10px">
+          <mat-form-field appearance="outline" style="width: calc(100% - 10px);margin-right: 10px" class="fullwidth">
+            <mat-label>Select Alternative Course 1</mat-label>
+            <mat-select [(ngModel)]="courseval1">
+              <mat-option *ngFor="let a of courses" value="{{a.programId}}">{{a.course}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+    </div>
+    <div style="padding-left: 30px;padding-right: 30px;margin-top: -10px">
+          <mat-form-field appearance="outline" style="width: calc(100% - 10px);margin-right: 10px" class="fullwidth">
+            <mat-label>Select Alternative Course 2</mat-label>
+            <mat-select [(ngModel)]="courseval2">
+              <mat-option *ngFor="let a of courses" value="{{a.programId}}">{{a.course}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+    </div>
+    </div>
+    <div *ngIf="proglevelval=='07'">
+    <div style="padding-left: 30px;padding-right: 30px;margin-top: -10px">
+          <mat-form-field appearance="outline" style="width: calc(100% - 10px);margin-right: 10px" class="fullwidth">
+            <mat-label>Select Program</mat-label>
+            <mat-select [(ngModel)]="courseval">
+              <mat-option *ngFor="let a of gradcourses" value="{{a.programId}}">{{a.course}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+    </div>
+    </div>
+
+    <table style="width: 100%;margin-top: -15px">
+      <tr>
+        <td style="width: 50%;padding-right: 30px;padding-left: 30px" colspan="3">
+          <mat-form-field appearance="outline" style="width: 100%">
+              <mat-label>Remarks</mat-label>
+              <input matInput placeholder="" [(ngModel)]="remarks" autocomplete="off">
+          </mat-form-field>
+        </td>
+        
+      </tr>
+    </table>
+
+	  <button mat-raised-button (click)="close()">Cancel</button>
+	  <button mat-raised-button color="primary" (click)="register()" style="float: right;" >Update</button>
+
+    </div>
+    </div>
+</mat-card-content>
+</mat-card>

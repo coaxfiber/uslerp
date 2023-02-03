@@ -1,0 +1,132 @@
+<mat-card class="example-card" id="addset" style='padding: 0 !important;'>
+  <mat-card-header >
+    <mat-card-title><b>Subject Mapping</b></mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content class='colo'>
+  	<table>
+  		<tr>
+  			<td style="width: 95px">
+  				Subject ID: 
+  			</td>
+  			<td>
+  				<b>{{ data.checklist.subjectId }}</b>
+  			</td>
+  		</tr>
+  		<tr>
+  			<td>
+  				Subject Title:
+  			</td>
+  			<td>
+  		 		<b>{{ data.checklist.subjectTitle }}</b>
+  			</td>
+  		</tr>
+  		<tr>
+  			<td>
+  				Total Units:
+  			</td>
+  			<td>
+  		 		<b>{{ data.checklist.totalUnits }}</b>
+  			</td>
+  		</tr>
+  	</table>
+  	<hr>
+
+  	<div style="max-height: calc(100vh - 500px);overflow-y: scroll;">
+  		<table style="width: 100%"  *ngIf="global.checkaccess(':StudentEvaluation:StudentEvaluationHistoryPost')&&global.checkaccess(':StudentEvaluation:SubjectEvaluationStatusListGet')" >
+  			<tr>
+  				<td>
+	  				<mat-form-field  style="width: 100%"  appearance="outline">
+					  <mat-label>Academic History</mat-label>
+		              <mat-select [(ngModel)]="notcred" name="notcred">
+                    <mat-option value="{{f.recordId}}" *ngFor="let f of data.map" >
+                      {{f.subjectId}} - {{ f.subjectTitle }} with {{ f.units }} total units:{{ f.grade }}
+                    </mat-option>
+                    <mat-option value="{{f.recordId}}" *ngFor="let f of notcredited" >
+                      {{f.subjectId}} - {{ f.subjectTitle }} with {{ f.units }} total units:{{ f.grade }}
+                    </mat-option>
+		              </mat-select>
+					</mat-form-field>
+  				</td>
+          <td style="width: 250px">
+            <mat-form-field style="width: 100%"  appearance="outline">
+            <mat-label>Status</mat-label>
+                  <mat-select [(ngModel)]="status" name="status" placeholder="Status">
+                    <mat-option value="{{f.statusId}}" *ngFor="let f of data.status" >
+                      {{f.status}}
+                    </mat-option>
+                  </mat-select>
+          </mat-form-field>
+          </td>
+          <td style="width: 110px">
+            <button mat-raised-button color="primary" style="margin-top: -16px" (click)="save()">Add Subject</button>
+          </td>
+  			</tr>
+  		</table>
+  		<table class="apptablegrade" style="width: 100%"  *ngIf="global.checkaccess(':StudentEvaluation:StudentEvaluationHistoryGet')" >
+          <tr>
+            <th style="width: 100px;text-align: center;">
+              Subject ID
+            </th>
+            <th>
+              Subject Title
+            </th>
+            <th style="width: 80px;text-align: center;">
+              Total Units
+            </th>
+            <th style="width: 62px;text-align: center;">
+              Grade
+            </th>
+            <th style="width: 120px;text-align: center;">
+              Status
+            </th>
+            <th style="width: 80px;text-align: center;">
+              - Action - 
+            </th>
+          </tr>
+          <tr *ngFor="let a of acadhist">
+            <td>
+              {{a.subjid}}
+            </td>
+            <td>
+              {{a.subjtitle}}
+            </td>
+            <td>
+              {{a.units}}
+            </td>
+            <td>
+              {{a.grade}}
+            </td>
+            <td>
+              {{a.status}}
+            </td>
+            <td>
+              
+                          
+            <button mat-raised-button style="font-size:11px;min-width:18px;line-height: 15px;height: 28px; padding: 0;margin-left: 5px;background-color:#006400;color: white" 
+             (click)="openUpdatemapping(a)"  *ngIf="global.checkaccess(':StudentEvaluation:SubjectAcademicHistoryMappingPut')">
+                &nbsp;<i class="material-icons">edit</i>&nbsp;
+            </button>  
+            <button mat-raised-button style="font-size:11px;min-width:18px;line-height: 15px;height: 28px; padding: 0;margin-left: 5px;background-color:#990000;color: white" 
+             (click)="removesub(a.id)" *ngIf="global.checkaccess(':StudentEvaluation:SubjectAcademicHistoryMappingDelete')" >
+                &nbsp;<i class="material-icons">delete</i>&nbsp;
+            </button>  
+            </td>
+          </tr>
+      </table>
+      <div>
+	     <mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="acadhist===undefined"></mat-spinner>
+	     <div *ngIf="acadhist!=undefined">
+	      <p *ngIf="acadhist.length===0" style="text-align: center;"><i>- No result found! -</i></p>
+	    </div>
+      </div>
+	</div>
+
+	  <div style="height: 10px"></div>
+	  <mat-divider></mat-divider>
+	  <div style="height: 10px"></div>
+	  <button mat-raised-button (click)="close()"  style="float: right;">Close</button>
+    <div style="height: 30px"></div>
+
+  </mat-card-content>
+</mat-card>

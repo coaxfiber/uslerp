@@ -1,0 +1,127 @@
+.example-form {
+  margin-right: 10px;
+  height: 100%;
+}
+.BasicInformationDisplay{
+  width: 100%;
+  display: block;
+}
+.tblInfo{
+  width: 100%;
+}
+#info1stCol{
+  float: left;
+  //margin-top: -50px;
+}
+#EmpPosition{
+  margin-top: -20px;
+}
+#EmpIDnumber{
+  margin-top: -5px;
+  float: left;
+}
+#DTRIDnum{
+  margin-top: 15px;
+  margin-left: -64px;
+  float: left;
+  //margin-left: -25px;
+}
+#hr{margin-top: -10px;}
+::ng-deep .mat-card-header {
+    background-color: #294a70 !important;
+    padding: 15px 5px 5px 5px !important;
+    color:white;
+}
+::ng-deep .mat-card-header * {
+    color:white;
+}
+
+::ng-deep .mat-card {
+    padding: 0 !important;
+}
+
+::ng-deep .mat-card-content {
+    padding: 15px !important;
+}
+
+.mat-form-field-infix{
+  width: auto !important;
+}
+
+#childrenCSS {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+#rowHeaderCss{
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  padding-top: 8px;
+  padding-bottom: 8;
+  text-align: center;
+  background-color: #294a70;
+  color: white;
+}
+#childrenCSS td, #childrenCSS th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+//#childrenCSS tr:nth-child(even){background-color: #f2f2f2;}
+
+
+#childrenCSS th {
+  padding-top: 8px;
+  padding-bottom: 8;
+  text-align: center;
+  background-color: #294a70;
+  color: white;
+  font-weight: bold;
+}
+
+#tableHeaderCss{
+  width: 100px;
+}
+
+.leaveCredits{
+  margin-top: -12px
+}
+.btnstyle{
+  font-size:11px;
+  width: 80px;
+  min-width:18px;
+  line-height: 15px;
+  height: 28px;
+  padding: 0;
+  margin-left: 5px
+}
+
+.btnstyle1{
+  font-size:11px;
+  width: 40px;
+  min-width:18px;
+  line-height: 15px;
+  height: 28px;
+  padding: 0;
+}
+.btnAction{
+  font-size:13px;
+  width: 120px;
+  min-width:18px;
+  line-height: 10px;
+  height: 38px;
+  padding: 0;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.btnAction:hover {background-color: #ddd;}
+.sit-in-the-corner {
+    float: left;
+    margin-left: 5px;
+    margin-top: -85px;
+}
+
+#redbtn{
+      background-color: #990000;
+      color: white;
+}

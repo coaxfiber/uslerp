@@ -1,0 +1,69 @@
+<mat-card class="example-card">
+  <mat-card-header >
+    <mat-card-title><b>Register/Reset Employee Account</b></mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content class='colo'>
+  	<mat-divider></mat-divider>
+  	<br>
+    <form class="example-form"  id="ngForm" #documentEditForm="ngForm"> 
+		  <table class="example-full-width" cellspacing="0">
+		  <tr>
+		    <td width="270px">
+		   <mat-form-field class="txtid">
+		      <input matInput #idno maxlength="7" placeholder="ID Number" [(ngModel)]="id"  value="" name="idno" (keydown)="keyDownFunction($event)">
+		      <mat-hint align="start">{{idno.value.length}} / 7</mat-hint>
+		    </mat-form-field>
+		    <button mat-mini-fab color="primary" (click)="emplookup()">
+			    <mat-icon>search</mat-icon>
+			  </button></td>
+		    <td rowspan="3" style="padding-left: 20px;" >
+		    	<table style="width: 100%">
+		    		<tr>
+		    			<td style="width: 150px">
+		    				<img [src]="image" width="150" onError="this.src='assets/noimage.jpg'"/>
+		    			</td>
+		    			<td>
+		    				<h3 style="margin-bottom: 0;margin-top: 0">{{name}}</h3><p style="margin-top: 5px">{{position}}</p>
+
+							      <div *ngIf="name!=''">
+							        <mat-slide-toggle [checked]="locked" (change)="enable()" [disabled]='disabledlock'>
+							          <span *ngIf="locked==false"> Unlocked</span>
+							          <span *ngIf="locked==true"> Locked</span>
+							        </mat-slide-toggle>
+							      </div><br>
+
+	  						<button mat-raised-button color="primary" *ngIf="name!=''&&global.checkaccess(':Role:Roles')" (click)="openDialogManageRole()" >Manage Role</button>
+		    			</td>
+		    		</tr>
+		    	</table>
+		    </td>
+		  	<!--<mat-form-field class="example-full-width">
+		      <input matInput placeholder="LR Number" value="" [(ngModel)]="options.value.lrno" name="lrno" required>
+		    </mat-form-field>-->
+		  </tr>
+		  <tr>
+		  	<td>
+		  		<mat-form-field class="example-full-width">
+			      <input #pword2 matInput placeholder="Password" type="password" value="" [(ngModel)]="pword" name="lrno" [disabled]="disabledpword">
+			    </mat-form-field>
+
+		  	</td>
+		  </tr><tr>
+		  	<td>
+		  		<mat-form-field class="example-full-width">
+			      <input matInput placeholder="Confirm Password" type="password" value="" [(ngModel)]="cpword" name="lrno" [disabled]="disabledpword">
+			    </mat-form-field>
+		  	</td>
+		  </tr>
+		  </table>
+		  <mat-checkbox (click)="default()"   onclick="return false;"  [checked]="isChecked" readonly="readonly"> <label>Use default Password</label></mat-checkbox><br><br>
+		</form>
+  <mat-divider></mat-divider><br>
+	  <button mat-raised-button (click)="clear()">Clear</button>
+	  &nbsp; <span *ngIf="indicatorload==1" > Loading...</span>
+	  <button mat-raised-button color="primary" (click)="onSubmit()"  [disabled]="!submit"  *ngIf="global.checkaccess(':Account:Register')&&submitword=='Register'&&indicatorload==2">Register</button>
+
+	  <button mat-raised-button color="primary" (click)="onSubmit()"  [disabled]="!submit"  *ngIf="global.checkaccess(':Account:Register')&&submitword=='Reset'&&indicatorload==2">Reset</button>
+  </mat-card-content>
+</mat-card>

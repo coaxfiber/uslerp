@@ -1,0 +1,474 @@
+  <mat-card class="example-card">
+  <mat-card-header >
+    <mat-card-title>
+      <b>Placement Manager</b>
+
+    </mat-card-title>
+  </mat-card-header>
+    
+  <mat-card-content class='colo'>
+  	<mat-divider></mat-divider>
+  	<br>
+    <table style="width: 600px">
+  		<tr>
+  			<td width="160">
+  				<img [src]="image" width="150" onError="this.src='assets/noimage.jpg'"/>
+  			</td>
+  			<td>
+		  <table class="example-full-width" cellspacing="0" summary="">
+		  <tr>
+		    <td width="50%"><mat-form-field class="example-full-widthminus">
+		      <input autofocus matInput #idno2 maxlength="7" placeholder="ID Number" value="" [(ngModel)]="id" name="idno" required="required"  (keyup)="keyDownFunction($event)">
+		    </mat-form-field>
+		    <button mat-mini-fab color="primary" (click)="studentlookup()">
+			    <mat-icon>search</mat-icon>
+			  </button></td>
+			  <td style="text-align: right;">
+           <span >SMS: <b>{{smsleft}}</b></span>
+         </td>
+		  </tr>
+		  </table>
+
+		    <h3 *ngIf="lname!=''" style="margin: 0px">{{lname}}, {{fname}} {{mname}} {{suffix}}</h3>
+		    <div style="height: 10px"></div>
+			  <table class="example-full-width" cellspacing="0"  *ngIf="lname!=''"><tr>
+			    <td width="40%">
+					<mat-form-field class="example-full-width" style="width: calc(100% - 5px)">
+						<mat-label>Contact Number</mat-label>
+			      		<input matInput [(ngModel)]="cno"  type="text" maxlength="11" autocomplete="off" readonly="readonly">
+			    	</mat-form-field>
+			    </td>
+			    <td width="60%">
+					
+            <b style="float: right;font-size: 12px;background-color: #294a70;color: white;padding: 3px 6px 3px 6px;border-radius:5px">{{enrollmentstatus}}</b>
+			    </td>
+			  </tr></table>
+        <div style="height: 92px" *ngIf="!(lname!='')"></div>
+  			</td>  
+  		</tr>
+  	</table>
+    <div *ngIf="lname!=''" style="width: 750px" >
+      <button mat-raised-button color="primary" (click)="savebutton()" [disabled]="savestatus"  *ngIf="global.checkaccess(':Placement:PlacementInformationPut')"> <i class="material-icons iconsize">exit_to_app</i> Save</button>
+      &nbsp;<button mat-raised-button color="primary" (click)="createaccount()"  [disabled]="myportalbutton" *ngIf="global.checkaccess(':Placement:CheckUserInfoGet')"> <i class="material-icons iconsize">face</i> Create MyPortal Account</button>
+      &nbsp;<button mat-raised-button color="primary" (click)="openreportcard()" [disabled]="!((preference.result==='R')&&global.domain=='COLLEGE')" > <i class="material-icons iconsize">calendar_view_day</i> View Report Card</button> 
+      <span *ngIf='myportalstatus' style="float: right;margin-top:10px"><b style="color:green">With MyPortal Account</b></span>
+      <span *ngIf='!myportalstatus' style="float: right;margin-top:10px"><b style="color:red">No MyPortal Account</b></span>
+    </div>
+  <div style="height: 10px"></div>
+  <mat-divider></mat-divider>
+  <div style="height: 10px"></div>
+  <div  style="max-width: 800px">
+  <mat-accordion *ngIf="lname!=''">
+  <mat-expansion-panel [expanded]="true" >
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Examination Results
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+
+      <mat-form-field appearance="outline" style="width: 100%;margin-top: 10px">
+        <mat-label>- For School Year -</mat-label>
+        <mat-select  [(ngModel)]="preference.examForSchoolYear">
+          <mat-option *ngFor="let x of sylist" [value]="x.syWithSem">
+            {{ display(x.syWithSem) }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+          <div  *ngIf="global.domain=='HIGHSCHOOL'" style="width: 700px;">
+            <table>
+              <tr>
+                <td style="width: 300px">
+            <mat-form-field appearance="outline" style="width: 300px;">
+              <mat-label>Result:</mat-label>
+                <mat-select [(ngModel)]="preference.result">
+                  <mat-option value="0">(not set)</mat-option>
+                  <mat-option value="P">P - Passed</mat-option>
+                  <mat-option value="R">R - Recommended</mat-option>
+                  <mat-option value="F">F - Failed</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </td>
+              <td style="width: 400px">
+                 <fieldset>
+            <legend>SMS Status</legend>
+               <div style="height: 10px"></div>
+                <div  *ngIf="!preference.testResultSent&&preference.result=='P'" >
+                <p style="color: red;" class="textsee">
+                  *Test result is not yet sent. <br>(<a href="javascript:void(0)" (click)="HSresult()"  style="color:#557abc;text-decoration: none;">Send Test Result</a>)
+                </p>
+                </div>
+                <div  *ngIf="preference.testResultSent&&preference.result=='P'"  style="margin-top: -15px">
+                <p style="color: green;" class="textsee">
+                  *Test result was already sent. <br>(<a href="javascript:void(0)" (click)="HSresult()"  style="color:#557abc;text-decoration: none;">Resend</a>)
+                </p>
+                </div>
+                <div  *ngIf="preference.result!='P'" style="margin-top: -15px">
+                  -Not Available-
+                </div>
+              </fieldset>
+              </td>
+            </tr>
+          </table>
+            </div>
+          <div  *ngIf="global.domain=='COLLEGE'||global.domain=='GRADUATE SCHOOL'" style="width: 700px;">
+          <div style="width: 330px;float: left;padding: 10px">
+            <mat-form-field appearance="outline" style="width: 100%">
+              <mat-label>Exam Schedule:</mat-label>
+              <mat-select [(ngModel)]="preference.testScheduleId">
+                <mat-option value="0">(not set)</mat-option>
+                <mat-option *ngFor="let a of examsched" value="{{a.id}}">{{a.testDate}} ({{a.allocated}}/{{a.slots}})</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" style="width: 100%;margin-top: -15px">
+              <mat-label>Exam Room:</mat-label>
+              <mat-select [(ngModel)]="preference.examRoom">
+                <mat-option *ngFor="let a of rooms"  value="{{a.roomid}}">{{a.roomname}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+
+            <mat-form-field appearance="outline" style="width: 100%;margin-top: -15px">
+              <mat-label>Exam Date:</mat-label>
+              <input readonly matInput [matDatepicker]="picker" (click)="picker.open()"  [(ngModel)]="preference.examDate">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+
+            <table style="width: 100%;margin-top: -15px">
+              <tr>
+                <td style="width: 50%">
+                    <mat-form-field appearance="outline" style="width: 169px" class="fullwidth">
+                        <mat-label>VIT Stanine</mat-label>
+                        <input matInput placeholder="" [(ngModel)]="preference.vit" autocomplete="off" type="number"
+                        (keyup)="checkchanges()" maxlength="1" max="999">
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field appearance="outline" style="width: 169px" class="fullwidth">
+                        <mat-label>NVIT Stanine</mat-label>
+                        <input matInput placeholder="" [(ngModel)]="preference.nvit" autocomplete="off" type="number"(keyup)="checkchanges()" maxlength="1" max="999">
+                    </mat-form-field>
+                </td>
+              </tr>
+            </table>
+
+            &nbsp;&nbsp;&nbsp;Vit/NVit Result: <b>{{preferredCourseIdtext}}</b>
+            <br><br><br>
+            <mat-form-field appearance="outline" style="width: 100%;margin-top: -15px">
+              <mat-label>Result:</mat-label>
+                <mat-select [(ngModel)]="preference.result">
+                  <mat-option value="0">(not set)</mat-option>
+                  <mat-option value="P">P - Passed</mat-option>
+                  <mat-option value="R">R - Recommended</mat-option>
+                  <mat-option value="F">F - Failed</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+                <div  *ngIf="global.domain=='COLLEGE'||global.domain=='GRADUATE SCHOOL'">
+                  <table style="margin-top: -18px">
+                    <tr>
+                      <td style="width: 350px;padding-right:  15px">
+                          <mat-form-field appearance="outline" style="width: 100%">
+                            <mat-label>Exemption Type:</mat-label>
+                            <mat-select [(ngModel)]="preference.exemptionType">
+                              <mat-option value="0">(not set)</mat-option>
+                              <mat-option value="1">USL HS Graduate</mat-option>
+                              <mat-option value="2">Science HS Graduate</mat-option>
+                              <mat-option value="3">Gold Section of CNHS</mat-option>
+                              <mat-option value="4">Valedictorian</mat-option>
+                              <mat-option value="5">Salutatorian</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                      </td>
+                    </tr>
+                </table> 
+            </div>
+
+            <p style="text-align: center;">
+              <button mat-raised-button color="primary" (click)="openpdf(2)" > <i class="material-icons iconsize">file_copy</i> FM-GCC-314</button>
+              &nbsp;&nbsp;
+              <button mat-raised-button color="primary" (click)="openpdf(1)" > <i class="material-icons iconsize">file_copy</i> FM-GCC-304</button>
+              </p>
+              <div style="height:10px"></div>
+          </div>
+
+          <div style="float: right;width: 330px;padding: 10px">
+            <fieldset>
+            <legend>Release information</legend>
+            <mat-form-field appearance="outline" style="width: 100%">
+              <mat-label>Release Date:</mat-label>
+              <input readonly matInput [matDatepicker]="picker2" (click)="picker2.open()"  [(ngModel)]="preference.dateReleased">
+              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+              <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+
+            &nbsp;&nbsp;&nbsp;<mat-checkbox  [(ngModel)]='preference.released' style="margin-top: -15px">Released</mat-checkbox>
+            <div style="height: 10px"></div>
+            &nbsp;&nbsp;&nbsp;<b>Released by: {{preference.releasedBy}}</b><br>
+            <div style="height: 10px"></div>
+
+              <button mat-raised-button (click)="updaterelease()" [disabled]='updatereleasetemp&&savestatus' style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; background-color:#006600;color: white;" *ngIf="global.checkaccess(':Placement:PlacementReleasePut')">
+              &nbsp;&nbsp;<i class="material-icons">update</i>
+              <span style="margin-top: 7px"> Update release info&nbsp;&nbsp;&nbsp;</span>
+              </button>
+            <div style="height: 5px"></div>
+              </fieldset>
+
+            <div style="height: 10px"></div>
+              <fieldset>
+            <legend>SMS Status</legend>
+
+              <div *ngIf="preference!=undefined"><!--&&(programLevel=='04'||programLevel=='05')-->
+              <style type="text/css">
+                .textsee {
+                  margin: 0 0 10px 0;
+
+                   font-weight: bold;
+                }
+              </style>
+                <!--FOR HS!-->
+
+                <div  *ngIf="global.domain=='COLLEGE'"  style="margin-top: 10px">
+                <p style="color: red;" class="textsee" *ngIf="!preference.testSchedSent">
+                  *Test schedule is not yet sent. <br>(<a href="javascript:void(0)" (click)="sendexamschedule()"  style="color:#557abc;text-decoration: none;">Send Test Schedule</a>)
+                </p>
+                 <p style="color: green;" class="textsee" *ngIf="preference.testSchedSent">
+                *Test schedule was already sent. <br>(<a href="javascript:void(0)" (click)="sendexamschedule()" style="color:#557abc;text-decoration: none;">Resend</a>)
+                </p>
+                </div>
+
+
+                <div style="height: 17px"></div>
+                <p style="color: green;" class="textsee" *ngIf="preference.testResultSent&&global.domain=='HIGHSCHOOL'&&saved" class="textsee">
+                *Test result was already sent. <br>(<a href="javascript:void(0)" (click)="sendtestsched('2')" style="color:#557abc;text-decoration: none;">Resend</a>)
+                </p>
+                <p style="color: red;" class="textsee" *ngIf="!preference.testResultSent&&saved&&global.domain=='HIGHSCHOOL'">
+                *Test result is not yet sent. <br>(<a href="javascript:void(0)" (click)="sendtestsched('2')" style="color:#557abc;text-decoration: none;">Send Test Result</a>)
+                </p>
+
+                <div  *ngIf="!preference.testResultSent&&global.domain=='COLLEGE'&&preference.result!='R'"  style="margin-top: -15px">
+                <p style="color: red;" class="textsee">
+                  *Test result is not yet sent. <br>(<a href="javascript:void(0)" (click)="sendrecommended('2')"  style="color:#557abc;text-decoration: none;">Send Test Result</a>)
+                </p>
+                </div>
+                <div  *ngIf="preference.testResultSent&&global.domain=='COLLEGE'&&preference.result!='R'"  style="margin-top: -15px">
+                <p style="color: green;" class="textsee">
+                  *Test result was already sent. <br>(<a href="javascript:void(0)" (click)="sendrecommended('2')"  style="color:#557abc;text-decoration: none;">Resend</a>)
+                </p>
+                </div>
+
+                <!--FOR COLLEGE RECOMMENDED!-->
+                <div *ngIf="preference.testResultSent&&global.domain=='COLLEGE'&&preference.result=='R'" style="margin-top: -15px">
+                <p style="color: green;" class="textsee">
+                  <select [(ngModel)]="selectrecommended">
+                    <option value="0" selected>- Select option for recommended status -</option>
+                    <option value="1">Edit for recommended</option>
+                    <option value="3">Approved recommended status of guidance result</option>
+                  </select>
+                *Test result was already sent. <br>(<a href="javascript:void(0)" (click)="sendrecommended('1')"  style="color:#557abc;text-decoration: none;">Resend</a>)
+                </p>
+                </div>
+
+                <div  *ngIf="!preference.testResultSent&&global.domain=='COLLEGE'&&preference.result=='R'"  style="margin-top: -15px">
+                <p style="color: red;" class="textsee">
+                  <select [(ngModel)]="selectrecommended">
+                    <option value="0" selected>- Select option for recommended status -</option>
+                    <option value="1">Edit for recommended</option>
+                    <option value="3">Approved recommended status of guidance result</option>
+                  </select>
+                  *Test result is not yet sent. <br>(<a href="javascript:void(0)" (click)="sendrecommended('1')"  style="color:#557abc;text-decoration: none;">Send Test Result</a>)
+                </p>
+                </div>
+
+                
+                <div *ngIf="global.domain=='COLLEGE'&&preference.result=='R'">
+                <p style="color: #294a70;" class="textsee">
+                  *Follow up on Report Card.<br>
+                  Message sent: {{preference.reportCard_FollowUp_SMS_Ctr}} (<a href="javascript:void(0)" (click)="reportCardFollowUp()"  style="color:#557abc;text-decoration: none;">Resend</a>)<br>
+                  Last sent: <span *ngIf="preference.reportCard_FollowUp_SMS_LastDate_Sent!=='0001-01-01T00:00:00'">{{preference.reportCard_FollowUp_SMS_LastDate_Sent | date:'mediumDate'}}</span>
+                </p>
+                </div>
+            </div>
+            <div style="height: 5px"></div>
+              </fieldset>
+          </div>
+
+            </div>
+            
+             <div  *ngIf="global.domain=='COLLEGE'||global.domain=='GRADUATE SCHOOL'">
+
+                <div *ngIf="global.domain=='COLLEGE'" >
+                      <mat-form-field appearance="outline" style="width: calc(100% - 10px);margin-right: 10px;margin-top: -10px" class="fullwidth">
+                        <mat-label>Select Current Strand</mat-label>
+                        <mat-select [(ngModel)]="preference.strand">
+                              <mat-option value="">- Select Strand -</mat-option>
+                          <mat-option *ngFor="let a of strand" value="{{a.strandId}}">{{a.strandTitle}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                </div>
+
+                  <table style="width: 100%">
+                    <tr>
+                      <td style="width: calc(100% - 200px)">
+                          <mat-form-field appearance="outline" style="width: calc(100% - 10px);margin-right: 10px;margin-top: -10px" class="fullwidth">
+                          <mat-label>Select Guidance Result</mat-label>
+                            <mat-select [(ngModel)]="preference.gResult" (ngModelChange)="checkchanges()">Select Guidance Result
+                              <mat-option value="">(not set)</mat-option>
+                              <mat-option *ngFor="let a of courses" value="{{a.programId}}">{{a.course}} ({{a.courseCode}})</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                      </td>
+                      <td style="width: 200px">
+                        {{ gResulttext }}
+                      </td>
+                    </tr>
+                  </table>
+              <div style="margin-top: -10px"  *ngIf="global.domain=='COLLEGE'||global.domain=='GRADUATE SCHOOL'">
+
+                  <table style="width: 100%">
+                    <tr>
+                      <td style="width: calc(100% - 200px)">
+                           <mat-form-field appearance="outline" style="width: calc(100% - 10px);margin-right: 10px" class="fullwidth">
+                          <mat-label>Select Preferred Course</mat-label>
+                          <mat-select [(ngModel)]="preference.preferredCourseId" placeholder="{{preference.preferredCourse}}" (ngModelChange)="checkchanges()">
+                            <mat-option value="">(not set)</mat-option>
+                            <mat-option value="{{preferredCourseId}}"  *ngIf="checkifexist(preferredCourseId)&&preferredCourseId!=null"><span *ngIf="!preference.preferredCourse==''">{{preference.preferredCourse}}</span><span *ngIf="preference.preferredCourse==''">Course with ProgID: {{preference.preferredCourseId}}</span></mat-option>
+                            <mat-option *ngFor="let a of courses" value="{{a.programId}}">{{a.course}} ({{a.courseCode}}) - {{preference.preferredCourseId}}</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </td>
+                      <td style="width: 200px">
+                        {{preferredCourseIdtext}}  
+                      </td>
+                    </tr>
+                  </table>
+              </div>
+              <div style="margin-top: -10px"  *ngIf="global.domain=='COLLEGE'">
+                    
+
+                  <table style="width: 100%">
+                    <tr>
+                      <td style="width: calc(100% - 200px)">
+                           <mat-form-field appearance="outline" style="width: calc(100% - 10px);margin-right: 10px" class="fullwidth">
+                            <mat-label>Select Alternative Course 1</mat-label>
+                            <mat-select [(ngModel)]="preference.alternativeCourseId1"  placeholder="{{preference.alternativeCourse}}" (ngModelChange)="checkchanges()">
+                              <mat-option value="">(not set)</mat-option>
+                              <mat-option value="{{preference.alternativeCourseId1}}"  *ngIf="checkifexist(alternativeCourseId1)&&alternativeCourseId1!=null"><span *ngIf="!preference.alternativeCourse==''">{{preference.alternativeCourse}}</span><span *ngIf="preference.alternativeCourse==''">Course with ProgID: {{preference.alternativeCourseId1}}</span></mat-option>
+                              <mat-option *ngFor="let a of courses" value="{{a.programId}}">{{a.course}} ({{a.courseCode}})</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                      </td>
+                      <td style="width: 200px">
+                        {{alternativeCourseId1text}}
+                      </td>
+                    </tr>
+                  </table>
+              </div>
+              <div style="margin-top: -10px"  *ngIf="global.domain=='COLLEGE'">
+                  <table style="width: 100%">
+                    <tr>
+                      <td style="width: calc(100% - 200px)">
+                          <mat-form-field  appearance="outline" style="width: calc(100% - 10px);margin-right: 10px" class="fullwidth">
+                            <mat-label>Select Alternative Course 2</mat-label>
+                            <mat-select [(ngModel)]="preference.alternativeCourseId2" (ngModelChange)="checkchanges()">
+                              <mat-option value="">(not set)</mat-option>
+                              <mat-option *ngFor="let a of courses" value="{{a.programId}}">{{a.course}} ({{a.courseCode}})</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                      </td>
+                      <td style="width: 200px">
+                        {{alternativeCourseId2text}}
+                      </td>
+                    </tr>
+                  </table>
+              </div>
+              </div>
+              <div *ngIf="global.domain=='HIGHSCHOOL'">
+              <div>
+                <div>
+                  <table style="width: 100%">
+                    <tr>
+                      <td>
+                  <b>for JHS</b></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        
+                      <mat-form-field appearance="outline" style="width: calc(100% - 10px);margin-right: 10px" class="fullwidth">
+                        <mat-label>Curriculum</mat-label>
+                        <mat-select [(ngModel)]="preference.jhS_CourseId">
+                          <mat-option value="">(not set)</mat-option>
+                          <mat-option *ngFor="let a of strandfilteredjhs" value="{{a.programID.toString()}}">{{a.course}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+
+              
+              <div>
+                <div>
+                  <table style="width: 100%">
+                    <tr>
+                      <td>
+                  <b>for SHS</b></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        
+                      <mat-form-field appearance="outline" style="width: calc(100% - 10px);margin-right: 10px" class="fullwidth">
+                        <mat-label>Strand</mat-label>
+                        <mat-select [(ngModel)]="preference.shS_PriorityStrandId1">
+                          <mat-option value="">(not set)</mat-option>
+                          <mat-option *ngFor="let a of strandfiltered" value="{{a.strandId}}">{{a.strandTitle}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              <div style="margin-top: -10px">
+                    <mat-form-field appearance="outline" style="width: calc(100% - 10px);margin-right: 10px" class="fullwidth">
+                      <mat-label>Strand Priority 2</mat-label>
+                      <mat-select [(ngModel)]="preference.shS_PriorityStrandId2">
+                        <mat-option value="">(not set)</mat-option>
+                        <mat-option *ngFor="let a of strandfiltered" value="{{a.strandId}}">{{a.strandTitle}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+              </div>
+              </div>
+              </div>
+  </mat-expansion-panel>
+
+
+  <mat-expansion-panel *ngIf="history.length!=0">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Enrollment History
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <table class="apptable" style="max-width: 900px">
+              <tr>
+                <th>School Year</th>
+                <th>Course</th>
+                <th>Year</th>
+                <th>Status</th>
+              </tr>
+              <tr *ngFor="let a of history">
+                <td>{{global.syDisplay(a.schoolYear)}}</td>
+                <td>{{a.course}} {{a.yearOrGradeLevel}} (version {{a.version}})</td>
+                <td>{{a.yearOrGradeLevel}}</td>
+                <td>{{a.status}}</td>
+              </tr>
+             </table>
+  </mat-expansion-panel>
+</mat-accordion>
+</div>
+  </mat-card-content>
+</mat-card>

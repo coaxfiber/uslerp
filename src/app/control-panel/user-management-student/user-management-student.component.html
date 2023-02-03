@@ -1,0 +1,69 @@
+
+<mat-card class="example-card">
+  <mat-card-header >
+    <mat-card-title><b>Register/Reset Student Account</b></mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content class='colo'>
+  	<mat-divider></mat-divider>
+  	<br>
+    <form class="example-form"> 
+		  <table class="example-full-width" cellspacing="0">
+		  <tr>
+		    <td width="270px">
+		   <mat-form-field class="txtid">
+		      <input matInput  placeholder="ID Number" [(ngModel)]="id2" (keydown)="keyDownFunction2($event)" name="id2">
+		    </mat-form-field>
+		    <button mat-mini-fab color="primary" (click)="studlookup()">
+			    <mat-icon>search</mat-icon>
+			  </button></td>
+		    <td rowspan="3" style="padding-left: 20px;" >
+		    	<table style="width: 100%">
+		    		<tr>
+		    			<td style="width: 150px">
+		    				<img [src]="image2" width="150" onError="this.src='assets/noimage.jpg'"/>
+		    			</td>
+		    			<td>
+		    				<h3 style="margin-bottom: 0;margin-top: 0">{{name2}}</h3><span style="margin-top: 5px" *ngIf="position2!=' - 0'">{{position2}}<br>
+		    				</span>
+		    				<span *ngIf="bday!=''">Birth date: {{bday | date: '	MM/dd/yyyy'}}</span>
+		    				<div *ngIf="name2!=''">
+		    				<div style="height: 5px"></div>
+							      </div>
+	  						<button mat-raised-button color="primary" *ngIf="name2!=''&&global.checkaccess(':Role:Roles')" (click)="openDialogManageRole2()" >Manage Role</button>
+		    			</td>
+		    		</tr>
+		    	</table>
+		    </td>
+		  	<!--<mat-form-field class="example-full-width">
+		      <input matInput placeholder="LR Number" value="" [(ngModel)]="options.value.lrno" name="lrno" required>
+		    </mat-form-field>-->
+		  </tr>
+		  <tr>
+		  	<td>
+		  		<mat-form-field class="example-full-width">
+			      <input matInput placeholder="Password" type="password" value=""  name="pword2" [(ngModel)]="pword2" [disabled]="disabledpword2">
+			    </mat-form-field>
+
+		  	</td>
+		  </tr><tr>
+		  	<td>
+		  		<mat-form-field class="example-full-width">
+			      <input matInput placeholder="Confirm Password" type="password" value="" name="cpword2" [(ngModel)]="cpword2" [disabled]="disabledpword2">
+			    </mat-form-field>
+		  	</td>
+		  </tr>
+		  </table>
+		  <mat-checkbox (click)="default2()" onclick="return false;"  [checked]="isChecked2" readonly="readonly"> <label>Use default Password</label></mat-checkbox><br><br>
+		</form>
+  <mat-divider></mat-divider><br>
+	  <button mat-raised-button (click)="clear2()">Clear</button>
+	  &nbsp; <span *ngIf="indicatorload==1" > Loading...</span>
+	  <button mat-raised-button color="primary" (click)="onSubmit2()"  [disabled]="!submit2"  *ngIf="global.checkaccess(':Account:Register')&&submitword2=='Register'&&indicatorload==2">Register</button>
+
+	  <button mat-raised-button color="primary" (click)="onSubmit2()"  [disabled]="!submit2"  *ngIf="global.checkaccess(':Account:Register')&&submitword2=='Reset'&&indicatorload==2">Reset</button>
+	  <br>&nbsp;
+
+  </mat-card-content>
+</mat-card>
+

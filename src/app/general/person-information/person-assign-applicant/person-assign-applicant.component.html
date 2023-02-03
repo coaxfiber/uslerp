@@ -1,0 +1,66 @@
+<mat-card class="example-card" id="form" style='padding: 0 !important;'>
+  <mat-card-header >
+    <mat-card-title><b >Assign Applicant</b></mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content class='colo' >
+    <style type="text/css">
+      .red{
+        background-color: #fed6d6 !important;
+      }
+      .green{
+        background-color: #d1fbd1 !important;
+      }
+    </style>
+    <table>
+      
+    <td style="width: 200px">
+        <mat-form-field style="width: 100%">
+          <input matInput placeholder="Search" value="" [(ngModel)]="search" autocomplete="off"  (keyup)="keyDownFunction($event)">
+        </mat-form-field>
+    </td>
+    <td>
+      <button mat-raised-button color="primary"  (click)="keyDownFunction('onoutfocus')" style="font-size:12px;min-width:18px;line-height: 15px;height: 28px;margin-top: 4px; padding: 0;margin-left: 5px">&nbsp;<i class="material-icons">search
+          </i> 
+          <span style="margin-top: 7px"> Search&nbsp;&nbsp;&nbsp;</span></button>
+    </td>
+
+    </table>
+    <div style="max-height: calc(100vh - 350px);overflow-y: scroll;">
+    	<table class="apptable">
+        <tr  *ngIf="warning==''">
+          <th>
+            Name
+          </th>
+          <th>
+            Gender
+          </th>
+          <th>
+            Date of Birth
+          </th>
+          <th>
+            - Action -
+          </th>
+        </tr>
+        <tr *ngFor="let a of arraydis" class="{{style(a.newStudent)}}">
+          <td (click)="checkthis(a)">{{a.lastName.toUpperCase()}}, {{a.firstName.toUpperCase()}}  <span *ngIf="a.middleName!=null">{{a.middleName.toUpperCase() }}</span> <span *ngIf="a.suffixName!=null">{{a.suffixName.toUpperCase()}}</span> </td>
+                      <td >{{a.gender}}</td>
+                      <td >{{a.dateOfBirth | date: 'mediumDate' }}</td>
+                      <td>
+                        <button mat-raised-button color="primary" style="font-size:11px;min-width:18px;line-height: 15px;height: 28px; padding: 0;margin-left: 5px"
+                           (click)="checkthis(a)">
+                              &nbsp;<i class="material-icons">launch</i> 
+                              <span style="margin-top: 7px"> Select&nbsp;&nbsp;&nbsp;</span>
+                          </button>
+                      </td>
+        </tr>
+    	</table>
+    </div>
+      <mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="arraydis===undefined">
+      </mat-spinner>
+      <div *ngIf="arraydis!=undefined">
+      <p style="text-align: center;" *ngIf="arraydis.length==0">- No applicant - </p>
+      </div>
+  	<button mat-raised-button (click)="close()" style="float: right;margin:10px">Close</button>
+  </mat-card-content>
+</mat-card>

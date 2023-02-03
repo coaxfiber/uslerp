@@ -1,0 +1,101 @@
+<mat-card class="example-card" id="items" style="padding: 0">
+  <mat-card-header >
+    <mat-card-title><b>Items</b></mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content class='colo'>
+  	<mat-divider></mat-divider>
+  		<br>
+		
+		<p style="margin-top: -5px">ITEM DETAILS:</p>
+		<table cellspacing="0" style="width: 50%; margin-top: -15px">
+			<tr>
+				<td width="150px">
+					<p>Department:</p>
+					<p style="margin-top: -7px">Position:</p>
+					<p style="margin-top: -7px">Classification:</p>
+					<p style="margin-top: -7px">Reports to:</p>
+				</td>
+				<td align="left">
+					<p><strong>{{deptName}}</strong></p>
+					<p style="margin-top: -7px"><strong>{{postName}}</strong></p>
+					<p style="margin-top: -7px"><strong>{{className}}</strong></p>
+					<p style="margin-top: -7px"><strong>{{reportsto}}</strong></p>
+				</td>
+			</tr>
+			
+		</table>
+		<table>
+			<tr>
+				<td>Actions:</td>
+			</tr>
+			<tr>
+				<td >
+	    			<button mat-raised-button class="btnstyle" (click)="additem()">
+	    				<i class="material-icons">note_add</i><span style="margin-top: 7px">Add&nbsp;&nbsp;&nbsp;</span>
+		    		</button>
+		    		<button mat-raised-button color="primary" class="btnstyle" (click)="editItem()" disabled="{{editCTRL}}">
+	    				<i class="material-icons">edit</i><span style="margin-top: 7px">Edit&nbsp;&nbsp;&nbsp;</span>
+		    		</button>
+
+		    		<button mat-raised-button color="warn" class="btnstyle" (click)="deleteItem()" disabled="{{editCTRL}}">
+		    			<i class="material-icons">delete</i><span style="margin-top: 7px">Delete&nbsp;&nbsp;&nbsp;</span>
+		    		</button>
+		    		<button mat-raised-button style="background-color: #8a0900; color: white" class="btnstyle" (click)="Cancel()" *ngIf="editCTRL===false">
+		    			<i class="material-icons">cancel</i><span style="margin-top: 7px">Cancel&nbsp;&nbsp;&nbsp;</span>
+		    		</button>
+				</td>
+			</tr>
+		</table>
+		<br>  	
+
+    <table class="apptablegrade" >
+		<tr>
+	    	<th style="display: none;">
+	    		ITID
+	    	</th>
+	    	<th style="display: none;">
+	    		DID
+	    	</th>
+	    	<th style="display: none;">
+	    		PID
+	    	</th>
+	    	<th style="display: none;">
+	    		CID
+	    	</th>
+	    	<th style="display: none;">
+	    		RID
+	    	</th>
+	    	<th width="20.3%" style="text-align: center;">
+	    		POSITION
+	    	</th>
+	    	<th width="20.2%" style="text-align: center;">
+	    		DEPARTMENT
+	    	</th>
+	    	<th width="20%" style="text-align: center;">
+	    		CLASSIFICATION
+	    	</th><th width="21%" style="text-align: center;">
+	    		REPORTS TO
+	    	</th>
+	    </tr>
+			
+	</table>
+	<div  style="max-height: calc(80vh - 250px);overflow-y: scroll;">
+		<table  *ngFor="let d of itemArr" class="apptablegrade" style="">
+				<tr (click)="getiteminfo(d)">
+			    	<td style="display: none">{{d.itemid}}</td>
+			    	<td style="display: none">{{d.departmentID}}</td>
+			    	<td style="display: none">{{d.positionID}}</td>
+			    	<td style="display: none">{{d.classificationID}}</td>
+			    	<td style="display: none">{{d.reportstoID}}</td>
+			    	<td width="25%" >{{d.position}}</td>
+			    	<td width="25%" >{{d.departmentName}}</td>
+			    	<td width="25%" >{{d.classification}}</td>
+			    	<td width="25%" >{{d.reportsTo}}</td>			    	
+			    </tr>
+		</table>
+	</div>
+
+
+  </mat-card-content>
+</mat-card>

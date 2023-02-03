@@ -1,0 +1,101 @@
+<mat-card class="example-card">
+   <mat-card-header >
+    <mat-card-title><b>Find Code</b></mat-card-title>
+  </mat-card-header>
+  <mat-card-content class='colo'>
+	
+
+
+
+<table style="width: 100%">
+	<tr>
+		<td style='width: 150px'>
+	    <mat-form-field style='width: 100%'>
+		  <mat-label>Find by:</mat-label>
+		  <mat-select [(ngModel)]="findby">
+		    <mat-option value="Code No">Code No</mat-option>
+		    <mat-option value="Subject ID">Subject ID</mat-option>
+		    <mat-option value="Descriptive Title">Descriptive Title</mat-option>
+		    <mat-option value="Room No">Room No</mat-option>
+		  </mat-select>
+		</mat-form-field>
+		</td>
+		<td style="width: 200px">
+		  	<mat-form-field style="width: 100%">
+		      <input matInput placeholder="Search String" value="" [(ngModel)]="string" autocomplete="off"  (keydown)="keyDownFunction($event)">
+		    </mat-form-field>
+		</td>
+		<td>
+			<mat-checkbox [checked]="exact" onclick="return false;"   (click)="checkbox()">Exact Match</mat-checkbox>&nbsp;&nbsp;
+      <button mat-raised-button color="primary"  (click)="searcht()" style="font-size:11px;min-width:18px;line-height: 15px;height: 28px; padding: 0;margin-left: 5px">&nbsp;<i class="material-icons">search
+          </i> 
+          <span style="margin-top: 7px"> Search&nbsp;&nbsp;&nbsp;</span></button>
+		</td>
+		<td>
+		</td>
+    <td>
+      
+    </td>
+    <td style='width: 150px'>
+       <!-- <mat-form-field style='width: 150px'>
+        <mat-label>Filter by:</mat-label>
+        <mat-select [formControl]="deps" multiple >
+          <mat-option *ngFor="let d of departments" [value]="d.departmentId" (click)="filterby()">{{d.departmentCode}}</mat-option>
+        </mat-select>
+      </mat-form-field>-->
+    </td>
+	</tr>
+</table>
+
+<div style="width: 100%;max-height: calc(100vh - 300px); overflow-y: scroll;">
+                  
+                  <table class="apptable">
+                    <tr>
+                      <th style="width:70px">Code No</th>
+                      <th style="width:100px">Subject ID</th>
+                      <th style="min-width:150px">Descriptive Title </th>
+                      <th style="width:50px">Day</th>
+                      <th style="width:100px">Time</th>
+                      <th style="width:70px">Room</th>
+                      <th style="width:40px">Units</th>
+                      <th style="width:60px">CS</th>
+                      <th style="width:60px">OE</th>
+                      <th style="width:60px">RES</th>
+                      <th style="width:80px">Department</th>
+                      <th style="width:75px">- Action -</th>
+                    </tr>
+                    <tr *ngFor="let a of tableArr" class="{{ seeclass(a) }}">
+                      <td>{{a.codeNo}}</td>
+                      <td>{{a.subjectID}}</td>
+                      <td>{{a.subjectTitle}}</td>
+                      <td>{{daydisplay(a.day)}}</td>
+                      <td>{{a.time}}</td>
+                      <td>{{a.roomNumber}}</td>
+                      <td>{{a.units}}</td>
+                      <td>{{a.classSize}}</td>
+                      <td>{{a.oe}}</td>
+                      <td>{{a.res}}</td>
+                      <td>{{a.departmentCode}}</td>
+                      <td>
+                          
+                          <button mat-raised-button color="primary"  (click)="select(a.codeNo,'success',a)" style="font-size:11px;min-width:18px;line-height: 15px;height: 28px; padding: 0;margin-left: 5px" *ngIf="(a.oe+a.res)<a.classSize&&(seeclass(a)=='normal')">
+                              &nbsp;<i class="material-icons">launch</i> 
+                              <span style="margin-top: 7px"> Select&nbsp;&nbsp;&nbsp;</span>
+                          </button>
+                          <span *ngIf="(a.oe+a.res)>=a.classSize"> Max limit reached.</span>
+                          <span *ngIf="seeclass(a)=='codeorange'"> Schedule Conflict.</span>
+                      </td>
+                    </tr>
+                  </table>
+</div>
+                  <mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="tableArr===undefined"></mat-spinner>
+			         <div *ngIf="tableArr!=undefined">
+			          <p *ngIf="tableArr.length===0" style="text-align: center;"><i>- No result found! -</i></p>
+			        </div>
+		  		  
+  </mat-card-content>
+</mat-card>
+<div mat-dialog-actions style="float: right;margin-top: 0;padding-top: 0;margin-right: 10px">
+  <button mat-raised-button (click)="onNoClickclose()" color="warning">Close</button>
+</div>
+ 

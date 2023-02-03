@@ -1,0 +1,39 @@
+<mat-card class="example-card" id="addcur" style='padding: 0 !important;'>
+  <mat-card-header >
+    <mat-card-title>
+    	<b *ngIf="data.check==0">Admitted Students</b>
+    	<b *ngIf="data.check!=0">Paid Students</b> - <span *ngIf="data.proglevel=='HIGHSCHOOL'">JHS: {{jhscount()}} | SHS: {{shscount()}} |</span> Total: {{array.length}}
+    </mat-card-title>
+  </mat-card-header>
+  <style type="text/css">
+  	mat-form-field{
+  		margin-bottom: -20px;
+  	}
+  </style>
+  <mat-card-content>
+  	<div  style="max-height: calc(100vh - 350px);overflow-y: auto">
+          <button mat-raised-button (click)="export()" style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; padding: 0;margin-left: 5px;margin: 5px;background-color:#006600;color: white;float: right;">
+            &nbsp;&nbsp;<i class="material-icons">print
+            </i> <span style="margin-top: 7px"> Export to Excel&nbsp;&nbsp;&nbsp;</span></button>
+  	<table class="apptable" *ngIf="array!=null">
+	    <tr>
+	      <th style="width:80px">ID Number</th>
+	      <th style="min-width:100px">Student's Name</th>
+          <th style="width:40px">Gender</th>
+	      <th style="min-width:100px">Course & Yr</th>
+          <th style="min-width:100px">Status</th>
+	    </tr>
+    	<tr *ngFor="let a of array">
+            <td>{{a.idNumber}}</td>
+            <td>{{a.fullName}}</td>
+            <td>{{a.gender}}</td>
+            <td>{{a.course}} - <span *ngIf="a.yearOrGradeLevel>0">{{a.yearOrGradeLevel}}</span><span *ngIf="a.yearOrGradeLevel==0">K</span></td>
+            <td>{{a.status}}</td>
+        </tr>
+    </table> 
+    </div>
+  </mat-card-content>
+</mat-card>
+
+    <button mat-raised-button (click)="close()" style="float: right;margin-right: 10px">Close</button>
+    <br><br>

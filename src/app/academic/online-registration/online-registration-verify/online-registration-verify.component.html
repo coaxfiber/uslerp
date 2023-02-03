@@ -1,0 +1,81 @@
+<mat-card class="example-card" id="addset" style='padding: 0 !important;max-height: calc(100vh - 150px);overflow-y: auto;'>
+  <mat-card-header >
+    <mat-card-title><b>Applicant <span *ngIf='data.type==null'>Payment</span> <span *ngIf='data.type==1'>Certificate</span> Verification</b></mat-card-title>
+  </mat-card-header>
+  <mat-card-content class='colo'>
+<style type="text/css">
+  @media only screen and (max-width: 800px) {
+  .fullwidth {
+    width: 100% !important;
+    margin-right: 0px;
+  }
+  #boxx{
+    margin: 25px 10px 25px 10px;
+  }
+}
+</style>
+  
+    <mat-progress-bar mode="indeterminate" style="margin: 50px 20px 20px 20px;width: calc(100% - 40px)"  *ngIf='loading'></mat-progress-bar>
+    <p style="text-align: center; padding-bottom: 50px"  *ngIf='loading'>Loading Data...</p>
+
+
+    <div  *ngIf='loading==false'>
+    <div>
+   
+	<div  *ngIf="proglevelval!=''" style="padding-left: 30px;clear: both">
+    Applicant no: <b>{{getapplicantno(data.data.applicantNo)}}</b>
+    <h3 style="margin-top: 0px;margin-bottom: 10px;">{{data.data.lastName}}, {{data.data.firstName}} {{data.data.middleName}} {{data.data.suffixName}}</h3>
+    <div>
+            <div style="float: left;width: 40%"  class="fullwidth"  *ngIf='data.data.datePaid!="0001-01-01T00:00:00"'>
+             Date of Payment:
+             <h3 style="margin-top: 0px;margin-left: 15px">{{data.data.datePaid | date:'mediumDate'}}</h3>
+            </div>
+            <div style="float: left;width: 40%"  class="fullwidth">
+             Payment Type:
+             <h3 style="margin-top: 0px;margin-left: 15px">{{ getpaymenttype() }}</h3>
+            </div>
+            <div *ngIf="data.type==null">
+                <p style="text-align: center;" *ngIf="data.data.proofOfPayment==''">Loading image...</p>
+                <img [src]='attachment'  *ngIf='data.data.proofOfPayment!=null&&data.data.proofOfPayment!=""' style="width:calc(100% - 30px)" />
+            </div>
+            <div *ngIf="data.type==1">
+                <p style="text-align: center;" *ngIf="data.data.reportCard==''">Loading image...</p>
+                <img [src]='attachment'  *ngIf='data.data.reportCard!=null&&data.data.reportCard!=""' style="width:calc(100% - 30px)" />
+            </div>
+    </div>
+
+    <div *ngIf='data.data.proofOfPayment==null&&data.type==null' style="margin-top: 80px">
+             <h3 style="text-align: center;">Proof of payment not uploaded.&nbsp;&nbsp;&nbsp;&nbsp;</h3>
+    </div> 
+    <div *ngIf='data.data.reportCard==null&&data.type==1' style="margin-top: 80px">
+             <h3 style="text-align: center;">Certificate not uploaded.&nbsp;&nbsp;&nbsp;&nbsp;</h3>
+    </div>       
+	            <div style="height: 15px"></div>
+	    </div>
+      <div style="margin-bottom: 15px">
+      <mat-radio-group aria-label="Select an option" [(ngModel)]="veri">
+        <mat-radio-button value="1">Set to Verified</mat-radio-button>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-radio-button value="2">Set to Not Verified</mat-radio-button>
+      </mat-radio-group>
+      </div>
+    <table style="width: 100%;margin-top:10px" *ngIf="veri=='2'">
+      <tr>
+        <td style="width: 50%;padding-right: 30px;" colspan="3">
+          <mat-form-field appearance="outline" style="width: 100%">
+              <mat-label>Remarks</mat-label>
+              <input matInput placeholder="" [(ngModel)]="remarksVerification" autocomplete="off">
+          </mat-form-field>
+        </td>
+        
+      </tr>
+    </table>
+
+	  <button mat-raised-button (click)="close()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="register()"style="float: right;" *ngIf="data.type==null" >Update</button>
+    <button mat-raised-button color="primary" (click)="register2()"style="float: right;" *ngIf="data.type==1" >Update</button>
+
+    </div>
+    </div>
+</mat-card-content>
+</mat-card>

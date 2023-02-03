@@ -1,0 +1,264 @@
+  <mat-card class="example-card">
+  <mat-card-header >
+    <mat-card-title><b>Student Evaluation</b></mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content class='colo'>
+  	<mat-divider></mat-divider>
+	<div style="height: 10px"></div>
+	<div class="example-box" cdkDrag style="right: 20px;padding: 10px"  *ngIf="data!=undefined&&showcred==true">
+		<div style="
+		max-height: 600px;
+  		overflow-y: scroll;">
+	  <table style="width: 100%">
+	  	<tr>
+	  		<td style="text-align: left;">
+	  			<b>Subjects that are not credited</b>
+	  		</td>
+	  		<td>
+	  			<button mat-raised-button (click)="invertcred()" style="float: right;"> <i class="material-icons iconsize">close</i> Close</button>
+	  		</td>
+	  	</tr>
+	  </table>
+	  <div style="height: 5px"></div>
+	  <table class="apptablegrade" style="width: 100%">
+          <tr>
+            <th style="width: 100px;text-align: center;">
+              Subject ID
+            </th>
+            <th>
+              Subject Title
+            </th>
+            <th style="width: 80px;text-align: center;">
+              Total Units
+            </th>
+            <th style="width: 62px;text-align: center;">
+              Grade
+            </th>
+          </tr>
+      </table>
+      <div  *ngIf="notcredited!=undefined">
+      	<mat-radio-group aria-label="Select an option">
+      	<div *ngFor="let a of notcredited; let i = index">
+		  <table class="apptablegrade">
+	          <tr>
+	          	<td style="width: 100px;text-align: left;">
+	              <mat-radio-button value="{{ a.recordId }}" (click)="selectnotcreditedsubj(a.recordId)">{{ a.subjectId }}</mat-radio-button>
+	            </td>
+	            <td style="text-align: left;">
+	              {{ a.subjectTitle }}
+	            </td>
+	            <td style="width: 80px;text-align: center;">
+	              {{ a.units }}
+	            </td>
+	            <td style="width: 62px;text-align: center;">
+	            	{{ a.grade }}
+	            </td>
+	          </tr>
+	      </table>
+      	</div>
+      	</mat-radio-group>
+      </div>
+	  <table class="apptablegrade">
+
+          <tr *ngIf="notcredited===undefined">
+          	<td  colspan="4">
+          		<mat-spinner style="margin-left: auto;margin-right: auto;" ></mat-spinner>
+          	</td>
+          </tr>
+		  	<tr  *ngIf="notcredited!=undefined">
+		  		<td colspan="4"  *ngIf="notcredited.length==0" >
+					      <p style="text-align: center;"><i>- No result found! -</i></p>
+		  		</td>
+		  	</tr>
+        </table>
+        </div>
+	</div>
+  	<table>
+  		<tr>
+  			<td width="160">
+  				<img [src]="image" width="150" onError="this.src='assets/noimage.jpg'"/>
+  			</td>
+  			<td>
+		  <table class="example-full-width" cellspacing="0">
+		  <tr>
+		    <td width="50%">
+		    <mat-form-field style="width: 180px">
+		      <input matInput placeholder="ID Number" [(ngModel)]="id"
+		      (keydown)="keyDownFunctionstudent($event)" name="id">
+		    </mat-form-field>
+		    <button mat-mini-fab color="primary" (click)="studentlookup()">
+			    <mat-icon>search</mat-icon>
+			  </button></td>
+		  </tr>
+		  </table>
+
+		<div style="height: 10px"></div>
+        <div style="height: 85px" *ngIf="!(lname!='')"></div>
+		<div *ngIf="lname!=''checklistexist" >
+		 <h2 *ngIf="lname!=''" style="margin: 0px">{{lname}}, {{fname}} {{mname}} {{suffix}}</h2>
+		 <div style="height: 5px"></div>
+		 <b style="font-size: 20px">{{course}} - {{yearOrGradeLevel}}</b>
+		 <br>
+		<div style="height: 5px"></div>
+		  <button mat-raised-button (click)="invertcred()" style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; padding: 0;background-color:#006600;color: white;"  *ngIf="checklistexist">
+          &nbsp;&nbsp;<i class="material-icons">notes
+          </i> <span style="margin-top: 7px"> {{textcred}}&nbsp;&nbsp;&nbsp;</span></button>
+
+		  <button mat-raised-button (click)="createchecklist()" style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; padding: 0;background-color:#294a70;color: white;"  *ngIf="!checklistexist&&global.checkaccess(':StudentEvaluation:StudentEvaluationHistoryPost')" [disabled]="createchecklisttemp" >
+          &nbsp;&nbsp;<i class="material-icons">add
+          </i> <span style="margin-top: 7px"> Create Checklist&nbsp;&nbsp;&nbsp;</span></button>
+		 </div>
+  			</td>
+  		</tr>
+  	</table>
+  	<div *ngIf="checklistexist&&data!=undefined">
+    <div style="width: 100%;max-height: calc(100vh - 440px); overflow-y: scroll;">
+    <div *ngIf="data!=undefined">
+      <div style="height: 10px"></div>
+      <table style="width:100%">
+      	<tr>
+      		<td style="width:450px;padding-right: 20px">
+		      <table>
+		        <tr>
+		          <td style="width: 120px" valign="top">
+		            Program ID:
+		          </td>
+		          <td style="width: calc(100% - 200px)">
+		            <b>{{data.programId}}</b>
+		          </td>
+		        </tr>
+		        <tr>
+		          <td style="width: 120px" valign="top">
+		            Course Code:
+		          </td>
+		          <td style="width: calc(100% - 200px)">
+		            <b>{{data.courseCode}}</b>
+		          </td>
+		        </tr>
+		        <tr>
+		          <td style="width: 120px" valign="top">
+		            Program Title:
+		          </td>
+		          <td style="width: calc(100% - 200px)">
+		            <b>{{data.programTitle}}</b>
+		          </td>
+		        </tr>
+		        <tr>
+		          <td style="width: 120px" valign="top">
+		             Major: 
+		          </td>
+		          <td style="width: calc(100% - 200px)">
+		            <b>{{data.major}}</b>
+		          </td>
+		        </tr>
+		        <tr>
+		          <td style="width: 120px" valign="top">
+		            Version:
+		          </td>
+		          <td style="width: calc(100% - 200px)">
+		            <b>{{data.version}}</b>
+		          </td>
+		        </tr>
+		        <tr>
+		          <td style="width: 120px" valign="top">
+		            Status:
+		          </td>
+		          <td style="width: calc(100% - 200px)">
+		            <b>{{data.statusCode}} - {{data.statusDesc}}</b>
+		          </td>
+		        </tr>
+		        <!-- <tr>
+		          <td style="width: 120px" valign="top">
+		            Program Chair:
+		          </td>
+		          <td style="width: calc(100% - 200px)">
+		            <b>{{data.name}}</b>
+				 </td>
+		        </tr> -->
+		      </table>
+		  </td>
+		</tr>
+	</table>
+      </div>
+
+    <div style="height: 7px;"></div>
+
+		  <button mat-raised-button (click)="removechecklist()" style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; padding: 0;background-color:#990000;color: white;"
+		  [disabled]="deletechecklisttemp" *ngIf="global.checkaccess(':StudentEvaluation:SubjectEvaluationDelete')">
+          &nbsp;&nbsp;<i class="material-icons">delete
+          </i> <span style="margin-top: 7px"> Remove Checklist&nbsp;&nbsp;&nbsp;</span></button>
+
+		  <button mat-raised-button (click)="eval()" style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; padding: 0;background-color:#294a70;color: white;float: right"
+		  [disabled]="savefuncvar"  *ngIf="global.checkaccess(':StudentEvaluation:SubjectAcademicHistoryMappingPost')">
+          &nbsp;&nbsp;<i class="material-icons">save
+          </i> <span style="margin-top: 7px"> Save Evaluation&nbsp;&nbsp;&nbsp;</span></button>
+
+    <div style="height: 7px;"></div>
+       <table class="apptablegrade" *ngIf="data!=undefined">
+          <tr>
+            <th style="width: 100px;text-align: center;">
+              Subject ID
+            </th>
+            <th>
+              Subject Title
+            </th>
+            <th style="width: 80px;text-align: center;">
+              Total Units
+            </th>
+            <th style="width: 62px;text-align: center;">
+              Grade
+            </th>
+          </tr>
+        </table>
+        <div *ngIf="tableArr!=undefined">
+        	<div   *ngFor="let a of tableArr; let i = index" [style.background-color]="checkcolor(i)" >
+       <table class="apptablegrade" >
+          <tr *ngIf="sy(a.yearLevel)" style="text-align: center;" [style.background-color]="'white'">
+            <td colspan="4">
+              <b>{{  a.yearLevel }}</b>
+            </td>
+          </tr>
+          <tr *ngIf="sem(a.term)" bgcolor="#f4f8fd">
+            <td colspan="4">
+              <b><i>{{  a.term }}</i></b>
+            </td>
+          </tr>
+          <tr (click)="openaddmapping(a,checkcolor(i))" >
+            <td style="width: 100px;text-align: center;">
+              {{ a.subjectId }}
+            </td>
+            <td>
+              {{ a.subjectTitle }}
+            </td>
+            <td style="width: 80px;text-align: center;" >
+              {{ a.totalUnits }}
+            </td>
+            <td style="width: 62px;text-align: center;">
+            	{{ checkgrade(i) }}
+            </td>
+          </tr>
+      </table>
+      </div>
+      <style type="text/css">
+      	.hoverset:hover{
+      		cursor: pointer;
+      	}
+      </style>
+      </div>
+      <div *ngIf="tableArr!=undefined&&data!=undefined">
+	     <mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="tableArr===undefined"></mat-spinner>
+	     <div *ngIf="tableArr!=undefined">
+	      <p *ngIf="tableArr.length===0" style="text-align: center;"><i>- No result found! -</i></p>
+	    </div>
+      </div>
+  </div>
+  </div>
+
+  	<div *ngIf="!checklistexist&&data!=undefined">
+  		<p style="text-align: center;">- No Existing Record! -</p>
+
+
+  	</div>
+  </mat-card-content>
+</mat-card>

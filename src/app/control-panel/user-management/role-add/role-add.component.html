@@ -1,0 +1,27 @@
+<mat-card class="example-card">
+   <mat-card-header >
+    <mat-card-title><b>Create Role</b></mat-card-title>
+    <mat-card-subtitle>For Creating a new Role in the database</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content class='colo'>
+		  <table class="example-full-width" cellspacing="0">
+		  <tr>
+		    <td width="100%">
+		  		<mat-form-field class="widthtext">
+			      <input matInput placeholder="Role" type="text" [(ngModel)]="role" name="role" value="">
+			    </mat-form-field></td>
+		    <td rowspan="3" style="padding-left: 20px;" >
+		    </td>
+		  	<!--<mat-form-field class="example-full-width">
+		      <input matInput placeholder="LR Number" value="" [(ngModel)]="options.value.lrno" name="lrno" required>
+		    </mat-form-field>-->
+		  </tr>
+		  </table>
+		  
+	</mat-card-content>
+</mat-card>
+<div mat-dialog-actions style="float: right">
+  <button mat-raised-button (click)="onNoClick()" color="warning">Close</button>
+  <button mat-raised-button cdkFocusInitial color="primary" (click)="saveRole()" >Save</button>
+</div>
+ 

@@ -1,0 +1,92 @@
+<mat-card class="example-card">
+  <mat-card-header >
+    <mat-card-title><b>Update Person Information</b></mat-card-title>
+    <mat-card-subtitle>For Updating Person in the database</mat-card-subtitle>
+  </mat-card-header>
+  
+  <mat-card-content class='colo'>
+  	<mat-divider></mat-divider>
+  	<br>
+    <form class="example-form"> 
+		  <table class="example-full-width" cellspacing="0">
+		  <tr>
+		    <td width="50%"><mat-form-field class="example-full-widthminus">
+    		<mat-label>ID Number</mat-label>
+		      <input autofocus matInput #idno2 maxlength="7"  value="" [(ngModel)]="options.value.idno" name="idno" required="required"  (keydown)="keyDownFunction($event)" [disabled]="isDisabled" autocomplete="off">
+		      <mat-hint align="start"></mat-hint>
+		    </mat-form-field>
+		    <button mat-mini-fab color="primary" (click)="studentlookup()">
+			    <mat-icon>search</mat-icon>
+			  </button></td>
+		  	<td style="padding-left: 10px">
+		  	<mat-form-field class="example-full-width">
+		      <input matInput placeholder="LR Number" value="" [(ngModel)]="options.value.lrno" name="lrno" autocomplete="off">
+		    </mat-form-field>
+		  	</td>
+		  </tr>
+		  </table>
+
+
+		  <table class="example-full-width" cellspacing="0"><tr>
+		    <td><mat-form-field class="example-full-width2">
+		      <input matInput placeholder="First Name" [(ngModel)]="options.value.fname" name="fname" required autocomplete="off">
+		    </mat-form-field></td>
+		    <td><mat-form-field class="example-full-width2">
+		      <input matInput placeholder="Middle Name" [(ngModel)]="options.value.mname" name="mname" autocomplete="off">
+		    </mat-form-field></td>
+		    <td><mat-form-field class="example-full-width2">
+		      <input matInput placeholder="Last Name" [(ngModel)]="options.value.lname" name="lname" required autocomplete="off">
+		    </mat-form-field></td>
+		    <td><mat-form-field class="example-full-width3">
+		      <input matInput placeholder="Suffix" [(ngModel)]="options.value.suffix" name="suffix" autocomplete="off" >
+		    </mat-form-field></td>
+		  </tr></table>
+
+
+  		 <table class="example-full-width" cellspacing="0"><tr>
+		    <td width="33%">
+			  <mat-form-field  class="example-full-width">
+			    <mat-select required [(ngModel)]="options.value.gender" name="gender">
+			      <mat-option  value="M">Male</mat-option>
+			      <mat-option value="F">Female</mat-option>
+			    </mat-select>
+			    <mat-label>Gender</mat-label>
+			  </mat-form-field></td>
+			  <td width="33%">
+			  <mat-form-field  class="example-full-width">
+			    <mat-select required [(ngModel)]="options.value.cstatus" name="cstatus">
+			      <mat-option value="S">Single</mat-option>
+			      <mat-option value="M">Married</mat-option>
+			      <mat-option value="W">Widow</mat-option>
+			    </mat-select>
+			    <mat-label>Civil Status</mat-label>
+			  </mat-form-field></td>
+		    <td width="33%"><mat-form-field  class="example-full-width">
+				  <input readonly matInput [matDatepicker]="picker" placeholder="Birth Date" (click)="picker.open()"  [(ngModel)]="options.value.bdate" name="bdate" required>
+				  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+				  <mat-datepicker #picker></mat-datepicker>
+				</mat-form-field></td>
+		  </tr></table>
+
+
+
+		  <table class="example-full-width" cellspacing="0"><tr>
+		    <td width="50%">
+				<mat-form-field class="example-full-width" style="width: calc(100% - 50px)">
+					<mat-label>Contact Number</mat-label>
+					<span matPrefix>+63 &nbsp;</span>
+		      		<input matInput [(ngModel)]="options.value.cpno" name="cpno" type="text" autocomplete="off" maxlength="10">
+		    	</mat-form-field>
+		    </td>
+		    <td width="50%">
+				<mat-form-field class="example-full-width">
+		      		<input matInput placeholder="Telephone Number" [(ngModel)]="options.value.telno" name="telno" type="text" autocomplete="off">
+		    	</mat-form-field>
+		    </td>
+		  </tr></table>
+		</form>
+  <mat-divider></mat-divider><br>
+	  <button mat-raised-button (click)="clear()">Clear</button>&nbsp;&nbsp;
+	  <button mat-raised-button color="primary" (click)="onSubmitfunc()" *ngIf="global.checkaccess(':Person:PersonPut')">Update</button><br>&nbsp;
+  </mat-card-content>
+</mat-card>

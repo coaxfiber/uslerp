@@ -1,0 +1,81 @@
+<div mat-dialog-actions style="float: right">
+  <button mat-raised-button (click)="onNoClickclose()" color="warning">Close</button>
+  <button mat-raised-button color="primary" (click)="save()" >Print</button>
+</div>
+<br>
+<br>
+<br>
+<div id="ContenttoExport" style="margin: 20px 30px 20px 30px; width: 770px;">
+	<table width="95%" #content>
+
+		<thead class="report-header">
+	     <tr>
+	        <th class="report-header-cell">
+	           <div class="header-info">
+	            
+	           </div>
+	        </th>
+	      </tr>
+	    </thead>
+	    <tbody class="report-content">
+	      	<tr>
+				<td width="125" style="height: 120px;width: 120px !important">
+					<img width="120" height="120" [src]="image">
+				</td>
+				<td align="left" style="height: 120px" colspan="2">
+					<h3>{{name}}</h3>
+					<p id='pinfo1'><strong>{{position}}</strong></p>
+					<p id='pinfo'>{{email}}</p>
+					<p id='pinfo'>{{contact}}</p>
+					<p id='pinfo'>{{address}}</p>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" align="left" colspan="3">
+					<hr id="borderline">
+					<strong><p id="subtitle">OBJECTIVE:</p></strong>
+					<p style="margin-top: -14px; font-size: 15px; text-align: justify;">&nbsp;&nbsp;&nbsp;&nbsp;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="3">
+					<hr id="borderline">
+					<strong><p id="subtitle">SEMINARS AND TRAININGS:</p></strong>
+					<table style="margin-top: -28px;" id="sna">
+					    <tr *ngFor="let s of seminarsArr" class="page-break">
+					    	
+					    	<td width="40%" align="left" style="padding-top: -14px">
+					    		<p style="font-weight: bold;font-size: 15px">{{s.companyname}}</p>
+					    		<p style="font-size: 15px;margin-top: -14px">{{s.venue}}</p>
+					    		<p style="font-size: 15px;margin-top: -14px">{{s.startdate}} - {{s.enddate}}</p>
+					    	</td>
+					    	<td>
+					    		<span class="text-corner"><p style="font-size: 15px">{{s.seminardescription}}</p></span>
+					    	</td>
+					    	
+					    </tr>
+				    </table>
+				    <hr id="borderline">
+					<strong><p id="subtitle">WORK EXPERIENCE:</p></strong>
+					<table width="95%" style="margin-top: -30px;">
+				    	<tr>
+					    	<th style="display: none;">
+					    		date/s
+					    	</th>
+					    </tr>
+					    <tr *ngFor="let w of workXPArr" class="page-break">
+					    	<td >
+					    		<p style="font-weight: bold;font-size: 15px">{{w.companyname}}</p>
+					    		<p style="font-size: 15px;margin-top: -14px">{{w.position}}</p>
+					    		<p style="font-size: 13px;margin-top: -14px">{{w.startdate}}-{{w.enddate}}</p>
+					    	</td>
+					    </tr>
+				    </table>
+			    </td>
+			</tr>
+	    </tbody>
+		
+	</table>
+</div>
+
+<!--<embed  src="" type="application/pdf" style="overflow: auto; width: 100%; height: 100%;">-->

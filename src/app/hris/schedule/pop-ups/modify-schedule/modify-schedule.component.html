@@ -1,0 +1,54 @@
+<div  id="sched" style="">
+<mat-card class="example-card">
+   <mat-card-header >
+    <mat-card-title><b>{{entryType}} Schedule</b></mat-card-title>
+   </mat-card-header>
+   <div style="height: 10px"></div>
+   <mat-card-content class='colo'>
+	 <h4>Days:</h4>
+	 <table width="100%" style="margin-top: -15px">
+	 	<tr>
+	 		<td><mat-checkbox onclick="return false" [checked]="dayMonday" (click)="addDayofWeek('Monday')" [disabled]="ddayMonday">Monday</mat-checkbox></td>
+	 		<td><mat-checkbox onclick="return false" [checked]="dayWednesday" (click)="addDayofWeek('Wednesday')" [disabled]="ddayWednesday">Wednesday</mat-checkbox></td>
+	 		<td><mat-checkbox onclick="return false" [checked]="dayFriday" (click)="addDayofWeek('Friday')" [disabled]="ddayFriday">Friday</mat-checkbox></td>
+	 		<td><mat-checkbox onclick="return false" [checked]="daySunday" (click)="addDayofWeek('Sunday')" [disabled]="ddaySunday">Sunday</mat-checkbox></td>
+	 	</tr>
+	 	<tr>
+	 		<td><mat-checkbox onclick="return false" [checked]="dayTuesday" (click)="addDayofWeek('Tuesday')" [disabled]="ddayTuesday">Tuesday</mat-checkbox></td>
+	 		<td><mat-checkbox onclick="return false" [checked]="dayThursday" (click)="addDayofWeek('Thursday')" [disabled]="ddayThursday">Thursday</mat-checkbox></td>
+	 		<td colspan="2"><mat-checkbox onclick="return false" [checked]="daySaturday" (click)="addDayofWeek('Saturday')" [disabled]="ddaySaturday">Saturday</mat-checkbox></td>
+	 	</tr>
+	 </table>
+	 <br>
+	 <mat-divider></mat-divider>
+	 <table width="50%" style="margin-top: 5px">
+	 	<tr>
+	 		<td>
+	 			<mat-form-field class="example-half-width">
+	 				<input matInput placeholder="Time In" value="" [(ngModel)]="timeIn" (click)="openIndialog()" autocomplete="off"> 
+	 			</mat-form-field>
+	 		</td>
+	 		<td>
+	 			<mat-form-field class="example-half-width">
+	 				<input matInput placeholder="Time Out" value="" [(ngModel)]="timeOut"  (click)="openOutdialog()" autocomplete="off">
+	 			</mat-form-field>
+	 		</td>
+	 	</tr>
+	 	<tr>
+	 		<td>
+	 			<mat-form-field class="example-half-width">
+	 				<input matInput placeholder="Hours" value="" [(ngModel)]="computedHours" disabled="true" style="color: black">
+	 			</mat-form-field>
+	 		</td>
+	 		<td></td>
+	 	</tr>
+	 </table>
+	 <p style="color: red">*NOTE: Number defined under HOURS will be charged on your tardiness when you get absent.</p>
+		  
+   </mat-card-content>
+</mat-card>
+</div>
+<div mat-dialog-actions style="float: right">
+  <button mat-raised-button (click)="onNoClickclose()" color="warning">Close</button>
+  <button mat-raised-button color="primary" (click)="save()" >Save</button>
+</div>

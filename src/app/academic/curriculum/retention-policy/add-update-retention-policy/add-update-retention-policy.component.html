@@ -1,0 +1,120 @@
+<mat-card class="example-card" id="addcur" style='padding: 0 !important;'>
+  <mat-card-header >
+    <mat-card-title><b>Retention Policy</b></mat-card-title>
+  </mat-card-header>
+  <style type="text/css">
+  	mat-form-field{
+  		margin-bottom: -20px;
+  	}
+  </style>
+  <mat-card-content>
+				<table style="width: 100%">
+					<tr>
+						<td style="width: 180px" colspan="1">
+							<mat-form-field style="width: 180px"  appearance="outline">
+   							  <mat-label>Average not lower than</mat-label>
+						      <input matInput placeholder="" autocomplete="off" [(ngModel)]="averageNotLowerThan"  type="number" max="100">
+						    </mat-form-field>	
+						</td>
+						<td style="width: 180px" colspan="1">
+							<mat-form-field style="width: 180px"  appearance="outline">
+   							  <mat-label>Grade not lower than</mat-label>
+						      <input matInput placeholder="" autocomplete="off" [(ngModel)]="gradeNotLowerThan"  type="number"  max="100">
+						    </mat-form-field>	
+						</td>
+						<td>
+							
+                          <mat-form-field style="width:110px;" appearance="outline">
+                          <mat-label>Year level</mat-label>
+                          <mat-select [(ngModel)]="yearLevel"  >
+                            <mat-option  value='1'>
+                              1
+                            </mat-option>
+                            <mat-option  value='2'>
+                              2
+                            </mat-option>
+                            <mat-option  value='3'>
+                              3
+                            </mat-option>
+                            <mat-option  value='4'>
+                              4
+                            </mat-option>
+                            <mat-option  value='5'>
+                             5
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+						</td>
+					</tr>
+				</table>
+				<table style="width: 100%">
+					<tr>
+						<td style="width: 180px" colspan="1">
+                          <mat-form-field style="width: 180px;" appearance="outline">
+                          <mat-label>Term</mat-label>
+                          <mat-select [(ngModel)]="semester"  >
+                            <mat-option  value='1'>
+                              1 (First Semester)
+                            </mat-option>
+                            <mat-option  value='2'>
+                              2 (Second Semester)
+                            </mat-option>
+                            <mat-option  value='3'>
+                              3 (Summer)
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+						</td		>
+						<td style="width: 200px" colspan="1">
+							<span style="position: absolute;padding: 3px;background-color: white;  font-size: 10.5px;z-index: 999;margin-left: 5px;margin-top: -6px;color:#294a70;">Effective school year</span>
+							<mat-form-field style="width: 80px;"  appearance="outline">
+   							  <mat-label></mat-label>
+						      <input matInput placeholder="" autocomplete="off" [(ngModel)]="year1" type="number" min="1900" max="2999" (change)='yearchange1()'>
+						    </mat-form-field>	
+						    to
+							<mat-form-field style="width: 80px"  appearance="outline">
+   							  <mat-label></mat-label>
+						      <input matInput placeholder="" autocomplete="off"  [(ngModel)]="year2" type="number" min="1900" max="2999" (change)='yearchange2()'>
+						    </mat-form-field>	
+						</td>
+						<td style="width: 75px">	
+            <mat-form-field style="width:110px;" appearance="outline" *ngIf="data.data==1">
+              <mat-label>Status</mat-label>
+              <mat-select [(ngModel)]="statusId"  >
+                <mat-option  value='0'>
+                  Inactive
+                </mat-option>
+                <mat-option  value='1'>
+                 Active
+                </mat-option>
+              </mat-select>
+            </mat-form-field>		
+						</td>
+						<td></td>
+					</tr><tr>
+          <td colspan="3">
+            
+                          <mat-form-field style="width: 100%;" appearance="outline">
+                          <mat-label>Exempted Subject Type
+                                <mat-spinner style="margin-right: auto;"  [diameter]="20" *ngIf="arraysubtype===undefined"></mat-spinner></mat-label>
+                          <mat-select [(ngModel)]="subtype"  >
+                            <mat-option  value="">
+                              &nbsp;
+                            </mat-option>
+                            <mat-option  value="{{x.id}}" *ngFor="let x of arraysubtype">
+                              {{x.subjectTypeDesc}}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+          </td>     
+          </tr>
+					</table>
+  </mat-card-content>
+</mat-card>
+
+    <button mat-raised-button (click)="close()" style="float: left;margin-right: 10px">Cancel</button>
+
+                <button mat-raised-button color="primary" form="ngForm" (click)="retentionpolicypost()" style="float: right;"  *ngIf="data.data==0">Add Retention Policy</button>
+
+                <button mat-raised-button color="primary" form="ngForm" (click)="retentionpolicyput()" style="float: right;"  *ngIf="data.data==1">Update Retention Policy</button>
+    <br><br>

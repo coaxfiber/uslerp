@@ -1,0 +1,97 @@
+<div style="max-height: calc(100vh - 250px);overflow-y: auto;">
+<table *ngIf="record!=undefined">
+  <tr>
+    <td>ID Number: <b>{{record[0].idNumber}} </b></td>
+    <td>Name: <b>{{record[0].firstName}} {{record[0].middleName}} {{record[0].lastName}} {{record[0].suffixName}} </b></td>
+  </tr>
+</table>
+<table class="apptable" style="max-width: 100%;margin-top: 15px" *ngIf="record!=undefined">
+                  <tr>
+                    <td colspan="2">
+                      <b>ID Picture</b>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="width: 205px;">
+                      <div style="width: 200px;text-align: center;" (click)="opennewpic(idpicturevar)">
+                        <img [src]="idpicturevar" width="150" height="150" style="border-radius: 50%;border: 5px solid #555;object-fit: cover;"  onerror="this.onerror=null;this.src='assets/noimage.jpg'">
+                      </div>
+                    </td>
+                    <td>
+	      				<div style="margin-bottom: 15px">
+						  <mat-radio-group aria-label="Select an option" [(ngModel)]="record[0].idPicture_Status" [disabled]="!global.checkaccess(':Enrollment:PreEnrollmentSubmittedReqOSASPut')">
+					        <mat-radio-button [value]="2">Set to Verified</mat-radio-button>
+					        <div style="height: 10px"></div>
+					        <mat-radio-button [value]="1">Set to Not Verified</mat-radio-button>
+					      </mat-radio-group>
+					      </div>
+
+					          <mat-form-field appearance="outline" style="width: 100% " *ngIf="record[0].idPicture_Status==1" >
+					              <mat-label>Remarks</mat-label>
+					              <input matInput placeholder="" [(ngModel)]="record[0].idPicture_Remarks" autocomplete="off"  [disabled]="!global.checkaccess(':Enrollment:PreEnrollmentSubmittedReqOSASPut')">
+					          </mat-form-field>
+                      
+                    </td>                    
+                  </tr>
+                 <tr>
+                    <td colspan="3">
+                      <b>Birth Certificate:</b>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="width: 205px;">
+                      <div style="width: 200px;text-align: center;" (click)="opennewpic(birthcertvar)">
+                        <img [src]="birthcertvar" width="150"  height="150" style="border-radius: 5%;border: 5px solid #555;object-fit: cover;"  onerror="this.onerror=null;this.src='assets/noimage2.jpg'">
+                      </div>
+                    </td>
+                    <td>
+	      				<div style="margin-bottom: 15px">
+						  <mat-radio-group aria-label="Select an option" [(ngModel)]="record[0].birthCert_Status"  [disabled]="!global.checkaccess(':Enrollment:PreEnrollmentSubmittedReqOSASPut')">
+					        <mat-radio-button [value]="2">Set to Verified</mat-radio-button>
+					        <div style="height: 10px"></div>
+					        <mat-radio-button [value]="1">Set to Not Verified</mat-radio-button>
+					      </mat-radio-group>
+					      </div>
+
+					          <mat-form-field appearance="outline" style="width: 100% " *ngIf="record[0].birthCert_Status==1" >
+					              <mat-label>Remarks</mat-label>
+					              <input matInput placeholder="" [(ngModel)]="record[0].birthCert_Remarks" autocomplete="off" [disabled]="!global.checkaccess(':Enrollment:PreEnrollmentSubmittedReqOSASPut')">
+					          </mat-form-field> 
+                      
+                    </td>
+                    </tr></table>
+                    <table class="apptable" style="max-width: 100%;margin-top: 15px" *ngIf="record!=undefined">   
+                  <tr>
+                    <td colspan="3">
+                      <b>Proof of Payment:</b>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="width: 205px;">
+                      <div style="width: 200px;text-align: center;" (click)="opennewpic(popvar)">
+                        <img [src]="popvar" width="150"  height="150" style="border-radius: 5%;border: 5px solid #555;object-fit: cover;" onerror="this.onerror=null;this.src='assets/noimage3.jpg'">
+                      </div>
+                    </td>
+                    <td>
+	      				<div style="margin-bottom: 15px">
+						  <mat-radio-group aria-label="Select an option" [(ngModel)]="record[0].proofOfPayment_Status" [disabled]="!global.checkaccess(':Enrollment:PreEnrollmentSubmittedReqAcctgPut')">
+					        <mat-radio-button [value]="2">Set to Verified</mat-radio-button>
+					        <div style="height: 10px"></div>
+					        <mat-radio-button [value]="1">Set to Not Verified</mat-radio-button>
+					      </mat-radio-group>
+					      </div>
+
+				          <mat-form-field appearance="outline" style="width: 100% " *ngIf="record[0].proofOfPayment_Status==1">
+				              <mat-label>Remarks</mat-label>
+				              <input matInput placeholder="" [(ngModel)]="record[0].proofOfPayment_Remarks" autocomplete="off" [disabled]="!global.checkaccess(':Enrollment:PreEnrollmentSubmittedReqAcctgPut')">
+				          </mat-form-field>                      
+                    </td>   
+                  </tr>
+                </table>
+</div>
+
+          <button mat-raised-button (click)="onNoClick()" color="warning"  style="margin-top:10px">Close</button>
+            <button mat-raised-button (click)="verification(record[0].idNumber)" style="float: right;margin-top:10px" color="primary" >
+              <i class="material-icons">edit</i>
+              <span style="margin-top: 7px"> Update</span>
+            </button>  

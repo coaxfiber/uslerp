@@ -1,0 +1,23 @@
+<div>
+				 <button mat-raised-button color="primary"  (click)="openDialog(1)" style="font-size:12px;width: 125px;min-width:18px;line-height: 10px; padding: 0;margin-left: 5px"><i class="material-icons">
+				    add 
+				    </i> Add School Year&nbsp;&nbsp;&nbsp;&nbsp;</button>
+				    <div style="height: 10px"></div>
+<div style="max-height: calc(100vh - 350px);overflow-y: scroll">
+	<table class="apptable">
+		<tr *ngFor="let x of sylist">
+			<td><span>{{ display(x.syWithSem) }}</span></td>
+			<td>
+				<button mat-raised-button  (click)="removesy(x.syWithSem)" style="font-size:12px;width: 25px;min-width:18px;line-height: 3px; padding: 0;margin-left: 5px;background-color: #990000;color: white !important"><i class="material-icons">
+				    delete
+				    </i></button></td>
+		</tr>
+	</table>
+	
+        <mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="sylist===undefined"></mat-spinner>
+</div>
+
+<div mat-dialog-actions style="float: right">
+  <button mat-raised-button (click)="onNoClickclose()" color="warning">Close</button>
+</div>
+</div>

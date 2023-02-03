@@ -1,0 +1,88 @@
+  <mat-card class="example-card">
+  <mat-card-header >
+    <mat-card-title><b>CHED NSTP</b></mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content class='colo'>
+  	<mat-divider></mat-divider>
+     <table style="width: 100%">
+       <tr>
+         <td style="width: 350px">
+             <mat-form-field style="width: 325px" appearance="outline">
+			      <mat-label>- School Year -</mat-label>
+			      <mat-select [(ngModel)]="sy">
+			        <mat-option *ngFor="let x of global.allsyoptions" [value]="x.syWithSem">
+			          {{ display(x.syWithSem) }}
+			        </mat-option>
+			      </mat-select>
+			    </mat-form-field>
+         </td>
+         <td valign="top" style="width: 100px">
+          <button mat-raised-button (click)="generate()"  class="bluebutton">
+                  &nbsp;&nbsp;
+                  <span style="margin-top: 7px"> Generate&nbsp;&nbsp;&nbsp;</span>
+              </button>
+         </td>
+         <td valign="top">
+          <div style="height: 19px"></div>
+          {{array!=undefined&&array!=null ? array.length+' Result(s) Found!' : ''}}
+           
+         </td>
+         <td valign="top">
+          <button mat-raised-button (click)="exportexcel()" style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; padding: 0;margin-left: 5px;margin-top: 15px;background-color:#006600;color: white;float: right;"   *ngIf="array!=null&&array.length!=0">
+            &nbsp;&nbsp;<i class="material-icons">print
+            </i> <span style="margin-top: 7px"> Download Excel&nbsp;&nbsp;&nbsp;</span></button>
+         </td>
+       </tr>
+     </table>
+    <div style="width: 100%;max-height: calc(100vh - 345px); overflow-y: scroll;margin-top: -15px !important;">
+    	<style type="text/css">
+    		#excel-table th{ text-align:center; }
+    	</style>
+    <table class="apptable" *ngIf="array!=null"  id="excel-table" style="text-align:center;">
+	    <tr>
+	      <th style="width:50px;" ><b>NO.</b></th>
+	      <th style="width:50px">SERIAL NUMBER</th>
+	      <th style="width:70px">SURNAME</th>
+	      <th style="width:100px">FIRST NAME</th>
+	      <th style="width:70px">MIDDLE NAME</th>
+        <th style="width:70px">COURSE</th>
+        <th style="width:50px">YEAR LEVEL</th>
+        <th style="width:40px">GENDER</th>
+        <th style="width:90px">BIRTHDATE</th>
+        <th style="width:90px">CITY ADDRESS</th>
+        <th style="width:80px">PROVINCIAL ADDRESS</th>
+        <th style="width:70px">CONTACT NO.</th>
+        <th style="width:80px">EMAIL ADDRESS</th>
+        <th style="width:70px">SUBJECT ID</th>
+        <th style="width:120px">SUBJECT TITLE</th>
+        <th style="width:70px">CODE NO</th>
+        <th style="width:50px">GRADE</th>
+	    </tr>	    
+    	<tr *ngFor="let a of array; let i = index">
+            <td>{{i+1}}</td>
+            <td style="text-align:left;">{{a.serialNo}}</td>
+            <td style="text-align:left;">{{a.surname}}</td>
+            <td style="text-align:left;">{{a.firstName}}</td>
+            <td style="text-align:left;">{{a.middleName}}</td>
+            <td style="text-align:left;">{{a.course}}</td>
+            <td style="text-align:left;">{{a.yearOrGradeLevel}}</td>
+            <td style="text-align:left;">{{a.gender}}</td>
+            <td style="text-align:left;">{{a.birthDate | date: 'mediumDate'}}</td>
+            <td style="text-align:left;">{{a.streetOrBrgy}}, {{a.townOrCity}}</td>
+            <td style="text-align:left;">{{a.province}}</td>
+            <td style="text-align:left;">{{a.telephoneOrCPNumber}}</td>
+            <td style="text-align:left;">{{a.emailAddress}}</td>
+            <td style="text-align:left;">{{a.subjectId}}</td>
+            <td style="text-align:left;">{{a.subjectTitle}}</td>
+            <td style="text-align:left;">{{a.codeNo }}</td>
+            <td style="text-align:left;">{{a.grade}}</td>
+        </tr>
+    </table>    
+    </div>              
+  <mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="array===undefined"></mat-spinner>
+  <div *ngIf="array!=undefined">
+    <p *ngIf="array.length===0" style="text-align: center;"><i>- No result found! -</i></p>
+  </div>
+  </mat-card-content>
+</mat-card>

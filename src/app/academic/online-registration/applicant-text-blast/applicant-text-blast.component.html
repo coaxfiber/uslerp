@@ -1,0 +1,84 @@
+<mat-card class="example-card" id="addset" style='padding: 0 !important;max-height: calc(100vh - 150px);overflow-y: auto;'>
+  <mat-card-header >
+    <mat-card-title><b>SMS Text Blast ({{array.length}} applicant[s])</b>
+    </mat-card-title>
+    	<mat-card-subtitle>Reminder text blast for uploading payment(Testing fee) for online applicants</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content class='colo'>
+
+  	<div *ngIf='loading'  style="margin: 50px 20px 20px 20px;width: calc(100% - 40px)">
+	    <mat-progress-bar mode="query" [ngClass]="{ '_mat-animation-noopable': true }"></mat-progress-bar>
+	    <br>
+	    <p style="text-align: center; padding-bottom: 50px">Loading Data...</p>
+  	</div>
+
+    <table  *ngIf='!loading' >
+      <tr>
+        <td style="padding-left: 10px;width: 180px">
+           <mat-form-field class="example-full-widthminus">
+              <input autofocus matInput placeholder="Search applicant" value="" [(ngModel)]="search" (keyup)="filter()" autocomplete="off">
+            </mat-form-field>
+            <button mat-mini-fab color="primary">
+              <mat-icon>search</mat-icon>
+            </button>     
+        </td>
+        <td style="padding-left: 10px;width: 200px">
+          <mat-form-field appearance="outline" style="width: 200px">
+            <mat-label>Filter By:</mat-label>
+            <mat-select [(ngModel)]="filt"  (ngModelChange)='filter()'>
+              <mat-option value="">All</mat-option>
+              <mat-option value="1">Sent Status</mat-option>
+              <mat-option value="0">Failed/Not yet Sent</mat-option>
+            </mat-select>
+          </mat-form-field>          
+        </td>
+      </tr>
+    </table>
+
+  	<div style="max-height: calc(100vh - 400px);overflow-y: auto;"  *ngIf='!loading' >
+	     <table class="apptable" id="excel-table" style="overflow-x: scroll !important;"  matSort (matSortChange)="sortData($event)">
+	    <tr>
+       <!--  <th style="width:80px" mat-sort-header="programLevel">Program Level</th> -->
+        <th style="width:80px" mat-sort-header="appno">Applicant No.</th>
+        <th style="min-width:30px" mat-sort-header="fullname">Last name</th>
+        <th style="min-width:30px" mat-sort-header="firstname">First name</th>
+        <th style="min-width:30px" mat-sort-header="middlename">Middle name</th>
+        <th style="width:80px" mat-sort-header="cnumber">Contact Number</th>
+        <th style="width:100px" mat-sort-header="datereg">Date Registered</th>
+        <th style="width:150px">SMS Counter</th>
+        <th style="width:100px">Last Sent</th>
+	    </tr>
+	    			<tr *ngFor="let a of array" (click)="openHistory(a.applicantNo)">
+                      <!-- <td >{{checkproglevel(a.programLevel)}}</td> -->
+                      <td >{{a.applicantNo}}</td>
+                      <td >{{a.lastName.toUpperCase() }}</td>
+                      <td >{{a.firstName.toUpperCase() }}</td>
+                      <td >{{a.middleName.toUpperCase() }}</td>
+                      <!-- <td >{{a.suffixName.toUpperCase() }}</td>
+                      <td >{{a.gender}}</td>
+                      <td >{{a.dateOfBirth | date: 'mediumDate' }}</td> -->
+                      <td >{{a.contactNumber}}</td>
+                      <td>{{a.dateRegistered  | date: 'mediumDate' }}</td>
+                      <td >
+                        
+                              Failed: {{a.smS_Ctr_Failed}}<br>
+                            
+                              Success: {{a.smS_Ctr_Success}} 
+                              <span style="color: green" *ngIf="a.smS_Ctr_Success>0">
+                                <i class="material-icons">done</i></span>
+                        </td>
+                      <td><span *ngIf='"0001-01-01T00:00:00"!=a.smS_LastDateSent '>{{a.smS_LastDateSent  | date: 'mediumDate' }}</span></td>
+
+                    </tr>
+                </table>
+  	</div>
+    <div style="height: 10px"></div>
+    <p style="text-align: center;" *ngIf='array.length==0&&!loading'> 
+      - no Data found! -
+    </p>
+    <div  *ngIf='loading==false'>
+      <button mat-raised-button (click)="close()">Cancel</button>
+      <button mat-raised-button color="primary" (click)="swalConfirm()" style="float: right;" >Send text blast</button>
+    </div>
+</mat-card-content>
+</mat-card>

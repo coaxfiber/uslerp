@@ -1,0 +1,40 @@
+<mat-card class="example-card" id="addset" style='padding: 0 !important;max-height: calc(100vh - 150px);overflow-y: auto;'>
+  <mat-card-header >
+    <mat-card-title><b *ngIf="data.type==0">Update G9 Elective</b><b *ngIf="data.type==1">Update Learning Modality</b></mat-card-title>
+  </mat-card-header>
+  <mat-card-content class='colo'>
+  
+<style type="text/css">
+  @media only screen and (max-width: 800px) {
+  .fullwidth {
+    width: 100% !important;
+    margin-right: 0px;
+  }
+  #boxx{
+    margin: 25px 10px 25px 10px;
+  }
+}
+</style>
+<h3 style="margin-bottom: 0px">ID #: {{data.id}}<br>
+{{data.fullname}}
+</h3>
+<table >
+	<tr>
+		<td style="width:400px" valign="top" >
+			<mat-radio-group aria-label="Select an option"  [(ngModel)]="selected">
+				<mat-card  *ngFor="let a of data.array;">
+				<div style="height: 10px"></div>
+					<mat-radio-button value="{{a.id}}">{{a.name}}</mat-radio-button>
+				<div style="height: 10px"></div>
+				</mat-card>
+			</mat-radio-group>
+		</td>
+	</tr>
+</table>
+<div style="height: 15px"></div>
+	  <button mat-raised-button (click)="close()">Cancel</button>
+	  <button mat-raised-button color="primary" (click)="check2()"style="float: right;"  *ngIf="data.type==0" >Update</button>
+	  <button mat-raised-button color="primary" (click)="check()"style="float: right;"  *ngIf="data.type==1">Update</button>
+
+</mat-card-content>
+</mat-card>

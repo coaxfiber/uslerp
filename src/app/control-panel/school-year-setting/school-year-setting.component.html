@@ -1,0 +1,264 @@
+<mat-card class="example-card" id="school-year-setting" style="padding: 0">
+  <mat-card-header >
+    <mat-card-title><b>School Year Settings</b></mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content class='colo'>
+  	<mat-divider></mat-divider>
+    <br>
+    <mat-form-field style="width: 350px">
+      <mat-label>- School Year -</mat-label>
+      <mat-select  [(ngModel)]="selectedsem">
+        <mat-option *ngFor="let x of sylist" [value]="x.syWithSem" (click)="activate(x.syWithSem)">
+          {{ display(x.syWithSem) }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    &nbsp;&nbsp;&nbsp;  
+ <button mat-raised-button color="primary"  (click)="openDialog(1,null  )" style="font-size:11px;width: 115px;min-width:18px;line-height: 15px;height: 28px; padding: 0;margin-left: 5px"  *ngIf="global.checkaccess(':Maintenance:SYSettingsPost')"><i class="material-icons">note_add
+    </i> 
+    <span style="margin-top: 7px"> Add School Year&nbsp;&nbsp;&nbsp;</span></button>
+    <!--<button *ngIf="selectedsy!=undefined&&global.checkaccess(':Maintenance:SYSettingsDelete')" mat-raised-button  (click)="removesy(selectedsy)" style="float:right;font-size:12px;width: 203px;min-width:18px;line-height: 3px;margin-top: 13px;height: 28px; padding: 0;margin-left: 5px;background-color: #990000;color: white !important"><i class="material-icons"> 
+            delete
+            </i><span style="margin-top: 7px"> Remove this school year setting&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></button>-->
+    <style type="text/css">
+      .leftside {
+        width: 30%;
+        text-align: right
+      }
+    </style>
+    <div  *ngIf="selectedsy!=undefined">
+    <table style="width: 100%;min-width: 500px;" class="apptable">
+      <tr>
+        <th colspan="2">College and Graduate School Settings</th>
+      </tr>
+      <tr>
+        <td class="leftside">College Admission<br>
+          <span *ngIf="checkcoladmission.length==7">
+        currently open: {{checkcoladmission}}</span></td>
+        <td>
+          <style type="text/css">
+            .rowss:after {
+              content: "";
+              display: table;
+              clear: both;
+            }
+          </style>
+          <div class="rowss">
+              <div style="width: 130px;float: left">
+                <mat-slide-toggle [checked]="admissioncheck" (change)="checked('requireAdmission')" [disabled]="!(checkcoladmission==selectedsem)&&!(checkcoladmission=='')">
+                  <span *ngIf="requireAdmission>=0">Yes</span>
+                  <span *ngIf="requireAdmission<0">No</span>
+                </mat-slide-toggle>
+              </div>
+              <div style="width: 300px;float: left;margin-top: 2px"  *ngIf="requireAdmission>=0">
+                  <mat-radio-group aria-label="Select an option"  [(ngModel)]="raoption" (change)="changed('raoption')">
+                    <mat-radio-button value="0">Not Required</mat-radio-button>
+                  &nbsp; &nbsp; &nbsp;
+                  &nbsp; &nbsp; &nbsp;
+                    <mat-radio-button value="1">Required</mat-radio-button>
+                  </mat-radio-group>
+              </div>
+          </div>
+          <div style="height: 10px"></div>
+          <div *ngFor="let x of requireAdmissionarray">
+            <small><div [innerHTML]="x.desc" *ngIf="x.value==requireAdmission"></div></small>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="leftside">Graduate School Admission</td>
+        <td>
+          <mat-slide-toggle [checked]="gsAdmission===1" (change)="checked('gsAdmission')">
+            <span *ngIf="gsAdmission==0">No</span>
+            <span *ngIf="gsAdmission==1">Yes</span>
+          </mat-slide-toggle>
+          <div style="height: 10px"></div>
+          <div *ngFor="let x of gsAdmissionarray">
+            <small><div [innerHTML]="x.desc" *ngIf="x.value==gsAdmission"></div></small>
+          </div>
+        </td>
+      </tr> <tr>
+        <td class="leftside">Freshmen Enrollment <br><span *ngIf="checkonfy.length==7">
+        currently open: {{checkonfy}}</span></td>
+        <td>
+          <mat-slide-toggle [checked]="onlineEnrollment===1" (change)="checked('onlineEnrollment')" [disabled]="(
+          selectedsem.charAt(6)!='1'||!(checkonfy==selectedsem))&&
+          (selectedsem.charAt(6)!='1'||!(checkonfy==''))">
+            <span *ngIf="onlineEnrollment==0">No</span>
+            <span *ngIf="onlineEnrollment==1">Yes</span>
+          </mat-slide-toggle>
+          <div style="height: 10px"></div>
+          <div *ngFor="let x of onlineEnrollmentarray">
+            <small><div [innerHTML]="x.desc" *ngIf="x.value==onlineEnrollment"></div></small>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="leftside">Enrollment (College and Graduate School)</td>
+        <td>
+           <div class="rowss">
+              <div style="width: 130px;float: left">
+                <mat-slide-toggle [checked]="enrollmentcheck" (change)="checked('enrollment')">
+                  <span *ngIf="enrollment>=0">Yes</span>
+                  <span *ngIf="enrollment<0">No</span>
+                </mat-slide-toggle>
+              </div>
+              <div style="width: 300px;float: left;margin-top: 2px"  *ngIf="enrollment>=0">
+                  <mat-radio-group aria-label="Select an option"  [(ngModel)]="eoption" (change)="changed2('eoption')">
+                    <mat-radio-button value="0">Allowed</mat-radio-button>
+                      &nbsp; &nbsp; &nbsp;
+                      &nbsp; &nbsp; &nbsp;
+                      &nbsp; &nbsp; &nbsp;
+                    <mat-radio-button value="1">Not Allowed</mat-radio-button>
+                  </mat-radio-group>
+              </div>
+          </div>
+          <div style="height: 10px"></div>
+          <div *ngFor="let x of enrollmentarray">
+            <small><div [innerHTML]="x.desc" *ngIf="x.value==enrollment"></div></small>
+          </div>
+          </td>
+      </tr>
+
+     
+      <tr>
+        <td class="leftside">Lock Code to a Department</td>
+        <td>
+          <mat-slide-toggle [checked]="lockCodes===1" (change)="checked('lockCodes')">
+            <span *ngIf="lockCodes==1">Yes</span>
+            <span *ngIf="lockCodes==0">No</span>
+          </mat-slide-toggle>
+          <div style="height: 10px"></div>
+          <div *ngFor="let x of lockCodesarray">
+            <small><div [innerHTML]="x.desc" *ngIf="x.value==lockCodes"></div></small>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="leftside">Grade Entry <br><span *ngIf="checkonge.length==7">
+        currently open: {{checkonge}}</span></td>
+        <td>
+          <mat-slide-toggle [checked]="gradeEntry===1" (change)="checked('gradeEntry')" 
+          [disabled]="!(checkonge==selectedsem)&&!(checkonge=='')" >
+            <span *ngIf="gradeEntry==0">No</span>
+            <span *ngIf="gradeEntry==1">Yes</span>
+          </mat-slide-toggle>
+          <div style="height: 10px"></div>
+          <div *ngFor="let x of gradeEntryarray">
+            <small><div [innerHTML]="x.desc" *ngIf="x.value==gradeEntry"></div></small>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <table style="width: 100%;min-width: 500px;" class="apptable" *ngIf="sem==1">
+      <tr>
+        <th colspan="2">Basic Education Settings</th>
+      </tr>
+      <tr>
+        <td class="leftside">Elementary Admission<br>
+          <span *ngIf="checkelemadmission.length==7">
+        currently open: {{checkelemadmission}}</span></td>
+        <td>
+          <mat-slide-toggle [checked]="elemAdmission===1" (change)="checked('elemAdmission')"  [disabled]="!(checkelemadmission==selectedsem)&&!(checkelemadmission=='')">
+            <span *ngIf="elemAdmission==1">Yes</span>
+            <span *ngIf="elemAdmission==0">No</span>
+          </mat-slide-toggle>
+          <div style="height: 10px"></div>
+          <div *ngFor="let x of elemAdmissionarray">
+            <small><div [innerHTML]="x.desc" *ngIf="x.value==elemAdmission"></div></small>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="leftside">High School Admission<br>
+          <span *ngIf="checkhsadmission.length==7">
+        currently open: {{checkhsadmission}}</span></td>
+        <td>
+          <mat-slide-toggle [checked]="hsAdmission===1" (change)="checked('hsAdmission')"  [disabled]="!(checkhsadmission==selectedsem)&&!(checkhsadmission=='')">
+            <span *ngIf="hsAdmission==1">Yes</span>
+            <span *ngIf="hsAdmission==0">No</span>
+          </mat-slide-toggle>
+          <div style="height: 10px"></div>
+          <div *ngFor="let x of hsAdmissionarray">
+            <small><div [innerHTML]="x.desc" *ngIf="x.value==hsAdmission"></div></small>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="leftside">Junior High School Grade 7 Enrollment <br><span *ngIf="checkong7.length==7">
+        currently open: {{checkong7}}</span></td>
+        <td>
+          <mat-slide-toggle [(ngModel)]="jhsGrade7Enrollment"  [disabled]="!(checkong7==selectedsem)&&!(checkong7=='')">
+            <span *ngIf="jhsGrade7Enrollment==1">Yes</span>
+            <span *ngIf="jhsGrade7Enrollment==0">No</span>
+          </mat-slide-toggle>
+          <div style="height: 10px"></div>
+          <div *ngFor="let x of jhsGrade7Enrollmentarray">
+            <small><div [innerHTML]="x.desc" *ngIf="x.value==jhsGrade7Enrollment"></div></small>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="leftside">Junior High School Enrollment</td>
+        <td>
+          <mat-slide-toggle [(ngModel)]="hsEnrollment">
+            <span *ngIf="hsEnrollment==1">Yes</span>
+            <span *ngIf="hsEnrollment==0">No</span>
+          </mat-slide-toggle>
+          <div style="height: 10px"></div>
+          <div *ngFor="let x of jhsEnrollmentarray">
+            <small><div [innerHTML]="x.desc" *ngIf="x.value==jhsEnrollment"></div></small>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="leftside">Senior High School Grade 11 Enrollment <br><span *ngIf="checkong11.length==7">
+        currently open: {{checkong11}}</span></td>
+        <td>
+          <mat-slide-toggle [(ngModel)]="shsGrade11Enrollment" [disabled]="!(checkong11==selectedsem)&&!(checkong11=='')">
+            <span *ngIf="shsGrade11Enrollment==1">Yes</span>
+            <span *ngIf="shsGrade11Enrollment==0">No</span>
+          </mat-slide-toggle>
+          <div style="height: 10px"></div>
+          <div *ngFor="let x of shsGrade11Enrollmentarray">
+            <small><div [innerHTML]="x.desc" *ngIf="x.value==shsGrade11Enrollment"></div></small>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="leftside">Senior High School Enrollment</td>
+        <td>
+          <mat-slide-toggle [(ngModel)]="shsEnrollment">
+            <span *ngIf="shsEnrollment==1">Yes</span>
+            <span *ngIf="shsEnrollment==0">No</span>
+          </mat-slide-toggle>
+          <div style="height: 10px"></div>
+          <div *ngFor="let x of shsEnrollmentarray">
+            <small><div [innerHTML]="x.desc" *ngIf="x.value==shsEnrollment"></div></small>
+          </div>
+        </td>
+      </tr>
+      <!-- <tr>
+        <td class="leftside">High School Faculty Grade Entry</td>
+        <td>
+          <mat-slide-toggle [checked]="facultyGradeEntry===1" (change)="checked('facultyGradeEntry')">
+            <span *ngIf="facultyGradeEntry==1">Yes</span>
+            <span *ngIf="facultyGradeEntry==0">No</span>
+          </mat-slide-toggle>
+          <div style="height: 10px"></div>
+          <div *ngFor="let x of facultyGradeEntryarray">
+            <small><div [innerHTML]="x.desc" *ngIf="x.value==facultyGradeEntry"></div></small>
+          </div>
+        </td>
+      </tr> -->
+      
+    </table>
+    
+ <div style="height: 5px"></div>
+ <p style="text-align: right;">
+ <button mat-raised-button color="primary"  (click)="savechanges()" *ngIf="global.checkaccess(':Maintenance:SYSettingsPut')">Save Changes</button>
+</p>
+</div>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,430 @@
+  <mat-card class="example-card">
+  <mat-card-header >
+    <mat-card-title><b>Enrollment List ({{ global.domain }})</b></mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content class='colo'>
+  	<mat-divider></mat-divider>
+     <table style="width: 100%" *ngIf="global.domain=='COLLEGE'">
+       <tr>
+         <td style="width: 150px">
+            <mat-form-field style="width: 150px" appearance="outline" >
+              <mat-label>Departments</mat-label>
+              <mat-select  [(ngModel)]="dept">
+                <mat-option value="" (click)='searchlookup(0)'>
+                  - include all -
+                </mat-option>
+                <mat-option value="{{a.departmentId}}" *ngFor="let a of departments" (click)='searchlookup(0,a.departmentId)'>
+                  {{a.departmentCode}} - {{a.departmentName}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+         </td>
+         <!-- <td style="width: 220px">
+            <mat-form-field style="width: 100%;" appearance="outline">
+          <mat-label>Program 
+                  <mat-spinner style="margin-right: auto;"  [diameter]="20" *ngIf="program===undefined"></mat-spinner>
+                </mat-label>
+          <mat-select [(ngModel)]="prog" >
+                <mat-option value="">
+                  - include all -
+                </mat-option>
+                <mat-option  [value]="x.programId" *ngFor="let x of program">
+                  {{x.courseCode}} {{x.major}} v{{x.version}}
+                </mat-option>
+          </mat-select>
+        </mat-form-field>
+         </td> -->
+         <td style="width: 100px">
+            <mat-form-field style="width: 125px;" appearance="outline">
+            <mat-label>Year </mat-label>
+            <mat-select [(ngModel)]="year" >
+                <mat-option value="">
+                  - include all -
+                </mat-option>
+                <mat-option  value="1">
+                  First Year
+                </mat-option>
+                <mat-option  value="2">
+                  Second Year
+                </mat-option>
+                <mat-option  value="3">
+                  Third Year
+                </mat-option>
+                <mat-option  value="4">
+                  Fourth Year
+                </mat-option>
+                <mat-option  value="5">
+                  Fifth Year
+                </mat-option>
+          </mat-select>
+        </mat-form-field>
+         </td>
+         <td style="width: 150px">
+            <mat-form-field style="width: 150px;" appearance="outline">
+            <mat-label>Gender</mat-label>
+            <mat-select [(ngModel)]="gender" >
+                <mat-option value="">
+                  - include both -
+                </mat-option>
+                <mat-option  value="M">
+                  Male
+                </mat-option>
+                <mat-option  value="F">
+                  Female
+                </mat-option>
+          </mat-select>
+        </mat-form-field>
+         </td>
+         <td valign="top" style="width: 100px">
+          <button mat-raised-button (click)="generate()"  style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; padding: 0;background-color:#294a70;color: white;margin-top: 15px;margin-left: 5px" *ngIf="global.checkaccess(':ReportSummary:CurriculumLookup')">
+                  &nbsp;&nbsp;
+                  <span style="margin-top: 7px"> Generate&nbsp;&nbsp;&nbsp;</span>
+              </button>
+         </td>
+         <td style="text-align: right;">
+          <p *ngIf="array!=null" style="margin-top: 5px">
+            {{ array.length }} Record(s)
+          </p>
+          <!-- <button mat-raised-button (click)="export()" style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; padding: 0;margin-left: 5px;margin-top: 15px;background-color:#006600;color: white;float: right;"   *ngIf="array!=null&&array.length!=0">
+            &nbsp;&nbsp;<i class="material-icons">print
+            </i> <span style="margin-top: 7px"> Print&nbsp;&nbsp;&nbsp;</span></button> -->
+         </td>
+       </tr>
+     </table>
+     <table style="width: 100%" *ngIf="global.domain=='ELEMENTARY'">
+       <tr>
+         <td style="width: 100px">
+            <mat-form-field style="width: 125px;" appearance="outline">
+            <mat-label>Grade </mat-label>
+            <mat-select [(ngModel)]="year" >
+                <mat-option value="">
+                  - include all -
+                </mat-option>
+                <mat-option  value="P1">
+                  Pre-school
+                </mat-option>
+                <mat-option  value="0">
+                  Kinder
+                </mat-option>
+                <mat-option  value="1">
+                  Grade 1
+                </mat-option>
+                <mat-option  value="2">
+                  Grade 2
+                </mat-option>
+                <mat-option  value="3">
+                  Grade 3
+                </mat-option>
+                <mat-option  value="4">
+                  Grade 4
+                </mat-option>
+                <mat-option  value="5">
+                  Grade 5
+                </mat-option>
+                <mat-option  value="6">
+                  Grade 6
+                </mat-option>
+          </mat-select>
+        </mat-form-field>
+         </td>
+         <td style="width: 150px">
+            <mat-form-field style="width: 150px;" appearance="outline">
+            <mat-label>Gender</mat-label>
+            <mat-select [(ngModel)]="gender" >
+                <mat-option value="">
+                  - include both -
+                </mat-option>
+                <mat-option  value="M">
+                  Male
+                </mat-option>
+                <mat-option  value="F">
+                  Female
+                </mat-option>
+          </mat-select>
+        </mat-form-field>
+         </td>
+         <td valign="top" style="width: 100px">
+          <button mat-raised-button (click)="generate()"  style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; padding: 0;background-color:#294a70;color: white;margin-top: 15px;margin-left: 5px" *ngIf="global.checkaccess(':ReportSummary:CurriculumLookup')">
+                  &nbsp;&nbsp;
+                  <span style="margin-top: 7px"> Generate&nbsp;&nbsp;&nbsp;</span>
+              </button>
+         </td>
+         <td style="text-align: right;">
+          <p *ngIf="array!=null" style="margin-top: 5px">
+            {{ array.length }} Record(s)
+          </p>
+          <!-- <button mat-raised-button (click)="export()" style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; padding: 0;margin-left: 5px;margin-top: 15px;background-color:#006600;color: white;float: right;"   *ngIf="array!=null&&array.length!=0">
+            &nbsp;&nbsp;<i class="material-icons">print
+            </i> <span style="margin-top: 7px"> Print&nbsp;&nbsp;&nbsp;</span></button> -->
+         </td>
+       </tr>
+     </table>
+     <table style="width: 100%" *ngIf="global.domain=='HIGHSCHOOL'">
+       <tr>
+         <td style="width: 100px">
+            <mat-form-field style="width: 125px;" appearance="outline">
+            <mat-label>Grade </mat-label>
+            <mat-select [(ngModel)]="year" >
+                <mat-option value="">
+                  - include all -
+                </mat-option>
+                <mat-option  value="1">
+                  Grade 7
+                </mat-option>
+                <mat-option  value="2">
+                  Grade 8
+                </mat-option>
+                <mat-option  value="3">
+                  Grade 9
+                </mat-option>
+                <mat-option  value="4">
+                  Grade 10
+                </mat-option>
+                <mat-option  value="5">
+                  Grade 11
+                </mat-option>
+                <mat-option  value="6">
+                  Grade 12
+                </mat-option>
+          </mat-select>
+        </mat-form-field>
+         </td>
+         <td style="width: 150px">
+            <mat-form-field style="width: 150px;" appearance="outline">
+            <mat-label>Gender</mat-label>
+            <mat-select [(ngModel)]="gender" >
+                <mat-option value="">
+                  - include both -
+                </mat-option>
+                <mat-option  value="M">
+                  Male
+                </mat-option>
+                <mat-option  value="F">
+                  Female
+                </mat-option>
+          </mat-select>
+        </mat-form-field>
+         </td>
+         <td valign="top" style="width: 100px">
+          <button mat-raised-button (click)="generate()"  style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; padding: 0;background-color:#294a70;color: white;margin-top: 15px;margin-left: 5px" *ngIf="global.checkaccess(':ReportSummary:CurriculumLookup')">
+                  &nbsp;&nbsp;
+                  <span style="margin-top: 7px"> Generate&nbsp;&nbsp;&nbsp;</span>
+              </button>
+         </td>
+         <td style="text-align: right;">
+          <p *ngIf="array!=null" style="margin-top: 5px">
+            {{ array.length }} Record(s)
+          </p>
+          <!-- <button mat-raised-button (click)="export()" style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; padding: 0;margin-left: 5px;margin-top: 15px;background-color:#006600;color: white;float: right;"   *ngIf="array!=null&&array.length!=0">
+            &nbsp;&nbsp;<i class="material-icons">print
+            </i> <span style="margin-top: 7px"> Print&nbsp;&nbsp;&nbsp;</span></button> -->
+         </td>
+       </tr>
+     </table>
+      <table style="width: 100%" *ngIf="global.domain=='GRADUATE SCHOOL'">
+       <tr>
+         <td style="width: 100px">
+            <mat-form-field style="width: 125px;" appearance="outline">
+            <mat-label>YEAR </mat-label>
+            <mat-select [(ngModel)]="year" >
+                <mat-option value="">
+                  - include all -
+                </mat-option>
+                <mat-option  value="1">
+                 First year
+                </mat-option>
+          </mat-select>
+        </mat-form-field>
+         </td>
+         <td style="width: 150px">
+            <mat-form-field style="width: 150px;" appearance="outline">
+            <mat-label>Gender</mat-label>
+            <mat-select [(ngModel)]="gender" >
+                <mat-option value="">
+                  - include both -
+                </mat-option>
+                <mat-option  value="M">
+                  Male
+                </mat-option>
+                <mat-option  value="F">
+                  Female
+                </mat-option>
+          </mat-select>
+        </mat-form-field>
+         </td>
+         <td valign="top" style="width: 100px">
+          <button mat-raised-button (click)="generate()"  style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; padding: 0;background-color:#294a70;color: white;margin-top: 15px;margin-left: 5px" *ngIf="global.checkaccess(':ReportSummary:CurriculumLookup')">
+                  &nbsp;&nbsp;
+                  <span style="margin-top: 7px"> Generate&nbsp;&nbsp;&nbsp;</span>
+              </button>
+         </td>
+         <td style="text-align: right;">
+          <p *ngIf="array!=null" style="margin-top: 5px">
+            {{ array.length }} Record(s)
+          </p>
+          <!-- <button mat-raised-button (click)="export()" style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; padding: 0;margin-left: 5px;margin-top: 15px;background-color:#006600;color: white;float: right;"   *ngIf="array!=null&&array.length!=0">
+            &nbsp;&nbsp;<i class="material-icons">print
+            </i> <span style="margin-top: 7px"> Print&nbsp;&nbsp;&nbsp;</span></button> -->
+         </td>
+       </tr>
+     </table>
+    <div style="width: 100%;max-height: calc(100vh - 390px); overflow-y: scroll;margin-top: -15px">
+    <table class="apptable" *ngIf="array!=null" id="excel-table">
+	    <tr>
+	      <th style="width:80px">ID Number</th>
+	      <th style="min-width:100px">Full Name</th>
+          <th style="width:50px">Year or Grade</th>
+          <th style="width:40px">Gender</th>
+	      <th style="min-width:120px">Course</th>
+          <th style="width:60px">Type</th>
+          <th style="width:100px"  *ngIf="global.domain!='GRADUATE SCHOOL'&&global.domain!='COLLEGE'">Section</th>
+          <th style="width:90px" *ngIf="global.domain!='HIGHSCHOOL'&&global.domain!='GRADUATE SCHOOL'&&global.domain!='ELEMENTARY'">Department</th>
+	    </tr>
+      <tr>
+          <td  scope="row">
+            <mat-form-field appearance="outline" style="width: 80px; margin-bottom: -15px">
+              <input autofocus matInput placeholder="ID#" value="" [(ngModel)]="idno" (keyup)="keyDownFunction()" autocomplete="off">
+            </mat-form-field>
+          </td>
+          <td  scope="row">
+            <mat-form-field appearance="outline" style="margin-bottom: -15px">
+              <input autofocus matInput placeholder="Last, First Middle" value="" [(ngModel)]="name" (keyup)="keyDownFunction()" autocomplete="off">
+            </mat-form-field>
+          </td>
+          <td  scope="row">
+            <mat-form-field appearance="outline" style="width: 70px; margin-bottom: -15px"  *ngIf="global.domain=='ELEMENTARY'">
+              <mat-label>GRADE</mat-label>
+              <mat-select [(ngModel)]="fyear" (ngModelChange)='keyDownFunction()' >
+                <mat-option  value="">- All -</mat-option>
+                <mat-option value="0">Kinder</mat-option>
+                <mat-option value="1">1</mat-option>
+                <mat-option value="2">2</mat-option>
+                <mat-option value="3">3</mat-option>
+                <mat-option value="4">4</mat-option>
+                <mat-option value="5">5</mat-option>
+                <mat-option value="6">6</mat-option>
+              </mat-select>
+            </mat-form-field> 
+            <mat-form-field appearance="outline" style="width: 70px; margin-bottom: -15px"  *ngIf="global.domain=='HIGHSCHOOL'">
+              <mat-label>Year</mat-label>
+              <mat-select [(ngModel)]="fyear" (ngModelChange)='keyDownFunction()' >
+                <mat-option  value="">- All -</mat-option>
+                <mat-option value="1">7</mat-option>
+                <mat-option value="2">8</mat-option>
+                <mat-option value="3">9</mat-option>
+                <mat-option value="4">10</mat-option>
+                <mat-option value="5">11</mat-option>
+                <mat-option value="6">12</mat-option>
+              </mat-select>
+            </mat-form-field> 
+            <mat-form-field appearance="outline" style="width: 70px; margin-bottom: -15px"  *ngIf="global.domain=='COLLEGE'||global.domain=='GRADUATE SCHOOL'"> 
+              <mat-label>Year</mat-label>
+              <mat-select [(ngModel)]="fyear" (ngModelChange)='keyDownFunction()'>
+                <mat-option  value="">- All -</mat-option>
+                <mat-option value="1">1</mat-option>
+                <mat-option value="2">2</mat-option>
+                <mat-option value="3">3</mat-option>
+                <mat-option value="4">4</mat-option>
+                <mat-option value="5">5</mat-option>
+              </mat-select>
+            </mat-form-field> 
+          </td>
+          <td  scope="row">
+            <mat-form-field style="width: 100px; margin-bottom: -15px" appearance="outline">
+            <mat-label>Gender</mat-label>
+            <mat-select [(ngModel)]="fgender"  (ngModelChange)='keyDownFunction()'  >
+                <mat-option value="">
+                  - both -
+                </mat-option>
+                <mat-option  value="M">
+                  Male
+                </mat-option>
+                <mat-option  value="F">
+                  Female
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </td>
+          <td  scope="row">
+            <mat-form-field style=" margin-bottom: -15px" appearance="outline">
+            <mat-label>Course</mat-label>
+            <mat-select [(ngModel)]="fcoursetxt" (ngModelChange)='keyDownFunction()'>
+                <mat-option value="">
+                  - All -
+                </mat-option>
+                <mat-option value="{{a}}" *ngFor="let a of fcourse">
+                  {{a}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </td> 
+          <td  scope="row">
+            <mat-form-field style="width: 150px; margin-bottom: -15px" appearance="outline">
+            <mat-label>Type</mat-label>
+            <mat-select [(ngModel)]="ftypetext" (ngModelChange)='keyDownFunction()'>
+                <mat-option value="">
+                  - All -
+                </mat-option>
+                <mat-option value="{{a}}" *ngFor="let a of ftype">
+                  {{a}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </td> 
+
+          <td  scope="row" *ngIf="global.domain!='GRADUATE SCHOOL'&&global.domain!='COLLEGE'">
+            <mat-form-field style="width: 150px; margin-bottom: -15px" appearance="outline">
+            <mat-label>Section</mat-label>
+            <mat-select [(ngModel)]="fsectiontext" (ngModelChange)='keyDownFunction()'>
+                <mat-option value="">
+                  - All -
+                </mat-option>
+                <mat-option value="{{a}}" *ngFor="let a of fsection">
+                  {{a}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </td> 
+
+          <td  scope="row" *ngIf="global.domain=='COLLEGE'">
+            <mat-form-field style="width: 150px; margin-bottom: -15px" appearance="outline">
+            <mat-label>Department</mat-label>
+            <mat-select [(ngModel)]="fdeptext" (ngModelChange)='keyDownFunction()'>
+                <mat-option value="">
+                  - All -
+                </mat-option>
+                <mat-option value="{{a}}" *ngFor="let a of fdept">
+                  {{a}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </td>  
+        </tr>
+    	<tr *ngFor="let a of array">
+            <td>{{a.idNumber}}</td>
+            <td>{{a.lastName}}, {{a.firstName}} {{a.suffixName}} {{a.middleName}} </td>
+            <td>
+              <span *ngIf="global.domain!='HIGHSCHOOL'">{{a.yearOrGradeLevel}}</span>
+              <span *ngIf="global.domain=='HIGHSCHOOL'">
+                {{checkyear(a.yearOrGradeLevel)}}
+              </span>
+            </td>
+            <td>{{a.gender}}</td>
+            <td>{{a.course}} - {{a.programTitle}}</td>
+            <td>{{a.typeDesc}}</td>
+            <td *ngIf="global.domain!='GRADUATE SCHOOL'&&global.domain!='COLLEGE'">{{a.section}}</td>
+            <td  *ngIf="global.domain!='HIGHSCHOOL'&&global.domain!='GRADUATE SCHOOL'&&global.domain!='ELEMENTARY'">{{a.departmentCode}}</td>
+        </tr>
+    </table>    
+    </div>              
+  <mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="array===undefined"></mat-spinner>
+  <div *ngIf="array!=undefined">
+    <p *ngIf="array.length===0" style="text-align: center;"><i>- No result found! -</i></p>
+  </div>
+
+  <button mat-raised-button (click)="exportexcel()" style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; padding: 0;margin-left: 5px;margin-top: 15px;margin-bottom: 15px;background-color:#006600;color: white;float: right;"   *ngIf="array!=null&&array.length!=0">
+            &nbsp;&nbsp;<i class="material-icons">print
+            </i> <span style="margin-top: 7px"> Export to Excel&nbsp;&nbsp;&nbsp;</span></button>
+  </mat-card-content>
+</mat-card>

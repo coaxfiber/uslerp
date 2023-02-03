@@ -1,0 +1,243 @@
+  <mat-card class="example-card">
+  <mat-card-header >
+    <mat-card-title><b>Subjects</b></mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content class='colo'>
+  	<mat-divider></mat-divider>
+  	<br>
+      <button mat-raised-button (click)="export()" style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; padding: 0;margin-left: 5px;margin-top: 15px;background-color:#006600;color: white;float: right;"  *ngIf="data!=undefined&&tableArr!==undefined&&global.checkaccess(':Curriculum:SubjectListWithPrerequisitesGet')">
+          &nbsp;&nbsp;<i class="material-icons">cloud_download
+          </i> <span style="margin-top: 7px"> Export to excel&nbsp;&nbsp;&nbsp;</span></button>
+  	<table>
+  		<tr>
+  			<td>
+		  <table class="example-full-width" cellspacing="0">
+		  <tr>
+		    <td width="50%"><mat-form-field class="example-full-widthminus">
+		      <input autofocus matInput #idno2 maxlength="6" placeholder="Program ID" value="" [(ngModel)]="progid" (keydown)="keyDownFunction($event)" autocomplete="off">
+		    </mat-form-field>
+		    <button mat-mini-fab color="primary" (click)="openDialoglookup(0,0)">
+			    <mat-icon>search</mat-icon>
+			  </button></td>
+		  	<td style="padding-left: 10px">
+		  	</td>
+		  </tr>
+		  </table>
+  			</td>
+  		</tr>
+  	</table>
+    <div *ngIf="data!=undefined">
+      <mat-accordion *ngIf="data.length!=0">
+        <mat-expansion-panel>
+          <mat-expansion-panel-header> 
+            <table>
+              <tr>
+                <td style="width: 120px">
+                  Program ID:
+                </td>
+                <td style="width: calc(100% - 200px)">
+                  <b>{{data.programId}}</b>
+                </td>
+              </tr>
+            </table>
+          </mat-expansion-panel-header>
+              <table>
+                <tr>
+                  <td style="width: 120px">
+                    Course Code:
+                  </td>
+                  <td style="width: calc(100% - 200px)">
+                    <b>{{data.courseCode}}</b>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="width: 120px">
+                    Program Title:
+                  </td>
+                  <td style="width: calc(100% - 200px)">
+                    <b>{{data.programTitle}}</b>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="width: 120px">
+                     Major: 
+                  </td>
+                  <td style="width: calc(100% - 200px)">
+                    <b>{{data.major}}</b>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="width: 120px">
+                    Version:
+                  </td>
+                  <td style="width: calc(100% - 200px)">
+                    <b>{{data.version}}</b>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="width: 120px">
+                    Status:
+                  </td>
+                  <td style="width: calc(100% - 200px)">
+                    <b>{{data.statusCode}} - {{data.statusDesc}}</b>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="width: 120px">
+                    Program Chair:
+                  </td>
+                  <td style="width: calc(100% - 200px)">
+                    <b>{{data.name}}</b>
+                  </td>
+                </tr>
+              </table>
+         </mat-expansion-panel>
+      </mat-accordion>
+      
+      </div>
+    <div style="height: 15px;"></div>
+
+    <div>
+    <table class="apptable">
+	    <tr>
+	      <th style="width:80px">Subject ID</th>
+	      <th style="min-width:100px">Subject Title</th>
+        <th style="width:40px">Year Level</th>
+        <th style="width:40px">Term</th>
+        <th style="width:60px">Lecture Units</th>
+	      <th style="width:60px">Laboratory Units</th>
+        <th style="width:40px">Units</th>
+	      <th style="width:60px">Loading Department</th>
+	      <th style="width:120px;text-align: center;min-width: 120px">- Action -</th>
+	    </tr>
+      <tr>
+                      <td>
+              <mat-form-field style="width:80px;" appearance="outline">
+              <mat-label>filter</mat-label>
+                <input matInput placeholder="" autocomplete="off" [(ngModel)]="fsubjectId" (keydown)="filterall($event)">
+              </mat-form-field>
+                      </td>
+                      <td>
+                        <mat-form-field style="width:100%;" appearance="outline">
+                        <mat-label>filter</mat-label>
+                          <input matInput placeholder="" autocomplete="off" [(ngModel)]="fsubjectTitle" (keydown)="filterall($event)">
+                        </mat-form-field>
+                      </td>
+                      <td>
+                          <mat-form-field style="width: 70px;" appearance="outline">
+                          <mat-label>filter</mat-label>
+                          <mat-select [(ngModel)]="fyearLevel" >
+                            <mat-option  value='1' (click)="filterall('onoutfocus')">
+                              1
+                            </mat-option>
+                            <mat-option  value='2' (click)="filterall('onoutfocus')">
+                              2
+                            </mat-option>
+                            <mat-option  value='3' (click)="filterall('onoutfocus')">
+                              3
+                            </mat-option>
+                            <mat-option  value='4' (click)="filterall('onoutfocus')">
+                              4
+                            </mat-option>
+                            <mat-option  value='5' (click)="filterall('onoutfocus')">
+                              5
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </td>
+                      <td>
+                          <mat-form-field style="width: 70px;" appearance="outline">
+                          <mat-label>filter</mat-label>
+                          <mat-select [(ngModel)]="fterm" >
+                            <mat-option  value='1' (click)="filterall('onoutfocus')">
+                              1 (First Semester)
+                            </mat-option>
+                            <mat-option  value='2' (click)="filterall('onoutfocus')">
+                              2 (Second Semester)
+                            </mat-option>
+                            <mat-option  value='3' (click)="filterall('onoutfocus')">
+                              3 (Summer)
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </td>
+                      <td>
+                        <mat-form-field style="width:70px" appearance="outline">
+                        <mat-label>filter</mat-label>
+                          <input matInput placeholder=""  autocomplete="off" [(ngModel)]="flecUnits" (keydown)="filterall($event)" >
+                        </mat-form-field>
+                      </td>
+                      <td>
+                        <mat-form-field style="width:70px" appearance="outline">
+                        <mat-label>filter</mat-label>
+                          <input matInput placeholder=""  autocomplete="off" [(ngModel)]="flabUnits" (keydown)="filterall($event)" >
+                        </mat-form-field>
+                      </td>           
+                       
+                      <td>
+                        <mat-form-field style="width: 70px;" appearance="outline">
+                        <mat-label>filter</mat-label>
+                          <input matInput placeholder=""  autocomplete="off" [(ngModel)]="funits" (keydown)="filterall($event)">
+                        </mat-form-field>
+                      </td>          
+                      <td>
+                          <mat-form-field style="width: 80px;" appearance="outline">
+                          <mat-label>filter
+                                <mat-spinner style="margin-right: auto;"  [diameter]="20" *ngIf="arraydept===undefined"></mat-spinner></mat-label>
+                          <mat-select [(ngModel)]="floadingDeptCode" >
+                            <mat-option  [value]="x.departmentCode" *ngFor="let x of arraydept" (click)="filterall('onoutfocus')">
+                              {{x.departmentCode}} - {{x.departmentName}}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </td>
+                      <td style="text-align: center;">
+                        <div *ngIf="data!=undefined">
+                        <button mat-raised-button color="primary"  *ngIf="global.checkaccess(':Curriculum:SubjectPost')" (click)="openDialogaddupdatesubjects(0,null)" style="font-size:11px;width:102px;line-height: 15px;height: 40px; padding: 0;margin-left: 5px;background-color:#006600;color: white">&nbsp;<i class="material-icons">add
+                            </i> 
+                            <span style="margin-top: 7px"> Add Subject&nbsp;&nbsp;&nbsp;</span></button>
+                          </div>
+                      </td>
+
+
+            </tr>
+          </table>
+          <div style="width: 100%;max-height: calc(100vh - 525px); overflow-y: scroll;">
+          <table  class="apptable" style="min-width: 977px !important" >
+	    			<tr *ngFor="let a of tabledata">
+                      <td style="width:80px">{{a.subjectId}}</td>
+                      <td style="min-width:201px">{{ a.subjectTitle }}</td>
+                      <td style="width:70px">{{a.yearLevel}}</td>
+                      <td style="width:70px">{{a.term}}</td>
+                      <td style="width:70px">{{a.lecUnits}}</td>
+                      <td style="width:74px">{{a.labUnits}}</td>
+                      <td style="width:70px">{{a.units}}</td>
+                      <td style="width:80px !important">{{a.loadingDeptCode}}</td>
+                      <td style="text-align: center;width:103px;">
+                          <button mat-raised-button color="primary" style="font-size:11px;min-width:18px;line-height: 15px;height: 28px; padding: 0;margin-left: 5px"
+                          [matMenuTriggerFor]="menu"
+                           >
+                              &nbsp;<i class="material-icons">launch</i> 
+                              <span style="margin-top: 7px"> Options&nbsp;&nbsp;&nbsp;</span>
+                          </button>
+                              <mat-menu #menu="matMenu">
+                                <button mat-menu-item (click)="openDialogaddupdatesubjects(1,a)"  *ngIf="global.checkaccess(':Curriculum:SubjectPut')">Update subject</button>
+                                <!--&&global.requestid()==data.programChair-->
+                                <button mat-menu-item (click)="openDialogPrerequisites(a)"  *ngIf="global.checkaccess(':Curriculum:SubjectPrerequisiteGet')">Pre-requisite</button>
+                                <button mat-menu-item (click)="openDialogCorequisites(a)"  *ngIf="global.checkaccess(':Curriculum:SubjectPrerequisiteGet')">Co-requisite</button>
+                                <button mat-menu-item (click)="openDialogOtherrequisites(a)"   *ngIf="global.checkaccess(':Curriculum:SubjectOtherRequisiteGet')">Other requisite</button>
+                                <button mat-menu-item (click)="removesub(a.subjectId,a.recordId)"  *ngIf="global.checkaccess(':Curriculum:SubjectDelete')">Delete</button>
+                              </mat-menu>                          
+                      </td>
+
+                    </tr>
+                </table>
+                </div>
+                  <mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="tableArr===undefined"></mat-spinner>
+               <div *ngIf="tableArr!=undefined">
+                <p *ngIf="tableArr.length===0" style="text-align: center;"><i>- No result found! -</i></p>
+              </div>
+  </div>
+  </mat-card-content>
+</mat-card>

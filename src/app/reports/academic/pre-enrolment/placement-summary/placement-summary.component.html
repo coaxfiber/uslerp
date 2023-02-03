@@ -1,0 +1,119 @@
+  <mat-card class="example-card">
+  <mat-card-header >
+    <mat-card-title><b>Placement Exam Result Summary</b></mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content class='colo'>
+  	<mat-divider></mat-divider>
+    <table style="width: 100%;">
+    	<tr>
+    		<td style="width: 200px">
+			    <mat-form-field class="example-full-width"  appearance="outline" style="width: 200px">
+			    <input readonly matInput [matDatepicker]="picker" placeholder="Start Date" (click)="picker.open()"  [(ngModel)]="sdate" name="bdate">
+				  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+				  <mat-datepicker #picker ></mat-datepicker>
+			    </mat-form-field>
+    		</td>
+        <td style="width: 200px">
+          <mat-form-field class="example-full-width"  appearance="outline" style="width: 200px">
+          <input readonly matInput [matDatepicker]="picker2" placeholder="End Date" (click)="picker2.open()" [(ngModel)]="edate" name="bdate">
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
+        </td>
+        <td style="width: 300px" *ngIf="global.domain=='COLLEGE'||global.domain=='GRADUATE SCHOOL'">
+            <mat-form-field style="width: 300px" appearance="outline">
+              <mat-label>- Select First Choice Course -</mat-label>
+              <mat-select  [(ngModel)]="course">
+                <mat-option value="">
+                  - Select Course -
+                </mat-option>
+                <mat-option value="{{a.courseCode}}" *ngFor="let a of coursearray">
+                  {{a.courseCode}} - {{a.course}} (version {{a.version}})
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+        </td>
+        <td style="width: 150px" *ngIf="course!=''&&course!=undefined"> 
+            <mat-form-field style="width: 150px" appearance="outline">
+              <mat-label>- Select Result -</mat-label>
+              <mat-select  [(ngModel)]="result">
+                <mat-option value="P">
+                  P-Passed
+                </mat-option>
+                <mat-option value="F">
+                  F-Failed
+                </mat-option>
+                <mat-option value="R">
+                  R-Recommended
+                </mat-option>
+                <mat-option value="N">
+                  R-Not Recommended
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+        </td>
+    		<td style="width: 100px" valign="top">
+				  <button mat-raised-button (click)="checktogenerate()" style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; padding: 0;background-color:#294a70;color: white;margin-left: 10px;margin-top: 15px">
+		          		&nbsp;&nbsp;<i class="material-icons">date_range</i>
+		          		<span style="margin-top: 7px"> Generate&nbsp;&nbsp;&nbsp;</span>
+		          </button>
+    		</td>
+        <td valign="top">
+          
+      <button mat-raised-button (click)="export()" style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; padding: 0;margin-left: 5px;background-color:#006600;color: white;float: right;margin-bottom: 5px;margin-top: 15px"  *ngIf="array!=null&&array.length!=0">
+          &nbsp;&nbsp;<i class="material-icons">cloud_download
+          </i>
+          <span style="margin-top: 7px"> Export to excel&nbsp;&nbsp;&nbsp;</span>
+      </button>
+        </td>
+  		</tr>
+    </table>
+    <div style="margin-top: -15px;text-align: center;">
+    </div>
+
+      <!-- <mat-form-field style="width: 70px;" appearance="outline">
+      <mat-label>filter</mat-label>
+      <mat-select>
+        <mat-option  value='1'>
+          1
+        </mat-option>
+        
+      </mat-select>
+      </mat-form-field> -->
+    <div style="width: 100%;max-height: calc(100vh - 365px); overflow-y: scroll;margin-top: -20px">
+    <table class="apptable" *ngIf="array!=null">
+	    <tr>
+	      <th style="width:80px">ID Number</th>
+	      <th style="min-width:120px">Name</th>
+          <th style="min-width:180px">Strand</th>
+          <th style="width:90px">Exam Date</th>
+	      <th style="width:50px">Score</th>
+          <th style="width:60px">First Choice</th>
+          <th style="width:40px">Result</th>
+	      <th style="width:60px">Second Choice</th>
+          <th style="width:40px">Result</th>
+	      <th style="width:60px">Third Choice</th>
+          <th style="width:40px">Result</th>
+	    </tr>
+    	<tr *ngFor="let a of array">
+            <td>{{a.idNumber}}</td>
+            <td>{{a.name}}</td>
+            <td>{{a.strandCode}} - {{a.strandTitle}}</td>
+            <td>{{a.examDate | date: 'MMM dd, yyyy'}}</td>
+            <td>{{a.score}}</td>
+            <td>{{a.firstChoice}}</td>
+            <td>{{a.firstChoiceResult}}</td>
+            <td>{{a.secondChoice}}</td>
+            <td>{{a.secondChoiceResult}}</td>
+            <td>{{a.thirdChoice}}</td>
+            <td>{{a.thirdChoiceResult}}</td>
+        </tr>
+    </table>    
+    </div>              
+  <mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="array===undefined"></mat-spinner>
+  <div *ngIf="array!=undefined">
+    <p *ngIf="array.length===0" style="text-align: center;"><i>- No result found! -</i></p>
+  </div>
+  </mat-card-content>
+</mat-card>

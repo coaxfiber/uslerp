@@ -1,0 +1,54 @@
+<mat-card class="example-card" id="school-year-setting" style='padding: 0 !important;'>
+  <mat-card-header >
+    <mat-card-title><b>Add School Year</b></mat-card-title>
+    <mat-card-subtitle><p>Description.</p></mat-card-subtitle>
+  </mat-card-header>
+  
+  <mat-card-content class='colo'>
+<table>
+		<tr>
+			<td style="width: 125px">Active Term: &nbsp; &nbsp;</td>
+  			<td>	
+  				<mat-form-field style="width: 315px">
+				  <mat-label>- Select Term -</mat-label>
+				  <mat-select [(ngModel)]="activeterm" >
+				    <mat-option value="1">
+				      First Semester
+				    </mat-option>
+				    <mat-option value="2">
+				      Second Semester
+				    </mat-option>
+				    <mat-option value="3">
+				      Summer
+				    </mat-option>
+				  </mat-select>
+				</mat-form-field>
+			</td>
+		</tr>
+			<tr>
+  			<td>School Year: &nbsp; &nbsp;</td>
+  			<td>	
+  				
+              		<table style="width: 100%">
+              			<tr>
+              				<td>
+              					<mat-form-field style="width: 130px">
+              						<input matInput [(ngModel)]="year1" type="number" min="1900" max="2999" maxlength="4" (change)='yearchange1()'>
+              					</mat-form-field>
+              				</td>
+              				<td> &nbsp; to &nbsp; </td>
+              				<td>
+              					<mat-form-field style="width: 130px">
+              						<input matInput [(ngModel)]="year2" type="number" min="1900" max="2999" maxlength="4"  (change)='yearchange2()'>
+              					</mat-form-field>
+              				</td>
+              			</tr>
+              		</table>
+			</td>
+  		</tr>
+ </table>
+	  <button mat-raised-button (click)="onNoClickclose()">Cancel</button>
+	  <button mat-raised-button color="primary" form="ngForm" (click)="Addsy()" style="float: right;" *ngIf="data.x==1">Add School Year</button><br>&nbsp;
+
+  </mat-card-content>
+</mat-card>

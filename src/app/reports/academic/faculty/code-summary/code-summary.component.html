@@ -1,0 +1,117 @@
+  <mat-card class="example-card">
+  <mat-card-header >
+    <mat-card-title><b>Faculty Loads</b></mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content class='colo' style="max-width: 900px">
+  	<mat-divider></mat-divider>
+    <div style="height: 10px"></div>
+     <table style="width: 100%">
+       <tr>
+        <td colspan="2">
+            <mat-form-field style="width: 500px" appearance="outline">
+              <mat-label>Departments</mat-label>
+              <mat-select  [(ngModel)]="dept">
+                <mat-option value="{{a.departmentId}}" *ngFor="let a of departments2">
+                  {{a.departmentCode}} - {{a.departmentName}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+        </td>
+         <td></td>
+         <td valign="top" *ngIf="array!=undefined">
+         	<span   *ngIf="array!=null">
+          <button mat-raised-button (click)="generatePDF()" style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; padding: 0;margin-left: 5px;margin-top: 15px;background-color:#006600;color: white;float: right;"    *ngIf="array.length!=0">
+            &nbsp;&nbsp;<i class="material-icons">print
+            </i> <span style="margin-top: 7px"> Download PDF&nbsp;&nbsp;&nbsp;</span></button>
+            </span>
+         </td>
+       </tr>
+       <tr>
+
+         <td style="width: 70px">
+
+               <mat-form-field class="txtid" style="width: 150px" *ngIf="filter=='faculty'">
+                  <input matInput #idno maxlength="7" placeholder="ID Number" [(ngModel)]="id"  value="" name="idno" (keydown)="keyDownFunction($event)">                </mat-form-field>
+                <button mat-mini-fab color="primary" (click)="emplookup()"  *ngIf="filter=='faculty'">
+                  <mat-icon>search</mat-icon>
+                </button>
+         </td>
+         <td valign="top" style="width: 100px">
+            <button mat-raised-button (click)="generate()" class="bluebutton" [disabled]='generatetemp' >
+                  &nbsp;&nbsp;
+                  <span style="margin-top: 7px"> Generate&nbsp;&nbsp;&nbsp;</span>
+              </button>
+         </td>
+         <td>
+           
+         </td>
+       </tr>
+     </table>
+    <div style="width: 100%;max-height: calc(100vh - 360px); overflow-y: scroll;">
+    <div *ngIf="array!=undefined">
+    <table class="apptable" *ngIf="array!=null">
+      <tr *ngIf="array.length!=0">
+        <th style="width: 50px">TIME</th>
+            <th style="width: 75px">DAYS</th>
+            <th style="width: 35px">CODE NO.</th>
+            <th style="min-width: 100px">COURSE NUMBER/ DESCRIPTIVE TITLE</th>
+            <th style="width: 35px">ROOM NO.</th>
+            <th style="width: 35px">LEC HRS.</th>
+            <th style="width: 35px">LAB HRS.</th>
+            <th style="width: 50px">NO. OF STUD.</th>
+
+      </tr>
+      <tr *ngFor="let a of array">
+            <td>{{a.time}}</td>
+            <td>{{a.day}}</td>
+            <td>{{a.codeNo}}</td>
+            <td>{{a.subjectId}} - {{a.subjectTitle}}</td>
+            <td>{{a.roomNumber}}</td>
+            <td>{{a.lecUnits}}</td>
+            <td>{{a.labUnits}}</td>
+            <td>{{a.oe}}</td>
+        </tr>
+    	<!-- <tr>
+    		<th style="width: 50px">Code No.</th>
+            <th style="width: 75px">Subject ID</th>
+            <th style="min-width: 100px">Subject Title</th>
+            <th style="width: 25px">Lab Units</th>
+            <th style="width: 25px">Lec Units</th>
+            <th style="width: 50px">Room</th>
+            <th style="width: 75px">Time</th>
+            <th style="width: 50px">Department</th>
+            <th style="width: 30px">Class Size</th>
+            <th style="width: 25px">OE</th>
+            <th style="width: 25px">Res</th>
+            <th style="width: 100px">Instructor</th>
+            <th style="min-width: 125px">Loading Department</th>
+            <th style="width: 100px">Department Head</th>
+
+    	</tr>
+    	<tr *ngFor="let a of array">
+            <td>{{a.codeNo}}</td>
+            <td>{{a.subjectId}}</td>
+            <td>{{a.subjectTitle}}</td>
+            <td>{{a.labUnits}}</td>
+            <td>{{a.lecUnits}}</td>
+            <td>{{a.roomNumber}}</td>
+            <td>{{a.time}}</td>
+            <td>{{a.dept}}</td>
+            <td>{{a.classSize}}</td>
+            <td>{{a.oe}}</td>
+            <td>{{a.res}}</td>
+            <td>{{a.instructor}}</td>
+            <td>{{a.loadingDepartment}}</td>
+            <td>{{a.departmentName}}</td>
+        </tr> -->
+    </table>  
+    </div>  
+    </div>              
+  <mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="array===undefined"></mat-spinner>
+  <div *ngIf="array!=undefined">
+    <p *ngIf="array==null" style="text-align: center;"><i>{{message}}</i></p>
+    <p *ngIf="array!=null" style="text-align: center;"><i *ngIf="array.length===0&&id!=''" >- No result found! -</i></p>
+  </div>
+  </mat-card-content>
+</mat-card>

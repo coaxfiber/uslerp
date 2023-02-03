@@ -1,0 +1,72 @@
+<mat-card class="example-card">
+  <mat-card-header >
+    <mat-card-title><b>Entrance Exam Schedule Manager</b></mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content class='colo'>
+  	<mat-divider></mat-divider>
+    <br>
+  	<table style="width: 70% !important">
+  		<tr>
+  			<td align="left" width="20%">
+  				<mat-form-field style="width: 100%"><!-- 
+		          <input matInput placeholder="Search" value="" [(ngModel)]="search" autocomplete="off"  (keydown)="keyDownFunction()"> -->
+              <input autofocus matInput placeholder="Search by date" value="" [(ngModel)]="search" (keyup)="keyDownFunction()" autocomplete="off">
+		        </mat-form-field>
+  			</td>
+  			<td align="right">
+  				<button mat-raised-button class="btnstyle" (click)="addEntry()">
+					<i class="material-icons">note_add</i><span style="margin-top: 7px">Add Schedule&nbsp;&nbsp;&nbsp;</span>
+				</button>
+  			</td>
+  		</tr>
+  	</table>
+  		
+
+      	<table class="apptable"  style="width: 70% !important" matSort (matSortChange)="sortData($event)">
+        <tr>
+          <th>ID</th>
+          <th style="width: 175px">School Year</th>
+          <th style="width: 50px">Slot</th>
+          <th>Test Date</th>
+          <th style="width: 130px;text-align: center;">
+            - Action -
+          </th>
+        </tr>
+        <tr *ngFor="let x of temp  | paginate: eeschedConfig">
+          <td>{{ x.id}}</td>
+          <td style="width: 175px">{{x.schoolYear}}</td>
+          <td style="width: 50px">{{ x.slots }}</td>
+          <!-- <td>{{ x.testDate | date: 'MMM d, y h:mm a'}}</td> -->
+          <td>{{ x.testDate}}</td>
+          <td>
+                          <button mat-raised-button color="primary" style="font-size:11px;min-width:18px;line-height: 15px;height: 28px; padding: 0;margin-left: 25px" [matMenuTriggerFor]="menu">
+                              &nbsp;<i class="material-icons">launch</i> 
+                              <span style="margin-top: 7px"> Options&nbsp;&nbsp;&nbsp;</span>
+                           </button>
+
+                                <mat-menu #menu="matMenu">
+                                
+                                  <button mat-menu-item  (click)="updateEntry(x)">
+                                      <span style="margin-top: 7px"> Update</span>
+                                  </button>
+
+                                  <button mat-menu-item (click)="deleteEntry(x.id)">
+                                      <span style="margin-top: 7px"> Remove</span>
+                                  </button>
+
+                              </mat-menu>  
+          </td>
+        </tr>
+      </table>
+      <table border="0" style="width: 70% !important">
+        <tr>
+          <td>
+            <pagination-controls (pageChange)="eeschedPageChanged($event)" style="float: right;"></pagination-controls>
+          </td>
+        </tr>
+      </table>
+      
+
+  </mat-card-content>
+</mat-card>

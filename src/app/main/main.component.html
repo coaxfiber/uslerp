@@ -1,0 +1,412 @@
+ <mat-drawer-container class="example-container" style="max-height: 100vh" id="main" >
+  <mat-drawer mode="side" opened="true"  #drawer>
+  	<div style="" id="coverp">
+	  	<img [src]="image" width="110" id="photop" onError="this.src='assets/noimage.jpg'"/>
+		<div style="" id="fullname" style="padding-bottom: 5px">
+			{{ id }}<br>
+			{{ name | titlecase}}
+		<style type="text/css">
+			.chapsign:focus{
+				background-color: inherit !important;
+			}
+		</style>
+		<table style="width: 100%">
+      <tr>
+        <td style="width: 55%">
+          <small>
+          	<a mat-button color='default' style="font-size: 10px;text-align: right;" class="chapsign" (click)="openDialogchangepassword()">
+          		<i class="material-icons iconsize">lock</i> Change Password</a>
+          </small>
+        </td>
+        <td  style="text-align: center;text-align: left;" ><small>
+        	<a mat-button color='default' class="chapsign" style="font-size: 10px;float: left" (click)="logout()" >
+      		<mat-icon>exit_to_app</mat-icon> Sign Out</a></small>
+        </td>
+      </tr>
+    </table>
+		</div> 
+	</div>
+  	<div *ngIf="global.domain!=null" style="max-height: calc(100vh - 360px);overflow-y: auto;">
+
+<mat-accordion>
+  <mat-expansion-panel *ngIf="global.checkaccess(':Person:PersonGet')||global.checkaccess(':Person:PersonPost')">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <i class="material-icons iconsize" >assessment</i><b>&nbsp; General</b>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <a mat-button 
+     [routerLink]="['../main',{outlets:{div:'person-information'}}]"
+     *ngIf="global.checkaccess(':Person:PersonPost')">
+     	<i class="material-icons iconsize">person_add</i> New Person Registration
+ 	</a>
+
+     <a mat-button [routerLink]="['../main',{outlets:{div:'update-person'}}]"   *ngIf="global.checkaccess(':Person:PersonGet')"><i class="material-icons iconsize">edit</i> Update Person Information</a>
+
+  </mat-expansion-panel>
+  <mat-expansion-panel *ngIf="
+  global.checkaccess(':Student:Get')||
+  global.checkaccess(':Admission:Admit')||
+  global.checkaccess(':Admission:Register')||
+  global.checkaccess(':Enrollment:EnrolledSubjectsGet')||
+  global.checkaccess(':Code:SetHeadersGet')||
+  global.checkaccess(':Admission:SYSettingsGet')||
+  global.checkaccess(':Curriculum:CurriculumLookup')||
+  global.checkaccess(':Enrollment:PurgeListGet')||
+  global.checkaccess(':Curriculum:CurriculumLookup')||
+  global.checkaccess(':Curriculum:SubjectGet')||
+  (global.checkaccess(':StudentEvaluation:Get')&&
+  global.checkaccess(':StudentEvaluation:ChecklistGet')&&
+  global.checkaccess(':StudentEvaluation:AcademicHistoryEvaluationGet')&&
+  global.checkaccess(':StudentEvaluation:CurriculumGet'))||
+  global.checkaccess(':Code:ExamScheduleGet')||
+  (global.checkaccess(':Code:SetHeadersGet')||
+  global.checkaccess(':Maintenance:CompanyGet'))||
+  global.checkaccess(':OnlineRegistration:ApplicantGet')||
+  global.checkaccess(':Placement:PlacementInformationGet')||
+  global.checkaccess(':Maintenance:EntranceTestGet')||
+  global.checkaccess(':Enrollment:HSStudentElectiveListGet')||
+  global.checkaccess(':Enrollment:LearningModalitiesGet')||
+  global.checkaccess(':Student:SectionPut')||
+  global.checkaccess(':OnlineGradingSheet:OnlineGadingSheetGet')||
+  global.checkaccess(':Maintenance:ScheduleBasicEdPost')||
+  global.checkaccess(':Enrollment:PreEnrollmentSubmittedReqGet')">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <i class="material-icons iconsize" >chrome_reader_mode</i><b>&nbsp; Academic</b>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+     <a mat-button [routerLink]="['../main',{outlets:{div:'student-information'}}]"
+     *ngIf="global.checkaccess(':Student:Get')"><i class="material-icons iconsize">person_outline</i> Student Information</a>
+     
+     <a mat-button [routerLink]="['../main',{outlets:{div:'admission'}}]" 
+     *ngIf="global.checkaccess(':Admission:Admit')"><i class="material-icons iconsize">exit_to_app</i> Student Admission</a>
+     
+     <a mat-button [routerLink]="['../main',{outlets:{div:'Student-Registration'}}]" *ngIf="global.checkaccess(':Admission:Register')"><i class="material-icons iconsize">assignment_ind</i> Student Registration</a>
+
+     <a mat-button [routerLink]="['../main',{outlets:{div:'Enrollment-Manager'}}]" *ngIf="global.checkaccess(':Enrollment:EnrolledSubjectsGet')"><i class="material-icons iconsize">assignment</i> Enrollment Manager</a>
+
+
+     <a mat-button [routerLink]="['../main',{outlets:{div:'sy-setting'}}]" *ngIf="global.checkaccess(':Maintenance:SYSettingsPut')"><i class="material-icons iconsize">build</i> School Year Setting</a>
+
+     <a mat-button [routerLink]="['../main',{outlets:{div:'purge-list'}}]" *ngIf="global.checkaccess(':Enrollment:PurgeListGet')"><i class="material-icons iconsize">select_all</i> Purging</a>
+     
+     <mat-expansion-panel style="display:inline;padding: 0" *ngIf="global.checkaccess(':Curriculum:CurriculumLookup')">
+	    <mat-expansion-panel-header  style="padding-left: 7px;" [collapsedHeight]="'36px'" [expandedHeight]="'36px'">
+	      <mat-panel-title>
+	        <i class="material-icons iconsize" >chrome_reader_mode</i>&nbsp;Curriculum Manager
+	      </mat-panel-title>
+	    </mat-expansion-panel-header>
+	     <a mat-button  [routerLink]="['../main',{outlets:{div:'curriculum'}}]"
+	     *ngIf="global.checkaccess(':Curriculum:CurriculumLookup')">
+	     <i class="material-icons iconsize">library_books</i> Courses</a>
+
+	     <a mat-button [routerLink]="['../main',{outlets:{div:'subjects'}}]"
+	     *ngIf="global.checkaccess(':Curriculum:SubjectGet')"><i class="material-icons iconsize">toc</i> Subjects</a>
+	  </mat-expansion-panel>
+
+     <a mat-button [routerLink]="['../main',{outlets:{div:'student-evaluation'}}]" 
+	     *ngIf="
+	     global.checkaccess(':StudentEvaluation:Get')&&
+	     global.checkaccess(':StudentEvaluation:ChecklistGet')&&
+	     global.checkaccess(':StudentEvaluation:AcademicHistoryEvaluationGet')&&
+	     global.checkaccess(':StudentEvaluation:CurriculumGet')">
+     	<i class="material-icons iconsize">assignment_turned_in</i> Student Evaluation
+     </a>
+     
+     <a mat-button [routerLink]="['../main',{outlets:{div:'enrollment-summary'}}]" *ngIf="global.checkaccess(':Enrollment:role-managemen')"><i class="material-icons iconsize">dashboard</i> Enrollment Summary</a>
+
+     <a mat-button [routerLink]="['../main',{outlets:{div:'exam-schedule'}}]" *ngIf="global.checkaccess(':Code:ExamScheduleGet')"><i class="material-icons iconsize">vertical_split</i> Exam Schedule</a>
+
+     <mat-expansion-panel style="display:inline;padding: 0" *ngIf="
+	     global.checkaccess(':Code:SetHeadersGet')||
+	     global.checkaccess(':Maintenance:CompanyGet')||
+	     global.checkaccess(':Maintenance:EntranceTestGet')">
+	    <mat-expansion-panel-header  style="padding-left: 7px;" [collapsedHeight]="'36px'" [expandedHeight]="'36px'">
+	      <mat-panel-title>
+	        <i class="material-icons iconsize">perm_data_setting</i>&nbsp; Maintenance
+	      </mat-panel-title>
+	    </mat-expansion-panel-header>
+	     
+ 		<a mat-button [routerLink]="['../main',{outlets:{div:'Sets-Manager'}}]" *ngIf="global.checkaccess(':Code:SetHeadersGet')">
+ 		<i class="material-icons iconsize">toc</i> Sets Manager</a>
+
+      	<a mat-button [routerLink]="['../main',{outlets:{div:'academic-company'}}]" 
+	     *ngIf="global.checkaccess(':Maintenance:CompanyGet')">
+	     <i class="material-icons iconsize">apartment</i> School Manager</a>
+
+       <a mat-button [routerLink]="['../main',{outlets:{div:'entrance-exam-schedule-manager'}}]" *ngIf="global.checkaccess(':Maintenance:EntranceTestGet')"><i class="material-icons iconsize">vertical_split</i> Entrance Exam Sched Mngr.</a>
+
+
+	  </mat-expansion-panel>
+
+     <a mat-button [routerLink]="['../main',{outlets:{div:'online-registration'}}]" *ngIf="global.checkaccess(':OnlineRegistration:ApplicantGet')"><i class="material-icons iconsize">how_to_vote</i> Applicant Manager</a>
+
+     <a mat-button [routerLink]="['../main',{outlets:{div:'placement-manager'}}]" *ngIf="global.checkaccess(':Placement:PlacementInformationGet')"><i class="material-icons iconsize">how_to_reg</i> Placement Manager</a>
+
+     <a mat-button [routerLink]="['../main',{outlets:{div:'Grade-9-Elective'}}]" *ngIf="global.checkaccess(':Enrollment:HSStudentElectiveListGet')"><i class="material-icons iconsize">dashboard</i> G9 Elective</a>
+
+     <a mat-button [routerLink]="['../main',{outlets:{div:'Modality'}}]" *ngIf="global.checkaccess(':Enrollment:LearningModalitiesGet')"><i class="material-icons iconsize">dns</i> Learning Modality</a>
+     
+     <a mat-button [routerLink]="['../main',{outlets:{div:'Section-Manager'}}]" *ngIf="global.checkaccess(':Student:SectionPut')"><i class="material-icons iconsize">cloud_upload</i> Section Uploader</a>
+
+     <a mat-button [routerLink]="['../main',{outlets:{div:'Hs-Class-Schedule-Uploader'}}]" *ngIf="global.checkaccess(':Maintenance:ScheduleBasicEdPost')"><i class="material-icons iconsize">cloud_upload</i> HS Schedule Uploader</a>
+
+     
+       <a mat-button [routerLink]="['../main',{outlets:{div:'Electronic-Grading-Sheet'}}]" *ngIf="global.checkaccess(':OnlineGradingSheet:OnlineGadingSheetGet')"><i class="material-icons iconsize">vertical_split</i> Electronic Grading Sheet</a>
+
+       <a mat-button [routerLink]="['../main',{outlets:{div:'College-Preenrollment'}}]" *ngIf="global.checkaccess(':Enrollment:PreEnrollmentSubmittedReqGet')"><i class="material-icons iconsize">toc</i> Pre-enrollment</a>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel *ngIf="
+    global.checkaccess(':Employee:EmployeeGet')||
+    global.checkaccess(':Employee:ScheduleGet')||
+    global.checkaccess(':LeaveManagement:LeavesGet')||
+    global.checkaccess(':HRISMaintenance:DepartmentGet')||
+    global.checkaccess(':HRISMaintenance:PositionGet')||
+    global.checkaccess(':HRISMaintenance:RankGet')||
+    global.checkaccess(':HRISMaintenance:ItemGet')">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <i class="material-icons">recent_actors</i><b>&nbsp; HRIS</b>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+     
+     <a mat-button [routerLink]="['../main',{outlets:{div:'employee-information'}}]" *ngIf="global.checkaccess(':Employee:EmployeeGet')"><i class="material-icons iconsize">people</i> Employee Information</a>
+     
+	 <a mat-button [routerLink]="['../main',{outlets:{div:'leave-management'}}]" *ngIf="global.checkaccess(':LeaveManagement:LeavesGet')"><i class="material-icons iconsize">how_to_vote</i> Leave Management</a>
+
+
+	 <a mat-button [routerLink]="['../main',{outlets:{div:'hris-schedule-manager'}}]" *ngIf="global.checkaccess(':Employee:ScheduleGet')"><i class="material-icons iconsize">av_timer</i> Schedule Manager</a>
+	 
+	  <mat-expansion-panel style="display:inline;padding: 0" *ngIf="global.checkaccess(':HRISMaintenance:DepartmentGet')||
+    global.checkaccess(':HRISMaintenance:PositionGet')||
+    global.checkaccess(':HRISMaintenance:RankGet')||
+    global.checkaccess(':HRISMaintenance:ItemGet')">
+	    <mat-expansion-panel-header  style="padding-left: 7px;" [collapsedHeight]="'36px'" [expandedHeight]="'36px'">
+	      <mat-panel-title>
+	        <i class="material-icons">perm_data_setting</i>&nbsp; Maintenance
+	      </mat-panel-title>
+	    </mat-expansion-panel-header
+	    >
+	     <a mat-button [routerLink]="['../main',{outlets:{div:'hris-maintenance-departments'}}]" 
+	     *ngIf="global.checkaccess(':HRISMaintenance:DepartmentGet')"><i class="material-icons iconsize">device_hub</i> Departments</a>
+
+	     <a mat-button [routerLink]="['../main',{outlets:{div:'hris-maintenance-positions'}}]" 
+	     *ngIf="global.checkaccess(':HRISMaintenance:PositionGet')"><i class="material-icons iconsize">bubble_chart</i> Positions</a>
+
+	     <a mat-button [routerLink]="['../main',{outlets:{div:'hris-maintenance-ranks'}}]" 
+	     *ngIf="global.checkaccess(':HRISMaintenance:RankGet')"><i class="material-icons iconsize">flag</i> Ranks</a>
+
+	     <a mat-button [routerLink]="['../main',{outlets:{div:'hris-maintenance-items'}}]" 
+	     *ngIf="global.checkaccess(':HRISMaintenance:ItemGet')"><i class="material-icons iconsize">linear_scale</i> Items</a>
+
+	  </mat-expansion-panel>
+		
+  </mat-expansion-panel>
+
+  <mat-expansion-panel *ngIf="global.checkaccess(':Role:RoleGet')
+  ||global.checkaccess(':Account:Register')
+  ||global.checkaccess(':Account:Register')
+  ||global.checkaccess(':ClientApplication:ClientApplicationGet')">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <i class="material-icons">settings_applications</i><b>&nbsp; Control Panel</b>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+     	<mat-expansion-panel style="display:inline;padding: 0" *ngIf="global.checkaccess(':Account:Register')">
+	    <mat-expansion-panel-header  style="padding-left: 7px;" [collapsedHeight]="'36px'" [expandedHeight]="'36px'">
+	      <mat-panel-title>
+	        <i class="material-icons iconsize" >contacts</i>&nbsp;User Management
+	      </mat-panel-title>
+	    </mat-expansion-panel-header>
+	     <a mat-button  [routerLink]="['../main',{outlets:{div:'user-management'}}]"
+	     *ngIf="global.checkaccess(':Account:Register')"><i class="material-icons iconsize">person</i> Employee</a>
+
+	     <a mat-button [routerLink]="['../main',{outlets:{div:'user-management-student'}}]"
+	     *ngIf="global.checkaccess(':Account:Register')"><i class="material-icons iconsize">person_pin</i> Student</a>
+	  	</mat-expansion-panel>
+
+     	<a mat-button [routerLink]="['../main',{outlets:{div:'role-management'}}]" *ngIf="global.checkaccess(':Role:RoleGet')"><i class="material-icons iconsize">assignment_turned_in</i> Role Management</a>
+
+     	<a mat-button [routerLink]="['../main',{outlets:{div:'app-manager'}}]" *ngIf="global.checkaccess(':ClientApplication:ClientApplicationGet')"><i class="material-icons iconsize">surround_sound</i> Application Manager</a>
+  </mat-expansion-panel>
+
+</mat-accordion>
+
+</div>
+	<div style="bottom: 0 !important;position: fixed;width: 300px;background-color: #294a70;color: white;">
+    <div style="height: 5px;background-color: #ffab1f;"></div>
+      <p style="font-size: 11px;line-height: 1.3;padding-left: 10px"  >
+      ©{{global.year}} USL ERP<br>
+      University of Saint Louis - Tuguegarao City, Cagayan<br>
+      Maintained by: CICT.Team</p>
+    </div>
+  </mat-drawer>
+  <mat-drawer-content>
+
+<div style="padding-left: 10px;padding-top: 10px;">
+	<p style="margin:0;color:#294a70;"><small><b>Active Configuration: </b> 
+	<span  *ngIf="
+	global.checkdomain('0001')||
+	global.checkdomain('0002')||
+	global.checkdomain('0003')||
+	global.checkdomain('0004')||
+	global.checkdomain('0005')||
+	global.checkdomain('0006')||
+	global.checkdomain('0008')||
+	global.checkdomain('0009')||
+	global.checkdomain('0071')||
+	global.checkdomain('0072')||
+	global.checkdomain('0073')">
+	{{ global.domain  }}</span> {{ global.displaysem }} {{global.displayyear}} </small>
+	<button color="primary" style="background-color:#294a70;color:white;border-radius: 10px;border: none;padding-bottom: 3px" (click)="openDialog()"><small>change</small></button></p>  </div>
+
+  	<div style="margin-left: 10px;margin-top: 8px;" class="hnav">
+
+    <button  mat-button color="primary" style="min-width: 10px;width: 32px;" (click)="drawer.toggle()"><mat-icon>menu</mat-icon></button>
+
+  	<button mat-button [routerLink]="['../main',{outlets:{div:'home'}}]"  color="primary" style="min-width: 10px;width: auto;"><mat-icon>home</mat-icon> Home &nbsp;</button>
+
+<button mat-button [matMenuTriggerFor]="reports"  color="primary"  style="min-width: 10px;width: auto;"
+	 *ngIf="
+	 
+	  global.checkaccess(':ReportSummary:RPTSubjectProjectionGet')||
+	  global.checkaccess(':ReportSummary:RPTPlacementSummaryGet')||
+	  global.checkaccess(':ReportTeacher:RPTClassListGet')||
+	  global.checkaccess(':ReportTeacher:RPTCodeSummaryGet')||
+	  global.checkaccess(':ReportSummary:RPTEnrollmentListGet')||
+	  global.checkaccess(':ReportSummary:RPTApplicantSummaryByProgLevelGet')||
+	  global.checkaccess(':ReportCHED:RPTEnrollmentListCHEDGet')||
+	  global.checkaccess(':ReportCHED:RPTEnrollmentSummaryCHEDGet')||
+	  global.checkaccess(':ReportCHED:RPTNstpCHEDGet')||
+    global.checkaccess(':ReportSummary:RPTEnrolledStudentsListGet')||
+    global.checkaccess(':ReportTeacher:RPTClassListGet')||
+    global.checkaccess(':ReportHRIS:RPTEmployeeProfileByDeptGet')||
+    global.checkaccess(':ReportSummary:RPTPreEnrollmentStatsDepartpmentGet')||
+    global.checkaccess(':ReportSummary:RPTPreEnrollmentStatsCourseGet')||
+    global.checkaccess(':ReportSummary:RPTApplicantSummaryListRecommendedGet')
+    ">
+  <mat-icon>assignment</mat-icon> Reports <i class="material-icons">arrow_drop_down</i>
+</button>
+
+	<mat-menu #reports="matMenu" >
+	  <button mat-menu-item [matMenuTriggerFor]="academic">Academic</button>
+	  <button mat-menu-item [matMenuTriggerFor]="ched" 
+    *ngIf="global.checkaccess(':ReportCHED:RPTEnrollmentListCHEDGet')||
+	  global.checkaccess(':ReportCHED:RPTEnrollmentSummaryCHEDGet')||
+	  global.checkaccess(':ReportCHED:RPTNstpCHEDGet')">Ched</button>
+    <button mat-menu-item [matMenuTriggerFor]="hris" 
+    *ngIf="global.checkaccess(':ReportHRIS:RPTEmployeeProfileByDeptGet')">HRIS</button>
+	</mat-menu>
+
+  <mat-menu #hris="matMenu">
+    <button mat-menu-item  [routerLink]="['../main',{outlets:{div:'Report-Employee-Profile'}}]" *ngIf="global.checkaccess(':ReportHRIS:RPTEmployeeProfileByDeptGet')">
+    Employee profile</button>
+  </mat-menu>
+
+	<mat-menu #ched="matMenu">
+	  <button mat-menu-item  [routerLink]="['../main',{outlets:{div:'ched/enrolment-list'}}]" *ngIf="global.checkaccess(':ReportCHED:RPTEnrollmentListCHEDGet')">
+	  Enrolment List</button>
+	  <button mat-menu-item  [routerLink]="['../main',{outlets:{div:'ched/enrolment-summary'}}]" *ngIf="global.checkaccess(':ReportCHED:RPTEnrollmentSummaryCHEDGet')">
+	  Enrolment Summary</button>
+	  <button mat-menu-item  [routerLink]="['../main',{outlets:{div:'ched/NSTP'}}]" *ngIf="
+	  global.checkaccess(':ReportCHED:RPTNstpCHEDGet')">
+	  NSTP</button>
+	</mat-menu>
+
+	<mat-menu #academic="matMenu">
+	  <button mat-menu-item [matMenuTriggerFor]="preenrollment" *ngIf="
+	  global.checkaccess(':ReportSummary:RPTSubjectProjectionGet')||
+	  global.checkaccess(':ReportSummary:RPTPlacementSummaryGet')||
+	  global.checkaccess(':ReportSummary:RPTApplicantSummaryByProgLevelGet')||
+    global.checkaccess(':ReportSummary:RPTPreEnrollmentStatsDepartpmentGet')||
+    global.checkaccess(':ReportSummary:RPTPreEnrollmentStatsCourseGet')||
+    global.checkaccess(':ReportSummary:RPTApplicantSummaryListRecommendedGet')">Pre-enrolment</button>
+
+	  <button mat-menu-item [matMenuTriggerFor]="faculty" *ngIf="global.checkaccess(':ReportTeacher:RPTCodeSummaryGet')||
+    global.checkaccess(':ReportTeacher:RPTClassListGet')">Faculty</button>
+
+	  <button mat-menu-item [matMenuTriggerFor]="student" 
+	  *ngIf="
+	  global.checkaccess(':ReportSummary:RPTEnrollmentListGet')||
+	  global.checkaccess(':ReportSummary:RPTEnrollmentStatisticsGet')||
+	  global.checkaccess(':ReportSummary:RPTEnrollmentSummaryGet')">
+		Student
+	  </button>
+
+    <button mat-menu-item  [routerLink]="['../main',{outlets:{div:'Learning-Modality-Report'}}]" *ngIf="global.checkaccess(':ReportSummary:RPTEnrolledStudentsListGet')">Learning Modality</button>
+
+	</mat-menu>
+	<mat-menu #preenrollment="matMenu">
+
+    <button mat-menu-item  [matMenuTriggerFor]="preenrollmentapplicant" *ngIf="
+    global.checkaccess(':ReportSummary:RPTApplicantSummaryByProgLevelGet')||
+    global.checkaccess(':ReportSummary:RPTApplicantSummaryListRecommendedGet')
+    ">Applicant</button>
+
+	  
+	  <button mat-menu-item  [routerLink]="['../main',{outlets:{div:'report-placement-summary'}}]" *ngIf="global.checkaccess(':ReportSummary:RPTPlacementSummaryGet')">Placement Exam Result Summary</button>
+
+    <button mat-menu-item  [routerLink]="['../main',{outlets:{div:'report-code-projection'}}]" *ngIf="global.checkaccess(':ReportSummary:RPTSubjectProjectionGet')">Subject Projection</button>
+
+    <button mat-menu-item  [matMenuTriggerFor]="collegepreenrolment" *ngIf="
+    global.checkaccess(':ReportSummary:RPTPreEnrollmentStatsDepartpmentGet')||
+    global.checkaccess(':ReportSummary:RPTPreEnrollmentStatsCourseGet')
+    ">Pre-enrolled Summary Reports</button>
+
+	</mat-menu>
+
+  <mat-menu #preenrollmentapplicant="matMenu">
+    <button mat-menu-item [routerLink]="['../main',{outlets:{div:'applicant-summary'}}]" 
+    *ngIf="global.checkaccess(':ReportSummary:RPTApplicantSummaryByProgLevelGet')">
+    Summary
+    </button>
+    <button mat-menu-item [routerLink]="['../main',{outlets:{div:'Applicant-List-Report-Recommended-Report'}}]" 
+    *ngIf="global.checkaccess(':ReportSummary:RPTApplicantSummaryListRecommendedGet')">
+      With Placement Result(Recommended)
+    </button>
+  </mat-menu>
+
+   <mat-menu #collegepreenrolment="matMenu">
+    <button mat-menu-item  [routerLink]="['../main',{outlets:{div:'College-PreenrollmentStat-Department-Report'}}]" *ngIf="global.checkaccess(':ReportSummary:RPTPreEnrollmentStatsDepartpmentGet')">By Department</button>
+
+    <button mat-menu-item  [routerLink]="['../main',{outlets:{div:'College-PreenrollmentStat-Course-Report'}}]" *ngIf="global.checkaccess(':ReportSummary:RPTPreEnrollmentStatsCourseGet')">By Course</button>
+  </mat-menu>
+
+    
+
+	<mat-menu #faculty="matMenu">
+	  <button mat-menu-item  [routerLink]="['../main',{outlets:{div:'Faculty/Classlist'}}]" *ngIf="global.checkaccess(':ReportTeacher:RPTClassListGet')">Classlist</button>
+	  <button mat-menu-item  [routerLink]="['../main',{outlets:{div:'Faculty/Code-summary'}}]" *ngIf="global.checkaccess(':ReportTeacher:RPTCodeSummaryGet')">Faculty Loads</button>
+	</mat-menu>
+
+	<mat-menu #student="matMenu">
+  	  
+	  <button mat-menu-item  [routerLink]="['../main',{outlets:{div:'student/enrolment-list'}}]" *ngIf="global.checkaccess(':ReportSummary:RPTEnrollmentListGet')">Enrollment List</button>
+
+	  <button mat-menu-item  [routerLink]="['../main',{outlets:{div:'Report-Enrollment-Statistic'}}]" *ngIf="global.checkaccess(':ReportSummary:RPTEnrollmentStatisticsGet')">
+	  Enrollment Statistics</button>
+
+	  <button mat-menu-item  [routerLink]="['../main',{outlets:{div:'Report-Enrollment-Summary'}}]" *ngIf="global.checkaccess(':ReportSummary:RPTEnrollmentSummaryGet')">
+	  Enrollment Summary</button>
+
+	</mat-menu>	
+</div>
+
+  	<mat-card class="matcontainer" id="routererp" style="padding: 0;"> 
+
+    <router-outlet name="div"></router-outlet>
+
+
+  	</mat-card>	
+  	<div style="">
+		<div style="height: 5px;background-color: #ffab1f;"></div>
+		<div style="height: 5px;background-color: #294a70;"></div>
+	</div>
+  </mat-drawer-content>
+</mat-drawer-container>
+ 

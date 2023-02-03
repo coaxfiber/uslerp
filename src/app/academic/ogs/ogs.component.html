@@ -1,0 +1,242 @@
+  <mat-card class="example-card">
+  <mat-card-header >
+    <mat-card-title><b>Electronic Grading Sheet</b></mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content class='colo' >
+  	<mat-divider></mat-divider>
+  	<table style="width: 700px">
+  		<tr>
+		    <td style="width: 200px"><mat-form-field class="example-full-widthminus">
+		      <input autofocus matInput placeholder="Search Code" value="" [(ngModel)]="CNum" (keyup)="keyDownFunction($event)" autocomplete="off">
+		    </mat-form-field>
+		    <button mat-mini-fab color="primary">
+			    <mat-icon>search</mat-icon>
+			  </button></td>
+  			<td>
+		  <table style="width: 100%">
+		  <tr>
+		  	<td> 
+          <span *ngIf='codesummaryArr.length!=0'>Status: <b>{{ ogsstatus }}</b></span>
+		  	</td>
+        <td  style="width: 200px" >
+            <mat-form-field style="width: 200px" appearance="outline"  *ngIf='errs==""&&ogsstatus=="Locked"'>
+              <mat-label>CHANGE STATUS:</mat-label>
+              <mat-select [(ngModel)]="ogsstatustext" (ngModelChange)='swalConfirm()'>
+                <mat-option value='Open'  *ngIf="global.checkrole('Dean')"><!--Only for dean role-->
+                  <b>OPEN</b>
+                </mat-option>
+                <mat-option value='Posted' *ngIf="global.checkrole('Can Post EGS')">
+                  <b>POST</b>
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <button mat-raised-button (click)='postgrades()' *ngIf="global.checkrole('Can Post EGS')&&ogsstatus=='Posted'&&repost&&repostbut"
+            style="font-size:12px;min-width:18px;line-height: 15px;height: 28px; padding: 0;margin-left: 5px;margin-top: 15px;background-color:#006600;color: white;float: right;">
+                &nbsp;&nbsp;<i class="material-icons">assignment_turned_in
+                </i> <span style="margin-top: 7px"> Re-Post&nbsp;&nbsp;&nbsp;</span></button>   
+        </td>
+		  </tr>
+		  </table>
+  			</td>
+  		</tr>
+  	</table>
+  	<div style="height: 20px" *ngIf='errs=="start"'></div>
+
+    
+      <div style="max-height: calc(100vh - 360px);overflow-y: scroll;" *ngIf='codesummaryArr.length!=0'>
+			<style type="text/css">
+			  		.bordered {
+					  border: 1px solid black;
+					  border-collapse: collapse;
+			  		}
+			  		.padleft{
+			  		}
+			  		.subdits td {
+			  			padding-left: 5px;
+			  			padding-right: 5px;
+			  		}
+			  		.tdcenter {
+			  			text-align: center;
+			  		}
+			  		.td75 {
+			  			width: 60px;
+			  		}
+			  		.bordertop {
+			  			border-top: 1px solid;			  		}
+			  		.borderright {
+			  			border-right: 1px solid;	
+			  		}
+			  		.borderleft {
+			  			border-left: 1px solid;	
+			  		}
+			  		.borderbottom {
+			  			border-bottom: 1px solid;	
+			  		}
+			  	</style>
+      	<mat-expansion-panel  style="width: 700px" [expanded]="true"><!-- [expanded]="true" -->
+	    <mat-expansion-panel-header>
+	      <mat-panel-title>
+	        <b style="color: #294a70">
+			  	Details: 
+			</b>
+	      </mat-panel-title>
+			<mat-panel-description>
+			</mat-panel-description>
+	      <mat-panel-description>
+	      </mat-panel-description>
+
+	    </mat-expansion-panel-header>
+      <div  *ngIf="classlistArr!=undefined&&errs==''">
+        <button  mat-raised-button color="" class="btnstyle" style="min-width: 10px;width: 100px!important;float: right;margin-bottom: 10px" (click)="generatePDF()"  *ngIf="classlistArr.length!=0">
+                <i class="material-icons">print</i> View PDF &nbsp;<span style="margin-top: 7px;"></span>
+              </button>
+            </div>
+		  	<table style="width: 100%" cellspacing="0" cellpadding="0" *ngIf="codesummaryArr!=undefined" class="subdits">
+              <tr>
+              	<td style="width: 90px"><b>School Year</b></td>
+              	<td class="bordertop borderright borderleft padleft" colspan="2">{{ global.syDisplay(global.syear) }}</td>
+              	<td class="td75"> </td>
+              	<td class="td75"><b>Code No.</b></td>
+              	<td class="bordertop borderright borderleft td75 tdcenter">{{CNum}}</td>
+              </tr>
+              <tr>
+              	<td><b>Subject ID</b></td>
+              	<td class="bordered padleft" colspan="2">{{codesummaryArr[0].subjectId}}</td>
+              	<td  style="width: 75px"> </td>
+              	<td style="width: 75px"><b>Lec. Units</b></td>
+              	<td class="bordertop borderright borderleft"  style="width: 75px;text-align: center;">{{codesummaryArr[0].lecUnits}}</td>
+              </tr>
+              <tr>
+              	<td style="width: 75px" colspan="4"><b>Subject Description</b></td>
+              	<td style="width: 75px"><b>Lab. Units</b></td>
+              	<td class="bordertop borderright borderleft" style="width: 75px;text-align: center;">{{codesummaryArr[0].labUnits}}</td>
+              </tr>
+              <tr>
+              	<td class="bordered padleft" rowspan="" colspan="6" valign="top" style="height: 40px">{{codesummaryArr[0].subjectTitle}}</td>	
+              </tr>
+
+              <tr>
+              	<td colspan="3" class="borderbottom"></td>
+                <td class="tdcenter td75 borderleft borderbottom"><b>Remarks</b></td>
+                <td class="tdcenter td75 borderright borderbottom borderleft"><b>Total</b></td>
+                <td class="tdcenter td75 borderright borderbottom"><b>%</b></td>
+              </tr>
+              <tr>
+              	<td colspan="2" class="borderleft"><b>Instructor</b></td>
+              	<td class="tdcenter borderleft" style="width: 90px">
+              		<b>Date Signed</b>
+              	</td>
+              	<td class="tdcenter td75 borderleft borderbottom">Passed</td>
+              	<td class="tdcenter td75 borderright borderbottom borderleft">{{getpercentage(0,'Passed')}}</td>
+              	<td class="tdcenter td75 borderright borderbottom">{{getpercentage(1,'Passed')}}%</td>
+              </tr>
+              <tr>
+              	<td colspan="2" class="borderleft"></td>
+              	<td class="borderleft"></td>
+              	<td class="tdcenter td75 borderleft borderbottom">Failed</td>
+              	<td class="tdcenter td75 borderright borderbottom borderleft">{{getpercentage(0,'Failed')}}</td>
+              	<td class="tdcenter td75 borderright borderbottom">{{getpercentage(1,'Failed')}}%</td>
+              </tr>
+              <tr>
+              	<td colspan="2" class="borderleft borderbottom tdcenter">
+              		{{codesummaryArr[0].instructor}}
+              	</td>
+              	<td class="borderleft borderbottom tdcenter"></td>
+              	<td class="tdcenter td75 borderleft borderbottom">Dropped</td>
+              	<td class="tdcenter td75 borderright borderbottom borderleft">{{getpercentage(0,'Dropped')}}</td>
+              	<td class="tdcenter td75 borderright borderbottom">{{getpercentage(1,'Dropped')}}%</td>
+              </tr>
+              <tr>
+              	<td colspan="2" class="borderleft "><b>Academic Dean</b></td>
+              	<td class="tdcenter borderleft ">
+              		<b>Date Signed</b>
+              	</td>
+              	<td class="tdcenter td75 borderleft borderbottom">NFE</td>
+              	<td class="tdcenter td75 borderright borderbottom borderleft">{{getpercentage(0,'No Final Exam')}}</td>
+              	<td class="tdcenter td75 borderright borderbottom">{{getpercentage(1,'No Final Exam')}}%</td>
+              </tr>
+              <tr>
+              	<td colspan="2" class="borderleft"></td>
+              	<td class="borderleft"></td>
+              	<td class="tdcenter td75 borderleft borderbottom">WP</td>
+              	<td class="tdcenter td75 borderright borderbottom borderleft">{{getpercentage(0,'Widrawn with Permission')}}</td>
+              	<td class="tdcenter td75 borderright borderbottom">{{getpercentage(1,'Widrawn with Permission')}}%</td>
+              </tr>
+              <tr>
+              	<td colspan="2" class="borderleft borderbottom tdcenter">
+              		{{academicdean}}
+              	</td>
+              	<td class="borderleft borderbottom"></td>
+              	<td class="tdcenter td75 borderleft borderbottom"><span style="font-size: 12px">Blank Grade</span></td>
+              	<td class="tdcenter td75 borderright borderbottom borderleft">{{getpercentage(0,'Blank Grade')}}</td>
+              	<td class="tdcenter td75 borderright borderbottom">{{getpercentage(1,'Blank Grade')}}%</td>
+              </tr>
+              <tr>
+              	<td colspan="3" style="text-align: center;font-size: 11px;">
+              		<i>*Grade Legend: D is Dropped; N is NFE; WP is for Widrawn with Permision</i>
+              	</td>
+              	<td class="tdcenter td75 borderleft borderbottom">Total</td>
+              	<td class="tdcenter td75 borderright borderbottom borderleft" *ngIf="classlistArr!=undefined">{{ classlistArr.length}}</td>
+              	<td class="tdcenter td75 borderright borderbottom">100%</td>
+              </tr>
+              
+            </table>
+	  	</mat-expansion-panel>
+
+	  	<div style="height: 15px"></div>
+	  	<div  *ngIf="classlistArr!=undefined&&errs==''">
+	  	<table  class="apptable" style="width: 700px" *ngIf="classlistArr.length!=0">
+	            	<tr>
+	            		<th style="text-align: left;width: 25px"> &nbsp;No.</th>
+	            		<th style="text-align: left;width: 80px"> &nbsp;ID</th>
+	            		<th style="text-align: left;min-width: 150px"> &nbsp;Name</th>
+	            		<th style="text-align: left;width: 50px"> &nbsp;Gender</th>
+	            		<th style="text-align: left;width: 50px"> &nbsp;Grade</th>
+                  <th style="text-align: left;width: 100px"> &nbsp;Remarks</th>
+                  <th style="text-align: center;width: 70px"> &nbsp;Academic History</th>
+	            	</tr>
+	            	<tr  *ngFor="let e of classlistArr; let i = index">
+	            		<td>{{i+1}}</td>
+	            		<td style="text-align: center;">{{e.idNumber}}</td>
+	            		<td>{{e.name}}</td>
+	            		<td style="text-align: center;">{{e.gender}}</td>
+	            		<td style="text-align: center;">
+	            			{{classlistArr[i].grade}}
+	            		</td>
+	            		<td>
+							<b  *ngIf="classlistArr[i].grade>74&&classlistArr[i].grade<101"  style="color: #28a745" >Passed</b>
+
+							<b  *ngIf="classlistArr[i].grade==70"  style="color: #294a70" >Failed</b>
+
+							<b  *ngIf="classlistArr[i].grade=='D'"  style="color: #294a70" >Dropped</b>
+							
+							<b  *ngIf="classlistArr[i].grade=='N'"  style="color: #294a70" >No Final Exam</b>
+
+							<b  *ngIf="classlistArr[i].grade=='WP'"  style="color: #294a70" >Widrawn with Permission</b>
+
+							<b style="color: #dc3545" *ngIf="!(classlistArr[i].grade>74&&classlistArr[i].grade<101||classlistArr[i].grade==70||classlistArr[i].grade=='D'||classlistArr[i].grade=='N'||classlistArr[i].grade=='WP'||classlistArr[i].grade==''||classlistArr[i].grade==null)">Invalid Input</b>
+
+              <b style="color: #ff9807" *ngIf="classlistArr[i].grade==''||classlistArr[i].grade==null">Blank Grade</b>
+
+	            		</td>
+
+                  <td style="text-align: center;">{{e.acadHistGradePosted}}</td>
+	            	</tr>
+	            </table>
+	        </div>
+
+
+
+
+
+      <mat-spinner style="margin-left: auto;margin-right: auto;" *ngIf="classlistArr===undefined&&codesummaryArr.length==0" ></mat-spinner>
+  </div>
+
+      <div style="max-height: calc(100vh - 360px);overflow-y: scroll;" *ngIf='errs=="error"&&codesummaryArr.length==0'>
+      	<p>
+      		- Code: {{CNum}} not found! -
+      	</p>
+      </div>
+  </mat-card-content>
+</mat-card>

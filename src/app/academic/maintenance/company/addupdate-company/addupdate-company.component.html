@@ -1,0 +1,52 @@
+<mat-card class="example-card" id="addset" style='padding: 0 !important;'>
+  <mat-card-header >
+    <mat-card-title><b *ngIf="data.type==0">Add Company</b><b *ngIf="data.type==1">Update Company</b></mat-card-title>
+  </mat-card-header>
+  <style type="text/css">
+  	div.mat-form-field-wrapper{
+  		padding-bottom: 0px !important;
+  	}
+  </style>
+  <mat-card-content class='colo'>
+  	<p *ngIf="data.type==1">
+  		Company ID: <b>{{data.data.companyId}}</b>
+  	</p>
+  	<table style="width: 100%" >
+  		<tr>
+  			<td>
+  				<mat-form-field style="width: 100%"  appearance="outline">
+					<mat-label>Company Name</mat-label>
+			    	<input matInput [(ngModel)]="cname" autocomplete="off" style="width: 100%">
+			    </mat-form-field>
+  			</td>
+  		</tr>
+  		<tr>
+  			<td>
+  				&nbsp;&nbsp;&nbsp;
+  				<mat-checkbox [(ngModel)]="educ">
+  					An Educational Institution
+  				</mat-checkbox>
+  				<div style="height: 15px"></div>
+  			</td>
+  		</tr>
+  		<!-- <tr>
+			<td>
+				<mat-form-field appearance="outline" style="width: 90%" (click)="addresslookup()">
+   					<mat-label>Address</mat-label>
+					<input matInput [(ngModel)]="address" readonly="readonly">
+				</mat-form-field>&nbsp;
+				<button mat-mini-fab color="primary" (click)="addresslookup()">
+					<mat-icon>search</mat-icon>
+				</button>
+			</td>
+		</tr> -->
+  	</table>
+			
+	  <div style="height: 5px"></div>
+	  <mat-divider></mat-divider>
+	  <div style="height: 10px"></div>
+	  <button mat-raised-button (click)="close()">Cancel</button>
+	  <button mat-raised-button color="primary" (click)="save()" style="float: right;" *ngIf="data.type==0">Add Company</button>
+	  <button mat-raised-button color="primary" (click)="update()" style="float: right;" *ngIf="data.type==1">Update</button><br>&nbsp;
+  </mat-card-content>
+</mat-card>

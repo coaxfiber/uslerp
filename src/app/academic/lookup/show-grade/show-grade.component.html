@@ -1,0 +1,47 @@
+<h3 style="margin-top: 10px;float: left;">{{data.name}}</h3>
+
+<button mat-raised-button (click)="onNoClickclose()" style="float: right;"> <i class="material-icons iconsize">close</i> Close</button>
+
+<table class="apptablegrade">
+	<tr>
+		<th style="width: 100px">Subject ID</th>
+		<th>Descriptive Title</th>
+		<th style="width: 75px">Grade</th>
+		<th style="width: 75px">Units</th>
+	</tr>
+		
+</table>
+<div  style="max-height: calc(100vh - 250px);overflow-y: scroll;">
+<table  *ngFor="let grade of gradearray; let i = index" class="apptablegrade">
+		<tr *ngIf="sy(grade.schoolYear)" style="text-align: center">
+			<td colspan="4">
+				<b>{{  getsy(grade.schoolYear) }}</b>
+			</td>
+		</tr>
+		<tr *ngIf="sem(grade.schoolYear)" bgcolor="#f4f8fd">
+			<td colspan="4">
+				<b><i>{{  getsem(grade.schoolYear) }}</i></b>
+			</td>
+		</tr>
+		<tr>
+			<td style="width: 100px">
+				{{ grade.subjectID }}
+			</td>
+			<td>
+				{{ grade.subjectTitle }}
+			</td>
+			<td style="width: 69px">
+				{{ grade.grade }}
+			</td>
+			<td style="width: 62px">
+				{{ grade.units }}
+			</td>
+		</tr>
+		<tr *ngIf="sem2(grade.schoolYear,i)" >
+			<td colspan="4" style="text-align: right;color: red">
+				<b><i>{{ calcgrade(grade.schoolYear) }}</i></b>
+			</td>
+		</tr>
+</table>
+<mat-spinner *ngIf="gradearray==undefined" style="margin:10px auto 10px auto"></mat-spinner>
+</div>
